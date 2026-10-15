@@ -135,7 +135,7 @@ a{color:inherit;text-decoration:none}
 .c-media .stage{min-height:0;padding-bottom:3dvh;display:grid;place-items:center;container-type:size}
 .book{position:relative;width:min(86cqw,121.6cqh);aspect-ratio:1190/842;cursor:pointer;touch-action:pan-y;transition:transform .8s cubic-bezier(.6,.05,.3,1)}
 .book.closed-front{transform:translateX(-25%)}.book.closed-back{transform:translateX(25%)}
-/* сайт: на GitHub Pages живой сайт встроен в окно, ссылка под ним; в просмотрщике Claude встраивание запрещено, там только ссылка */
+/* сайт: на GitHub Pages в окне сохранённая копия (живой сайт запрещает встраивание), ссылка под ним на живой; в просмотрщике Claude встраивание запрещено, там только ссылка */
 .site-frame{width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px}
 .site-frame iframe{width:100%;height:100%;border:1px solid var(--ink);background:#fff}
 .site-frame a{justify-self:start;font-size:11px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid}
@@ -252,10 +252,10 @@ sec("Исследование и работа с контентом","Я сам�
 sec("Дизайн-решение","Я разработала структуру издания, определила последовательность страниц и создала композицию разворотов. Визуальная система строится на работе с типографикой, масштабом заголовков, расположением текстовых блоков и сочетанием текста с фотографиями.","Редакционная вёрстка помогает разделить материал на тематические части, выделить ключевые сообщения и задать ритм чтения. При этом отдельные развороты работают как части единого повествования, а не как самостоятельные информационные страницы.")+
 sec("Реализация","Я прошла весь путь от идеи до готового издания: от поиска информации и подготовки текстового материала до разработки макета, оформления разворотов и подготовки к печати.","В результате проект существует в двух форматах — цифровом и печатном. Это позволило реализовать концепцию как самостоятельное издание, рассчитанное на последовательное чтение и визуальное восприятие.")+
 sec("Результат","Seaside / Black Sea — законченный авторский зин, в котором исследовательская работа, редакционный дизайн и типографика объединены общей концепцией.","Проект демонстрирует мои навыки разработки визуальной концепции, структурирования информации, работы с текстом, создания многостраничных макетов и подготовки печатных материалов.")};
-const SITES={website:{url:"https://special.spbdnevnik.ru/award_best_2026",
+const SITES={website:{url:"https://special.spbdnevnik.ru/award_best_2026",copy:"award/index.html",
   note:"Сайт премии «Петербургского дневника». Дизайн мой, сделан для премии 2025 года; позже редакция обновила цифры на 2026-й, сохранив дизайн."}};
 const embed=location.hostname.endsWith("github.io");
-const siteHtml=x=>embed?`<div class="site-frame"><iframe src="${x.url}" title="Сайт премии «Петербургского дневника»" loading="lazy"></iframe><a href="${x.url}" target="_blank" rel="noopener">открыть сайт в новой вкладке ↗</a></div>`
+const siteHtml=x=>embed?`<div class="site-frame"><iframe src="${x.copy}" title="Сайт премии «Петербургского дневника»" loading="lazy"></iframe><a href="${x.url}" target="_blank" rel="noopener">открыть сайт в новой вкладке ↗</a></div>`
   :`<a class="site-link" href="${x.url}" target="_blank" rel="noopener"><b>${x.url.replace(/^https:\/\//,"")}</b><span>открыть сайт ↗</span><small>${x.note}</small></a>`;
 // книга листается загибом уголка: тянуть мышкой/пальцем или кликнуть по половине разворота
 const bookHtml=b=>`<div class="book closed-front" id="book" role="button" tabindex="0" aria-label="${b.label}: клик справа — вперёд, слева — назад, страницу можно тянуть за уголок"><canvas></canvas></div>`;
