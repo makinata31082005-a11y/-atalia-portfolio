@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Natalia Makienko</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500&display=swap">
+<style>
+/* шаг 1: первый экран. Фон и чернила нейтральные, цвет только у рисунка (синий, как у annaamb) */
+:root{--paper:#F7F6F4;--ink:#111;--crayon:#4A6FC0;--m:40px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1B1A19;--ink:#F1EFEC;--crayon:#7D9BE0}}
+:root[data-theme="dark"]{--paper:#1B1A19;--ink:#F1EFEC;--crayon:#7D9BE0}
+@media (max-width:760px){:root{--m:16px}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:"Inter",Helvetica,Arial,sans-serif;height:100vh;height:100dvh;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr)}
+a{color:inherit;text-decoration:none}
+
+/* меню как у Olga Minina: имя и пункты в квадратных скобках сверху справа от него */
+.top{position:relative;z-index:2;padding:28px var(--m);display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}
+.big{margin-left:auto}
+.brand{transition:filter .25s,opacity .25s;font:400 clamp(32px,4vw,56px)/1 "Inter",Helvetica,sans-serif;letter-spacing:-.02em}
+.top nav{display:flex;gap:14px;font-size:13px;letter-spacing:.02em;text-transform:uppercase;padding-top:2px}
+.top nav a{transition:filter .25s,opacity .25s}
+@media (hover:hover){.top:has(a:hover) a:not(:hover){filter:blur(2px);opacity:.5}}
+
+/* главная: компактное окно Figma, курсор Натальи сам верстает фрейм с надписью portfolio */
+#home{--ui:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--canvas:#F5F5F5;--panel:#fff;--line:#E6E6E6;--ui-ink:#1E1E1E;--ui-mute:#8A8A8A;--blue:#0D99FF;--blue-soft:#E5F4FF;--grid:#FF00000f;--who:#9747FF}
+#home.on{display:grid;place-items:center;padding:0 var(--m) var(--m);min-height:0}
+#home .app{display:grid;width:min(1040px,100%);height:min(540px,100%);grid-template:minmax(0,1fr) / 150px 1fr 170px;background:var(--canvas);color:var(--ui-ink);font:400 11px/1.4 var(--ui);
+  border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px #0000001f,0 30px 60px -30px #0006}
+#home .bar{grid-column:1/-1;background:#2C2C2C;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 12px}
+#home .bar .file{display:flex;gap:6px;align-items:center}
+#home .bar .file span{color:#ffffff80}
+#home .bar .who{display:flex;gap:8px;align-items:center}
+#home .ava{width:22px;height:22px;border-radius:50%;background:var(--who);display:grid;place-items:center;font-weight:600;font-size:10px}
+#home .share{padding:4px 10px;border-radius:5px;background:var(--blue);font-weight:500}
+#home .left,#home .right{background:var(--panel);overflow:hidden}
+#home .left{border-right:1px solid var(--line)}
+#home .right{border-left:1px solid var(--line)}
+#home .fph{display:flex;gap:12px;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:600}
+#home .fph span{color:var(--ui-mute);font-weight:400}
+#home .layers{list-style:none;margin:6px 0;padding:0}
+#home .layers li{display:flex;align-items:center;gap:7px;height:26px;padding-left:calc(12px + var(--l,0)*14px);white-space:nowrap}
+#home .layers li svg{flex:none;opacity:.6}
+#home .layers li.on{background:var(--blue-soft)}
+#home .layers li.hov{box-shadow:inset 0 0 0 1px var(--blue)}
+#home .sec{padding:10px 12px;border-bottom:1px solid var(--line)}
+#home .sec h3{margin:0 0 8px;font-size:11px;font-weight:600}
+#home .row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+#home .f{display:flex;align-items:center;gap:6px;height:24px;padding:0 7px;border-radius:5px;background:#F5F5F5;font-variant-numeric:tabular-nums;transition:box-shadow .2s,background-color .2s}
+#home .f i{font-style:normal;color:var(--ui-mute);width:10px}
+#home .f.wide{grid-column:1/-1}
+#home .f.hot{box-shadow:inset 0 0 0 1px var(--blue);background:#fff}
+#home .sw{width:12px;height:12px;border-radius:2px;background:#111}
+#home .gridrow{display:flex;align-items:center;gap:8px}
+#home .gridrow b{width:12px;height:12px;border-radius:2px;background:#FF000033}
+#home .canvas{position:relative;overflow:hidden;display:grid;place-items:center;padding:34px 28px 26px;container-type:size}
+#home .flabel{position:absolute;font-size:10px;color:var(--ui-mute);translate:0 -16px}
+#home .frame{position:relative;width:min(100cqw,100cqh*1.6);aspect-ratio:16/10;background:#fff;container-type:inline-size;box-shadow:0 0 0 1px #0000000a}
+#home .cols{position:absolute;inset:0 4%;display:grid;gap:0 1.6%;pointer-events:none}
+#home .cols i{background:var(--grid)}
+#home .el{position:absolute;margin:0;white-space:nowrap;cursor:default;color:var(--ink);user-select:none;-webkit-user-select:none;touch-action:none}
+#home .el.anim{transition:left .7s cubic-bezier(.65,0,.2,1),top .7s cubic-bezier(.65,0,.2,1)}
+#home .el:hover{outline:1px solid var(--blue)}
+#home #head{width:40cqw;height:auto;display:block;transition:width .6s cubic-bezier(.2,.7,.1,1)}
+#home #head.anim{transition:left .7s cubic-bezier(.65,0,.2,1),top .7s cubic-bezier(.65,0,.2,1),width .6s cubic-bezier(.2,.7,.1,1)}
+#home .mute{font:400 1.6cqw/1.2 var(--ui);color:#6F6F6F}
+#home .sel{position:absolute;pointer-events:none;outline:1px solid var(--blue);opacity:0;transition:opacity .15s}
+#home .sel.on{opacity:1}
+#home .sel b{position:absolute;width:6px;height:6px;background:#fff;outline:1px solid var(--blue);translate:-50% -50%}
+#home .sel b:nth-child(1){left:0;top:0}
+#home .sel b:nth-child(2){left:100%;top:0}
+#home .sel b:nth-child(3){left:0;top:100%}
+#home .sel b:nth-child(4){left:100%;top:100%}
+#home .sel span{position:absolute;left:50%;top:calc(100% + 6px);translate:-50% 0;background:var(--blue);color:#fff;font:500 10px/1 var(--ui);padding:3px 5px;border-radius:3px;white-space:nowrap;font-variant-numeric:tabular-nums}
+#home .snap{position:absolute;top:0;bottom:0;width:1px;background:#F24822;opacity:0;pointer-events:none;transition:opacity .15s}
+#home .snap.on{opacity:1}
+#home .cur{position:absolute;left:0;top:0;z-index:5;pointer-events:none;transition:opacity .3s}
+#home .cur span{position:absolute;left:14px;top:16px;background:var(--who);color:#fff;font:500 10px/1 var(--ui);padding:3px 6px;border-radius:0 6px 6px 6px;white-space:nowrap}
+@media (max-width:900px){#home .app{height:100%;grid-template:minmax(0,1fr) / 1fr}
+#home .left,#home .right{display:none}
+#home .bar .file span{display:none}
+#home .canvas{padding:30px 14px 16px}
+#home .frame{aspect-ratio:9/16;width:min(100cqw,100cqh*.5625)}
+#home #head{width:76cqw}
+#home .mute{font-size:3.6cqw}}
+@media (prefers-reduced-motion:reduce){#home .el,#home .el.anim,#home #head,#home #head.anim{transition:none}}
+
+/* страницы: главная и Artworks */
+.page{display:none}.page.on{display:flex}
+.big[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+
+/* Artworks: названия списком по центру (Esther Ramon), рядом мелко тип и год (Coscia),
+   при наведении превью у курсора (Korkunova), остальные бледнеют */
+.works{flex-direction:column;align-items:center;justify-content:center;padding:2dvh var(--m) 4dvh;min-height:0}
+.works ol{list-style:none;text-align:center}
+.works li a{position:relative;display:inline-flex;align-items:flex-start;gap:8px;font:500 clamp(16px,min(4.6vw,6.2dvh),68px)/1.12 "Inter",Helvetica,sans-serif;letter-spacing:-.03em;transition:opacity .25s}
+.works li sup{position:absolute;left:100%;margin-left:8px;font:400 12px/1 "Inter",sans-serif;letter-spacing:.02em;text-transform:uppercase;padding-top:.7em;white-space:nowrap}
+.works ol:has(a:hover) a:not(:hover){opacity:.2}
+/* шлейф из фото работ за курсором (Catarina Nery): фото появляются подряд и тают */
+.works{position:relative;isolation:isolate}
+.works ol{position:relative;z-index:1}
+.trail{position:fixed;display:block;object-fit:cover;pointer-events:none;z-index:0;transform:translate(-50%,-50%) rotate(var(--r));animation:fade 1.1s ease-in forwards}
+@keyframes fade{0%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scale(.85)}12%{opacity:1;transform:translate(-50%,-50%) rotate(var(--r)) scale(1)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(var(--r)) scale(.92)}}
+@media (prefers-reduced-motion:reduce){.trail{display:none}}
+@media (max-width:760px){.works li sup{display:none}}
+
+/* кейс (Esther Ramon): сначала одно название по центру, потом оно уезжает в левый верхний угол,
+   слева появляется описание, справа работа на 2/3 */
+.case{position:relative;padding:0 var(--m) 3dvh;min-height:0;display:none}
+.case.on{display:grid;grid-template-columns:1fr 2fr;grid-template-rows:auto minmax(0,1fr);gap:2dvh 32px}
+.c-title{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);white-space:nowrap;font:500 clamp(36px,min(7vw,11dvh),120px)/1 "Inter",Helvetica,sans-serif;letter-spacing:-.03em;
+  transition:left .9s cubic-bezier(.7,0,.2,1),top .9s cubic-bezier(.7,0,.2,1),transform .9s cubic-bezier(.7,0,.2,1),font-size .9s cubic-bezier(.7,0,.2,1)}
+.case.settled .c-title{left:var(--m);top:0;transform:none;font-size:clamp(26px,min(3vw,5dvh),44px)}
+.c-info,.c-media{opacity:0;transform:translateY(16px);transition:opacity .6s .55s,transform .6s .55s}
+.case.settled .c-info,.case.settled .c-media{opacity:1;transform:none}
+.c-info{grid-column:1;grid-row:2;padding-top:calc(clamp(26px,min(3vw,5dvh),44px) + 3dvh);display:grid;align-content:start;font-size:15px;line-height:1.4;overflow:auto}
+.c-info>div{border-top:1px solid var(--ink);padding:1.2dvh 0 2.6dvh}
+.c-info>div:last-child{border-bottom:1px solid var(--ink)}
+.c-info h3{font:500 11px/1.2 "Inter",sans-serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;opacity:.55}
+.c-info .todo{opacity:.5}
+.c-info p+p{margin-top:.7em}
+.c-info .c-sub{font:400 clamp(22px,2vw,30px)/1.1 "Instrument Serif",Georgia,serif;margin-bottom:12px}
+.c-info .c-name{font:500 13px/1.2 "Inter",sans-serif;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chips span{background:var(--ink);color:var(--paper);border-radius:999px;padding:3px 10px;font-size:11px;text-transform:uppercase}
+.c-media{grid-column:2;grid-row:1/3;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;min-height:0;padding-top:1dvh;padding-left:32px;border-left:1px solid color-mix(in srgb,var(--ink) 25%,transparent)}
+.c-media .ph{background:#1d1c1b;color:#9b9792;display:grid;place-items:center;font-size:12px;text-transform:uppercase;letter-spacing:.04em;min-height:0}
+.c-media p{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+@media (max-width:760px){.case.on{grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr);overflow:auto}
+  .c-info{grid-row:2;overflow:visible}.c-media{grid-column:1;grid-row:3;min-height:40dvh;padding-left:0;border-left:0}}
+@media (prefers-reduced-motion:reduce){.c-title,.c-info,.c-media{transition:none}}
+
+/* журнал и зин: сначала обложка, страница загибается за уголок, как во флипбуке (реф Heyzine), рисуется на canvas */
+.c-media .stage{min-height:0;padding-bottom:3dvh;display:grid;place-items:center;container-type:size}
+.book{position:relative;width:min(86cqw,121.6cqh);aspect-ratio:1190/842;cursor:pointer;touch-action:pan-y;transition:transform .8s cubic-bezier(.6,.05,.3,1)}
+.book.closed-front{transform:translateX(-25%)}.book.closed-back{transform:translateX(25%)}
+/* сайт: на GitHub Pages живой сайт встроен в окно, ссылка под ним; в просмотрщике Claude встраивание запрещено, там только ссылка */
+.site-frame{width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px}
+.site-frame iframe{width:100%;height:100%;border:1px solid var(--ink);background:#fff}
+.site-frame a{justify-self:start;font-size:11px;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid}
+.site-link{width:100%;height:100%;display:grid;align-content:center;justify-items:center;gap:14px;padding:24px;text-align:center;border:1px solid var(--ink);transition:background .25s,color .25s}
+.site-link b{font:500 clamp(18px,2.6vw,38px)/1.1 "Inter",sans-serif;letter-spacing:-.02em;word-break:break-all}
+.site-link span{font-size:11px;text-transform:uppercase;letter-spacing:.03em}.site-link small{max-width:44ch;font-size:13px;line-height:1.4;opacity:.6}
+@media (hover:hover){.site-link:hover{background:var(--ink);color:var(--paper)}}
+.zoom,.lb button{font:500 11px/1 "Inter",sans-serif;text-transform:uppercase;letter-spacing:.03em;background:none;border:1px solid currentColor;border-radius:999px;padding:5px 10px;color:inherit;cursor:pointer}
+.lb{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--paper);color:var(--ink)}
+.lb::backdrop{background:#000a}
+.lb-bar{position:sticky;top:0;z-index:1;display:flex;gap:8px;align-items:center;padding:12px var(--m);background:var(--paper)}.lb-x{margin-left:auto}
+.lb-pages{display:flex;justify-content:center;padding:0 var(--m) var(--m);width:max-content;min-width:100%;box-sizing:border-box}
+.lb-pages img{width:min(1240px,calc((100vw - 2*var(--m))/2));height:auto;cursor:zoom-in;box-shadow:0 0 0 1px #0001}
+.lb-pages.big img{width:1240px;cursor:zoom-out}
+@media (max-width:760px){.lb-pages{flex-wrap:wrap;width:auto}.lb-pages img{width:100%}.lb-pages.big{flex-wrap:nowrap;flex-direction:column;width:max-content}.lb-pages.big img{width:1240px}
+  .lb .book-hint,.c-media .book-hint{display:none}}
+.book-hint{font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.5}
+.book:focus{outline:none}
+.book canvas{position:absolute;left:-2%;top:-12%;width:104%;height:124%}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/">Natalia Makienko</a>
+  <nav><a href="#">[ about ]</a></nav>
+  <a class="brand big" href="#/artworks">Artworks</a>
+</header>
+
+<main class="page" id="home" aria-label="Главная">
+<div class="app" aria-hidden="true">
+  <aside class="left">
+    <div class="fph">Слои<span>Ассеты</span></div>
+    <ul class="layers">
+      <li style="--l:0"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 0v12M9 0v12M0 3h12M0 9h12" stroke="#1E1E1E" fill="none"/></svg><b>Главная</b></li>
+      <li style="--l:1"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1v10M6 1v10M10 1v10" stroke="#F24822" fill="none"/></svg>Сетка, <span id="ncol">12</span></li>
+      <li style="--l:1" data-for="head"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 10C2 4 6 2 10 2M10 2v3M10 2H7" stroke="#1E1E1E" fill="none"/></svg>portfolio</li>
+      <li style="--l:1" data-for="city"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 2h8M6 2v9" stroke="#1E1E1E" fill="none"/></svg>Санкт-Петербург</li>
+      <li style="--l:1" data-for="year"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 2h8M6 2v9" stroke="#1E1E1E" fill="none"/></svg>2026</li>
+    </ul>
+  </aside>
+  <main class="canvas">
+    <div class="frame" id="frame">
+      <span class="flabel">Главная</span>
+      <div class="cols" id="cols"></div>
+      <span class="snap" id="snap"></span>
+      <svg class="el" id="head" data-k="head" data-name="portfolio" viewBox="0 0 474 126"><path fill="#111" fill-rule="evenodd" d="M16.5 118.5C13.7 118.2 13.3 118.1 13.1 117.4C12.7 115.3 12.5 109.2 12.2 88.2C12.1 75.1 11.9 62.2 11.8 59.6C11.6 57.0 11.4 52.1 11.3 48.6C11.1 45.2 10.8 39.3 10.5 35.6C10.2 31.9 10.0 27.7 9.9 26.2C9.7 22.8 8.9 16.5 8.4 14.8C7.8 12.6 7.9 11.5 8.6 10.7C9.3 10.1 9.4 10.1 13.6 10.1C18.0 10.1 19.4 10.3 23.8 11.5C32.7 14.0 36.9 16.5 41.6 21.9C43.4 23.9 44.3 25.2 45.7 27.8C48.3 32.5 49.3 38.5 48.8 45.1C48.5 48.7 48.0 50.8 47.1 52.6C45.1 56.5 38.1 65.2 31.5 72.0C26.2 77.5 26.3 77.1 25.6 85.5C24.5 98.1 24.4 99.4 24.3 108.2C24.2 118.0 24.2 118.1 22.7 118.3C21.0 118.6 18.5 118.7 16.5 118.5ZM88.5 118.6C78.0 117.9 71.7 113.2 65.7 101.4C61.2 92.5 59.6 86.7 58.2 74.5C58.1 73.3 58.0 68.6 58.0 64.0C58.0 57.2 58.1 54.8 58.5 51.1C59.6 41.2 61.1 35.8 64.6 28.4C67.1 23.1 71.4 16.6 73.4 15.1C75.3 13.7 77.9 12.3 79.2 12.0C81.5 11.5 84.4 11.8 86.7 12.8C93.2 15.6 100.8 22.3 104.2 28.2C105.2 30.0 109.2 39.8 111.1 45.1C113.1 50.9 113.9 55.2 113.9 61.6C113.8 67.1 113.2 71.9 111.5 79.1C111.2 80.2 110.8 82.1 110.5 83.4C108.0 94.8 107.0 98.2 105.2 101.9C102.9 106.5 100.3 110.0 94.8 116.0C93.2 117.8 90.9 118.7 88.5 118.6ZM129.6 118.4C127.3 118.2 124.6 116.9 122.8 115.1C121.5 113.8 121.5 113.8 121.6 112.7C121.7 112.1 121.9 110.0 122.0 108.1C122.1 106.2 122.4 102.9 122.6 100.8C124.0 85.9 124.6 78.0 125.2 66.2C125.8 55.9 126.5 36.6 126.7 24.3L126.9 16.8L127.6 16.0C128.7 14.9 130.6 14.1 135.8 12.6C138.4 11.9 142.8 11.5 152.3 11.2C162.0 10.9 163.4 11.0 168.0 12.0C170.9 12.6 171.8 13.1 172.0 14.1C172.1 15.2 170.0 23.6 169.4 24.6C169.2 24.9 168.6 25.4 168.1 25.6C167.3 26.0 167.0 26.0 165.1 25.8C156.1 24.4 150.2 24.4 147.0 25.8C144.5 26.8 142.4 30.0 140.7 34.9L140.2 36.6L140.0 67.4C139.8 95.5 139.8 98.8 139.3 106.0C138.7 114.4 138.5 115.4 137.6 116.8C136.6 118.3 133.9 118.9 129.6 118.4ZM319.8 118.6C319.4 118.5 318.1 118.4 316.9 118.2C310.9 117.5 305.7 114.5 301.9 109.5C298.9 105.6 294.7 97.6 292.9 92.1C291.7 88.8 290.3 82.5 290.0 79.3C289.9 78.1 289.6 76.1 289.5 74.8C289.2 73.2 289.1 69.6 289.1 64.1C289.1 55.4 289.6 49.8 290.8 43.6C291.7 38.5 293.9 32.0 296.1 27.6C297.1 25.6 300.3 20.3 301.9 18.2C303.8 15.6 304.8 14.7 307.7 13.2C309.8 12.1 310.2 11.9 312.1 11.8C315.7 11.6 318.3 12.5 323.6 16.1C326.8 18.2 331.3 22.5 333.5 25.4C335.3 27.7 337.3 31.9 340.0 39.0C340.7 40.9 341.4 42.7 341.5 43.0C342.3 44.8 343.8 50.0 344.3 52.4C344.8 54.8 344.9 55.9 344.9 61.5C344.9 68.8 344.6 71.2 342.5 79.9C342.2 81.0 341.8 83.0 341.5 84.4C340.4 89.4 339.0 95.4 338.2 97.8C337.0 101.4 333.9 106.7 331.1 110.2C328.3 113.6 325.4 116.8 324.5 117.4C323.8 117.9 321.0 118.8 320.5 118.7C320.4 118.7 320.1 118.6 319.8 118.6ZM393.6 118.5C391.9 118.2 391.2 117.7 390.6 116.6C390.1 115.7 390.1 115.0 389.9 110.0C389.8 106.9 389.6 102.9 389.5 101.0C389.4 99.1 389.2 93.7 389.0 88.9C388.9 84.1 388.6 77.3 388.5 73.9C388.4 70.4 388.2 62.0 388.2 55.2C388.1 45.3 388.1 42.7 388.4 42.3C388.7 41.9 389.4 41.8 394.2 41.6C397.1 41.5 400.0 41.4 400.5 41.5C402.2 41.9 402.1 41.8 402.0 49.2C402.0 56.2 401.7 67.1 401.3 77.4C400.9 86.7 400.9 99.6 401.4 103.9C402.1 111.6 402.3 114.4 402.0 115.5C401.6 116.9 400.4 117.9 398.5 118.2C395.9 118.6 394.7 118.7 393.6 118.5ZM439.0 118.3C436.3 118.0 433.2 117.1 431.4 116.2C425.9 113.4 422.4 109.4 418.0 100.6C414.5 93.6 412.9 88.3 411.6 80.4C410.4 72.9 410.3 58.1 411.3 50.5C412.3 42.7 412.4 42.0 414.2 36.2C416.1 30.1 419.2 24.0 423.2 18.4C425.1 15.8 426.4 14.6 429.3 13.1L431.6 11.9L434.5 11.9C437.7 11.9 438.6 12.2 442.1 14.2C446.5 16.7 452.1 21.5 455.1 25.4C456.2 26.9 458.3 30.9 459.1 32.9C459.3 33.4 459.7 34.5 460.0 35.2C462.4 41.1 462.5 41.5 463.7 44.8C465.6 50.3 466.2 53.6 466.6 60.4C466.9 64.6 465.6 73.9 463.6 81.5C463.4 82.3 463.1 83.5 463.0 84.2C462.5 87.1 460.7 94.5 459.8 97.1C458.8 100.3 456.6 104.8 454.5 107.6C452.7 110.2 447.3 116.5 446.3 117.2C445.5 117.7 442.5 118.8 441.9 118.7C441.7 118.7 440.4 118.5 439.0 118.3ZM205.7 118.2C203.5 117.5 201.3 115.7 198.8 112.4C195.9 108.5 194.6 104.2 193.6 95.5C193.1 90.5 193.0 88.4 192.8 74.9C192.6 64.6 192.5 63.0 192.2 62.3C191.9 61.9 191.7 61.5 191.5 61.4C191.3 61.3 189.0 60.8 185.2 60.0C182.3 59.4 181.3 59.1 180.5 58.4L179.9 57.9L180.1 52.7C180.2 46.7 180.3 46.2 181.8 46.0C182.3 46.0 184.0 46.2 185.4 46.5C189.7 47.2 193.6 47.8 194.3 47.7C194.7 47.7 194.9 47.4 195.0 46.9C195.3 46.1 195.7 41.0 196.5 29.6C196.8 25.6 197.1 20.8 197.3 18.9C197.7 12.6 198.1 9.2 198.4 8.8C198.7 8.4 199.0 8.4 203.3 8.9C205.8 9.1 208.1 9.3 208.3 9.4C208.6 9.5 208.9 9.8 209.0 10.2C209.3 10.8 209.0 17.7 208.5 23.1C208.4 24.6 208.1 28.1 208.0 30.9C207.8 33.6 207.6 37.1 207.5 38.5C207.4 39.9 207.2 43.0 207.1 45.3L206.9 49.4L207.7 50.1C208.2 50.5 208.9 50.8 209.7 50.9C212.9 51.3 215.9 52.0 216.2 52.4C216.9 53.4 216.8 61.0 215.9 62.7C215.8 63.1 215.2 63.6 214.6 63.9C213.6 64.3 213.5 64.3 209.0 63.9C206.5 63.7 204.1 63.4 203.8 63.4C202.9 63.2 202.3 63.7 202.0 64.8C201.8 65.8 202.1 78.4 202.5 84.1C202.6 86.2 202.8 89.4 202.9 91.2C203.0 93.5 203.2 95.2 203.5 96.2C203.8 97.1 204.0 98.1 204.0 98.5C204.0 99.5 205.6 102.0 206.7 102.9C207.7 103.6 208.0 103.6 209.7 103.6C211.4 103.6 211.9 103.5 213.3 102.8C216.1 101.4 219.5 97.9 222.1 93.6C223.6 91.0 223.8 90.8 224.6 91.3C226.0 92.1 229.7 95.8 229.8 96.4C230.0 97.2 228.1 103.0 227.0 105.3C226.0 107.3 224.6 108.5 214.4 115.9C211.3 118.2 208.5 118.9 205.7 118.2ZM247.4 118.3C245.5 118.2 245.2 118.2 244.9 117.7C244.6 117.3 244.6 116.9 244.8 116.0C245.9 110.3 246.6 104.7 247.1 98.5C247.9 89.1 248.0 86.9 248.1 80.3C248.1 74.1 248.1 73.5 247.7 73.1C247.0 72.3 246.1 72.2 243.7 72.8C242.6 73.0 241.3 73.2 240.8 73.2C239.4 73.3 239.2 72.7 238.5 68.6C237.8 64.0 237.9 63.6 239.7 62.8C240.4 62.5 241.5 62.2 242.2 62.1C244.4 61.9 246.7 61.0 247.2 60.3C247.8 59.6 247.9 59.2 248.2 54.1C248.6 48.4 249.4 38.6 249.8 35.1C250.3 31.1 251.1 27.7 252.1 24.4C253.1 21.4 253.7 20.1 255.4 17.2C258.4 12.4 259.5 11.2 262.1 9.9C263.6 9.1 264.0 9.0 265.8 9.0C268.6 9.0 269.9 9.5 272.2 11.5C275.8 14.6 278.4 19.2 280.4 26.2C280.8 27.4 281.0 28.6 280.9 28.9C280.8 29.2 280.3 29.8 279.7 30.3C279.1 30.7 277.9 31.8 276.9 32.6C276.0 33.4 275.1 34.0 274.8 34.0C274.6 34.0 274.1 33.6 273.8 33.2C273.4 32.7 272.3 31.5 271.5 30.5C269.4 28.1 267.9 27.1 266.1 26.9C263.0 26.5 261.0 27.4 260.2 29.5C259.4 31.5 259.3 33.4 259.6 45.2L259.9 56.8L260.5 57.3C261.2 57.8 261.4 57.9 264.6 57.4C269.2 56.7 269.8 56.8 270.5 58.8C270.9 60.0 271.1 64.8 270.8 65.5C270.4 66.2 269.4 66.7 267.2 67.0C264.3 67.4 261.8 68.0 261.6 68.3C261.5 68.5 261.4 69.8 261.5 71.1C261.5 73.4 260.9 84.4 260.6 85.2C260.6 85.5 260.3 87.7 260.0 90.2C258.7 102.0 256.6 117.2 256.1 117.9C255.8 118.5 255.6 118.5 252.7 118.4C251.0 118.4 248.6 118.4 247.4 118.3ZM365.4 118.1C361.4 117.0 358.8 113.5 356.0 105.1C353.0 96.1 352.5 85.1 352.9 37.3C353.1 12.0 353.2 9.5 353.5 9.1C353.9 8.7 354.3 8.7 358.2 9.0C362.7 9.3 363.3 9.5 363.9 10.8C364.3 11.6 364.7 18.6 365.0 30.8C365.2 36.3 365.4 42.5 365.5 44.5C365.6 46.5 365.9 56.6 366.0 67.0C366.2 83.1 366.3 86.5 366.7 90.1C367.3 95.4 368.0 97.3 369.8 99.4C371.1 100.9 371.5 101.0 375.7 101.0C379.4 101.0 379.5 101.0 379.9 101.6C380.2 102.1 380.3 103.4 380.4 108.5C380.6 117.0 380.7 116.9 376.3 117.6C370.4 118.6 367.7 118.7 365.4 118.1ZM394.5 24.1C390.8 23.1 389.2 21.1 388.8 17.0C388.6 13.4 389.5 10.7 391.5 9.5C392.5 8.9 395.0 8.6 396.5 8.9C397.4 9.0 397.9 9.3 399.3 10.7C401.1 12.6 402.5 15.1 402.5 16.4C402.5 17.8 401.8 20.3 400.9 21.9C399.6 24.3 397.5 25.0 394.5 24.1Z"/></svg>
+      <p class="el mute" id="city" data-k="city" data-name="Санкт-Петербург">Санкт-Петербург</p>
+      <p class="el mute" id="year" data-k="year" data-name="2026">2026</p>
+      <div class="sel" id="sel"><b></b><b></b><b></b><b></b><span id="dim"></span></div>
+      <div class="cur" id="cur"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M1 1l15 8-6.5 1.6L6 18z" fill="#9747FF" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg><span>Наталья</span></div>
+    </div>
+  </main>
+  <aside class="right">
+    <div class="fph">Дизайн<span>Прототип</span></div>
+    <div class="sec"><h3 id="pname">Главная</h3>
+      <div class="row"><div class="f" id="fx"><i>X</i><span>0</span></div><div class="f" id="fy"><i>Y</i><span>0</span></div></div>
+      <div class="row"><div class="f" id="fw"><i>W</i><span>1440</span></div><div class="f" id="fh"><i>H</i><span>900</span></div></div></div>
+    <div class="sec"><h3>Заливка</h3><div class="row"><div class="f wide"><b class="sw"></b><span>111111</span></div></div></div>
+    <div class="sec"><h3>Сетка</h3><div class="gridrow"><b></b>Колонки, <span id="ncol2">12</span></div></div>
+  </aside>
+</div>
+</main>
+
+<main class="works page" id="artworks">
+  <ol id="list"></ol>
+</main>
+
+<main class="case page" id="case">
+  <h2 class="c-title" id="cTitle"></h2>
+  <div class="c-info" id="cInfo">
+    <div><h3>задача</h3><p class="todo">[заглушка: что нужно было сделать]</p></div>
+    <div><h3>что я сделала</h3><p class="todo">[заглушка: как решала]</p></div>
+    <div><h3>результат</h3><p class="todo">[заглушка]</p></div>
+    <div><h3>роли</h3><div class="chips" id="cRoles"></div></div>
+  </div>
+  <div class="c-media"><div class="stage" id="cStage"></div><p><span id="cKind"></span><button class="zoom" id="cZoom" hidden>увеличить ⤢</button></p></div>
+</main>
+
+<dialog class="lb" id="lb" aria-label="Разворот журнала крупно">
+  <div class="lb-bar"><button data-go="-1">← назад</button><button data-go="1">дальше →</button><span class="book-hint">клик по странице — ещё крупнее</span><button class="lb-x" data-close>закрыть ✕</button></div>
+  <div class="lb-pages" id="lbPages"></div>
+</dialog>
+<script>
+// shortcut: примеры работ по форматам, которые ты называла; заменить на настоящие названия и годы
+const WORKS=[["Magazine","magazine layout"],["Petersburg Diary Award","website"],["Research","research website"],["Longread","longread"],["Zine","zine"],["Booklets","print"],["Short Film","film"],["Podcast","podcast"]];
+document.getElementById("list").innerHTML=WORKS.map(([t,k],i)=>`<li><a href="#/work/${i}">${t}<sup>${k}, 20··</sup></a></li>`).join("");
+// фото из Figma-фрейма «galereya» (порядок слева направо), размеры в px как во фрейме
+const GALLERY=[[1,120,170],[2,120,170],[3,120,168],[4,120,170],[5,120,162],[6,212,150]];
+GALLERY.forEach(([i])=>new Image().src=`gallery/g-${i}.jpg`);
+const page=document.getElementById("artworks");let lx=0,ly=0,n=0;
+page.addEventListener("mousemove",e=>{
+  if(Math.hypot(e.clientX-lx,e.clientY-ly)<56)return;lx=e.clientX;ly=e.clientY;
+  const [i,gw,gh]=GALLERY[n%GALLERY.length],d=document.createElement("img");
+  d.className="trail";d.src=`gallery/g-${i}.jpg`;d.alt="";d.width=gw;d.height=gh;d.style.left=lx+"px";d.style.top=ly+"px";
+  d.style.setProperty("--r","0deg");n++;
+  page.append(d);d.addEventListener("animationend",()=>d.remove());
+});
+let timer;
+// задняя обложка журнала — тёмная плашка с подписью
+const plate=t=>{const c=document.createElement("canvas");c.width=620;c.height=877;const x=c.getContext("2d");
+  x.fillStyle="#2A2827";x.fillRect(0,0,620,877);x.fillStyle="#F4F1EC";x.font="500 14px Inter,sans-serif";x.fillText(t.toUpperCase(),43,822);return c};
+// журнал: обложка — 1-я полоса PDF, внутри разворот 2–3. Зин: 1-й разворот PDF — обложки (1 передняя, 2 задняя), внутри 3–4, 5–6, 7–8
+const BOOKS={magazine:{r:1754/1241,staples:1,crease:1,label:"Журнал",p:[1,2,3].map(n=>[`mag/p-${n}.jpg`,`Полоса ${n} журнала GUTTER`]).concat([[plate("gutter · май 2025")]])},
+  zine:{r:1737/1224,label:"Зин",p:[1,3,4,5,6,7,8,2].map(n=>[`zine/p-${n}.jpg`,`Полоса ${n} зина Seaside`])}};
+// описание слева: своё у работы, у остальных заглушка
+const cInfo=document.getElementById("cInfo"),INFO0=cInfo.innerHTML;
+const sec=(h,...ps)=>`<div><h3>${h}</h3>${ps.map(p=>`<p>${p}</p>`).join("")}</div>`;
+const INFO={zine:`<div><p class="c-name">Seaside / Black Sea</p><p class="c-sub">Авторский зин об экологической катастрофе в Чёрном море</p>
+<div class="chips"><span>Editorial design</span><span>Print design</span><span>Typography</span><span>Zine</span></div></div>`+
+sec("О проекте","Seaside / Black Sea — авторский зин о разливе мазута у побережья Анапы в декабре 2024 года. Через документальные материалы, свидетельства очевидцев и истории пострадавших животных издание раскрывает последствия экологической катастрофы для морской экосистемы и людей.","Проект объединяет исследовательскую работу, редакционную структуру и визуальное повествование в формате самостоятельного печатного издания, доступного также в цифровом виде.")+
+sec("Задача","Самостоятельно разработать концепцию зина на социально значимую тему и превратить большой объём разнородной информации в последовательную визуальную историю.","Важно было не просто рассказать о разливе мазута, а показать масштаб последствий через конкретные истории, структурировать материал и создать издание, которое удерживает внимание читателя от первой до последней страницы.")+
+sec("Идея и концепция","В основе проекта — контраст между морем как живой природной средой и загрязнением, которое нарушает её естественное равновесие.","Я выбрала тему экологической катастрофы у побережья Анапы и построила повествование вокруг трёх взаимосвязанных сторон произошедшего: последствий для природы, участия людей в спасении пострадавших животных и масштабов ущерба для морской экосистемы.","Зин рассматривает катастрофу не только как новостное событие, но и как историю о хрупкости природных связей и человеческой ответственности.")+
+sec("Исследование и работа с контентом","Я самостоятельно собирала информацию по теме, отбирала материалы и работала с текстами. При формировании содержания ориентировалась на сочетание фактической информации, свидетельств очевидцев и тематических разделов о последствиях загрязнения.","Материал охватывает историю разлива, помощь волонтёров, гибель и спасение животных, а также влияние мазута на морскую экосистему. Такое построение позволяет раскрыть проблему с разных сторон и последовательно провести читателя через основные аспекты катастрофы.")+
+sec("Дизайн-решение","Я разработала структуру издания, определила последовательность страниц и создала композицию разворотов. Визуальная система строится на работе с типографикой, масштабом заголовков, расположением текстовых блоков и сочетанием текста с фотографиями.","Редакционная вёрстка помогает разделить материал на тематические части, выделить ключевые сообщения и задать ритм чтения. При этом отдельные развороты работают как части единого повествования, а не как самостоятельные информационные страницы.")+
+sec("Реализация","Я прошла весь путь от идеи до готового издания: от поиска информации и подготовки текстового материала до разработки макета, оформления разворотов и подготовки к печати.","В результате проект существует в двух форматах — цифровом и печатном. Это позволило реализовать концепцию как самостоятельное издание, рассчитанное на последовательное чтение и визуальное восприятие.")+
+sec("Результат","Seaside / Black Sea — законченный авторский зин, в котором исследовательская работа, редакционный дизайн и типографика объединены общей концепцией.","Проект демонстрирует мои навыки разработки визуальной концепции, структурирования информации, работы с текстом, создания многостраничных макетов и подготовки печатных материалов.")};
+const SITES={website:{url:"https://special.spbdnevnik.ru/award_best_2026",
+  note:"Сайт премии «Петербургского дневника». Дизайн мой, сделан для премии 2025 года; позже редакция обновила цифры на 2026-й, сохранив дизайн."}};
+const embed=location.hostname.endsWith("github.io");
+const siteHtml=x=>embed?`<div class="site-frame"><iframe src="${x.url}" title="Сайт премии «Петербургского дневника»" loading="lazy"></iframe><a href="${x.url}" target="_blank" rel="noopener">открыть сайт в новой вкладке ↗</a></div>`
+  :`<a class="site-link" href="${x.url}" target="_blank" rel="noopener"><b>${x.url.replace(/^https:\/\//,"")}</b><span>открыть сайт ↗</span><small>${x.note}</small></a>`;
+// книга листается загибом уголка: тянуть мышкой/пальцем или кликнуть по половине разворота
+const bookHtml=b=>`<div class="book closed-front" id="book" role="button" tabindex="0" aria-label="${b.label}: клик справа — вперёд, слева — назад, страницу можно тянуть за уголок"><canvas></canvas></div>`;
+function bindBook(b){const book=document.getElementById("book"),cv=book.querySelector("canvas"),ctx=cv.getContext("2d");
+  const P=b.p.map(([src,alt])=>{if(typeof src!=="string")return src;const i=new Image();i.src=src;i.alt=alt;i.onload=()=>draw();return i});
+  const N=Math.ceil((P.length+1)/2);let s=0,f=null,anim=0,W,H,w,ox,oy,dpr;
+  const fast=matchMedia("(prefers-reduced-motion:reduce)").matches;
+  const size=()=>{dpr=devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;
+    w=W/1.04/2;ox=W/2;oy=H*.12/1.24;draw()};
+  new ResizeObserver(size).observe(cv);
+  const h=()=>w*b.r;
+  const ok=i=>P[i]&&P[i].complete!==false&&(P[i].naturalWidth??1);
+  // f — текущий загиб: dir 1 вперёд / -1 назад, c — уголок, p — куда его утянули (в координатах «от корешка»)
+  const pt=e=>{const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left-ox),y:(e.clientY-r.top-oy)}};
+  function clampP(p,c){const T={x:0,y:0},B={x:0,y:h()},d=Math.hypot(w,h()),[near,far]=c.y?[B,T]:[T,B];
+    for(const [o,r] of [[near,w],[far,d]]){const dx=p.x-o.x,dy=p.y-o.y,l=Math.hypot(dx,dy);if(l>r)p={x:o.x+dx/l*r,y:o.y+dy/l*r}}return p}
+  function cut(poly,M,n,keep){const out=[],side=q=>((q.x-M.x)*n.x+(q.y-M.y)*n.y)*keep;
+    poly.forEach((a,i)=>{const b=poly[(i+1)%poly.length],sa=side(a),sb=side(b);if(sa<=0)out.push(a);
+      if((sa<0)!==(sb<0)&&sa!==sb){const t=sa/(sa-sb);out.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t})}});return out}
+  const path=poly=>{ctx.beginPath();poly.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath()};
+  // страница x0..x0+w; dir — зеркало системы координат, картинку разворачиваем обратно
+  function pageAt(i,x0,dir,shadow){if(!P[i])return;ctx.save();
+    if(shadow){ctx.shadowColor="rgba(0,0,0,.16)";ctx.shadowBlur=30*dpr;ctx.shadowOffsetY=10*dpr;ctx.fillStyle="#f4f1ec";ctx.fillRect(x0,0,w,h());ctx.shadowColor="transparent"}
+    if(ok(i)){ctx.translate(x0+w/2,0);ctx.scale(dir,1);ctx.drawImage(P[i],-w/2,0,w,h());ctx.scale(dir,1);ctx.translate(-x0-w/2,0)}
+    // у обложки журнала только вдавленная линия сгиба (как у прошитого журнала), у обложки зина ничего; у внутренних полос мягкая тень в развороте
+    const g=ctx.createLinearGradient(0,0,x0<0?-w*.12:w*.12,0),cover=i===0||i===P.length-1;
+    for(const [o,c] of cover?(b.crease?[[.2,"0"],[.27,".08"],[.31,"-.14"],[.38,"0"]]:[]):[[0,".14"],[.3,".045"],[1,"0"]])
+      g.addColorStop(o,+c<0?`rgba(255,255,255,${-c})`:`rgba(0,0,0,${c})`);
+    ctx.fillStyle=g;ctx.fillRect(x0,0,w,h());ctx.restore()}
+  // скобы на корешке журнала
+  const staples=()=>{if(!b.staples)return;for(const y of [.24,.67]){const g=ctx.createLinearGradient(-1.5,0,1.5,0);
+    g.addColorStop(0,"#8a8986");g.addColorStop(.45,"#efeeec");g.addColorStop(1,"#7d7c79");ctx.fillStyle=g;ctx.fillRect(-1.5,h()*y,3,h()*.09)}};
+  function draw(){if(!W)return;const H0=h();ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    const dir=f?f.dir:1;ctx.translate(ox,oy);ctx.scale(dir,1);
+    // в зеркальной системе «правая» сторона — та, что листается
+    const L=dir>0?2*s-1:2*s,R=dir>0?2*s:2*s-1,back=dir>0?2*s+1:2*s-2,under=dir>0?2*s+2:2*s-3;
+    pageAt(L,-w,dir,1);
+    if(!f||(f.p.x===f.c.x&&f.p.y===f.c.y)){pageAt(R,0,dir,1);
+      if(P[L]&&P[R])staples();return}
+    const {c,p}=f,M={x:(c.x+p.x)/2,y:(c.y+p.y)/2},l=Math.hypot(c.x-p.x,c.y-p.y),n={x:(c.x-p.x)/l,y:(c.y-p.y)/l};
+    const rect=[{x:0,y:0},{x:w,y:0},{x:w,y:H0},{x:0,y:H0}],front=cut(rect,M,n,1),K=cut(rect,M,n,-1);
+    const md=M.x*n.x+M.y*n.y,m=[1-2*n.x*n.x,-2*n.x*n.y,-2*n.x*n.y,1-2*n.y*n.y,2*md*n.x,2*md*n.y];
+    const flap=K.map(q=>({x:m[0]*q.x+m[2]*q.y+m[4],y:m[1]*q.x+m[3]*q.y+m[5]}));
+    pageAt(under,0,dir,1);
+    // тень, которую загиб отбрасывает на открывшуюся страницу
+    if(P[under]){ctx.save();path(K);ctx.clip();const g=ctx.createLinearGradient(M.x,M.y,M.x+n.x*l*.5,M.y+n.y*l*.5);
+      g.addColorStop(0,"rgba(0,0,0,.22)");g.addColorStop(.3,"rgba(0,0,0,.08)");g.addColorStop(1,"rgba(0,0,0,0)");ctx.fillStyle=g;ctx.fillRect(0,-H0,w,3*H0);ctx.restore()}
+    ctx.save();path(front);ctx.clip();pageAt(R,0,dir,0);ctx.restore();if(P[L])staples();
+    // сам загиб: оборот листа, отражённый по линии сгиба, с мягкой тенью под ним
+    ctx.save();path(flap);ctx.shadowColor="rgba(0,0,0,.2)";ctx.shadowBlur=26*dpr;ctx.fillStyle="#f4f1ec";ctx.fill();ctx.restore();
+    ctx.save();path(flap);ctx.clip();ctx.transform(...m);ctx.scale(-1,1);pageAt(back,-w,dir,0);ctx.setTransform(dpr,0,0,dpr,0,0);ctx.translate(ox,oy);ctx.scale(dir,1);
+    const g=ctx.createLinearGradient(M.x,M.y,M.x-n.x*l*.5,M.y-n.y*l*.5);
+    g.addColorStop(0,"rgba(0,0,0,.12)");g.addColorStop(.08,"rgba(255,255,255,.12)");g.addColorStop(.5,"rgba(0,0,0,.03)");g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g;ctx.fillRect(-2*w,-H0,4*w,3*H0);ctx.restore()}
+  let down=null,peek=false;
+  const lay=()=>{const g=f&&!peek?f.dir:0;book.classList.toggle("closed-front",s===0&&g<=0);book.classList.toggle("closed-back",s===N-1&&g>=0)};
+  function start(dir,top){if(f||s+dir<0||s+dir>N-1)return false;const c={x:w,y:top?0:h()};f={dir,c,p:{...c}};lay();return true}
+  function animate(to,done){cancelAnimationFrame(anim);const a={...f.p},t0=performance.now(),D=fast?1:650*Math.max(.35,Math.hypot(to.x-a.x,to.y-a.y)/(2*w));
+    const lift=(f.c.y?-1:1)*h()*.1*Math.abs(to.x-a.x)/(2*w);
+    const step=t=>{const k=Math.min(1,(t-t0)/D),e=k<.5?2*k*k:1-(-2*k+2)**2/2;
+      f.p=clampP({x:a.x+(to.x-a.x)*e,y:a.y+(to.y-a.y)*e+Math.sin(Math.PI*e)*lift},f.c);draw();
+      if(k<1)anim=requestAnimationFrame(step);else done()};anim=requestAnimationFrame(step)}
+  const finish=()=>animate({x:-w,y:f.c.y},()=>{s+=f.dir;f=null;lay();draw()});
+  const revert=()=>animate({...f.c},()=>{f=null;lay();draw()});
+  const go=d=>{if(f&&!f.drag)return;if(start(d,0))finish()};
+  const sideOf=q=>q.x>0?1:-1, local=(q,dir)=>({x:q.x*dir,y:q.y});
+  cv.onpointerdown=e=>{const q=pt(e);down={q,dir:s===0?1:s===N-1?-1:sideOf(q)};if(!peek&&!f)start(down.dir,q.y<h()/2&&q.y>0);
+    if(f&&f.dir===down.dir){f.drag=true;peek=false;lay();cv.setPointerCapture(e.pointerId)}};
+  cv.onpointermove=e=>{const q=pt(e);
+    if(down&&f&&f.drag){if(Math.hypot(q.x-down.q.x,q.y-down.q.y)>6)down.moved=true;
+      if(down.moved){cancelAnimationFrame(anim);f.p=clampP(local(q,f.dir),f.c);draw()}return}
+    // уголок чуть приподнимается, когда к нему подводишь мышку
+    if(e.pointerType!=="mouse"||(f&&!peek))return;const dir=sideOf(q),lq=local(q,dir),hot=lq.x>w*.8&&lq.x<=w&&(lq.y>h()*.82||lq.y<h()*.18)&&lq.y>=0&&lq.y<=h();
+    if(hot&&(!peek||f.dir!==dir)){if(peek)f=null;peek=true;if(!start(dir,lq.y<h()/2))peek=false}
+    if(peek&&hot){cancelAnimationFrame(anim);const c=f.c;f.p=clampP({x:c.x+(lq.x-c.x)*1.5-w*.09,y:c.y+(lq.y-c.y)*1.5+(c.y?-1:1)*w*.07},c);draw()}
+    else if(peek){peek=false;revert()}};
+  cv.onpointerleave=()=>{if(peek&&!down){peek=false;revert()}};
+  const up=e=>{if(!down)return;const d=down;down=null;
+    if(f&&f.drag){f.drag=false;peek=false;if(!d.moved||f.p.x<w*.25)finish();else revert()}};
+  cv.onpointerup=up;cv.onpointercancel=e=>{if(down&&f&&f.drag){down=null;f.drag=false;revert()}};
+  book.onkeydown=e=>{if(e.key==="ArrowRight"||e.key==="Enter")go(1);if(e.key==="ArrowLeft")go(-1)};lay();
+  book.visible=()=>[P[2*s-1],P[2*s]].filter(i=>i&&i.tagName==="IMG");
+  book.go=d=>{if(f){cancelAnimationFrame(anim);f=null;peek=false}const t=s+d;if(t>=0&&t<N)s=t;lay();draw();showLb()}}
+const lb=document.getElementById("lb"),lbPages=document.getElementById("lbPages");
+function showLb(){const imgs=document.getElementById("book").visible();
+  lbPages.innerHTML=imgs.map(i=>`<img src="${i.getAttribute("src")}" alt="${i.alt}">`).join("")||'<p class="book-hint">на этой странице нет текста</p>'}
+document.getElementById("cZoom").onclick=()=>{lbPages.classList.remove("big");showLb();lb.showModal()};
+lb.onclick=e=>{const t=e.target;if(t.dataset.go)document.getElementById("book").go(+t.dataset.go);else if("close" in t.dataset)lb.close();else if(t.tagName==="IMG")lbPages.classList.toggle("big")};
+lb.onkeydown=e=>{if(e.key==="ArrowRight")document.getElementById("book").go(1);if(e.key==="ArrowLeft")document.getElementById("book").go(-1)};
+function route(){const h=location.hash,m=h.match(/^#\/work\/(\d+)$/),w=m&&WORKS[+m[1]];
+  const id=w?"case":h==="#/artworks"?"artworks":"home";
+  for(const v of ["home","artworks","case"])document.getElementById(v).classList.toggle("on",v===id);
+  document.querySelector(".big").toggleAttribute("aria-current",id!=="home");
+  const c=document.getElementById("case");c.classList.remove("settled");clearTimeout(timer);
+  if(w){document.getElementById("cTitle").textContent=w[0];document.getElementById("cKind").textContent=w[1];
+    const key=w[1].split(" ")[0];cInfo.innerHTML=INFO[key]||INFO0;cInfo.scrollTop=0;
+    const roles=document.getElementById("cRoles");if(roles)roles.innerHTML=w[1].split(" ").map(x=>`<span>${x}</span>`).join("");
+    const b=BOOKS[key];
+    const site=SITES[w[1]];
+    document.getElementById("cStage").innerHTML=b?bookHtml(b):site?siteHtml(site):'<div class="ph" style="width:100%;height:100%">фото или видео работы</div>';
+    if(b)bindBook(b);
+    document.getElementById("cZoom").hidden=!b;
+    // название стоит одно по центру, потом уезжает в угол
+    timer=setTimeout(()=>c.classList.add("settled"),900)}
+  scrollTo(0,0)}
+addEventListener("hashchange",route);route();
+
+// ---------- главная: окно Figma ----------
+(()=>{
+const home=document.getElementById("home");
+
+const frame=document.getElementById("frame"),colsEl=document.getElementById("cols"),sel=document.getElementById("sel"),dim=document.getElementById("dim"),snap=document.getElementById("snap"),cur=document.getElementById("cur");
+const mob=()=>innerWidth<=900;let N,pos;
+// позиции: колонка (с нуля) и верх в процентах высоты фрейма
+const POS={d:{head:[0,36],city:[0,88],year:[11,88]},m:{head:[0,38],city:[0,92],year:[3,92]}};
+function colX(k){const m=4,g=1.6,cw=(100-2*m-g*(N-1))/N;return m+k*(cw+g)}
+const els=[...frame.querySelectorAll(".el")],byK=Object.fromEntries(els.map(e=>[e.dataset.k,e]));
+function place(){for(const k in pos){const e=byK[k];e.style.left=colX(pos[k][0])+"%";e.style.top=pos[k][1]+"%"}}
+function setupGrid(){N=mob()?4:12;colsEl.style.gridTemplateColumns=`repeat(${N},1fr)`;colsEl.innerHTML="<i></i>".repeat(N);pos=JSON.parse(JSON.stringify(POS[mob()?"m":"d"]));
+  document.getElementById("ncol").textContent=document.getElementById("ncol2").textContent=N;byK.head.style.width="";place()}
+setupGrid();
+
+const $=id=>document.querySelector(`#${id} span`),F=id=>document.getElementById(id);
+let selected=null;
+const px=n=>Math.round(n*1440/frame.clientWidth); // числа в макете ширины 1440
+function readout(){if(!selected)return;const fr=frame.getBoundingClientRect(),r=selected.getBoundingClientRect();
+  Object.assign(sel.style,{left:r.left-fr.left+"px",top:r.top-fr.top+"px",width:r.width+"px",height:r.height+"px"});
+  dim.textContent=`${px(r.width)} × ${px(r.height)}`;$("fx").textContent=px(r.left-fr.left);$("fy").textContent=px(r.top-fr.top);$("fw").textContent=px(r.width);$("fh").textContent=px(r.height)}
+function select(e){selected=e;sel.classList.toggle("on",!!e);F("pname").textContent=e?e.dataset.name:"Главная";
+  document.querySelectorAll(".layers li").forEach(li=>li.classList.toggle("on",!!e&&li.dataset.for===e.dataset.k));
+  if(e)readout();else{$("fx").textContent=0;$("fy").textContent=0;$("fw").textContent=1440;$("fh").textContent=px(frame.clientHeight)}}
+function hot(id){F(id).classList.add("hot");setTimeout(()=>F(id).classList.remove("hot"),900)}
+(function tick(){if(home.classList.contains("on"))readout();requestAnimationFrame(tick)})();
+
+// курсор Натальи сам верстает фрейм
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+let auto=true,userT=0;const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+let cx=60,cy=60;
+function moveCur(x,y,ms=700){return new Promise(res=>{const sx=cx,sy=cy,t0=performance.now();
+  (function f(t){const k=Math.min(1,(t-t0)/ms),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;cx=sx+(x-sx)*e;cy=sy+(y-sy)*e;cur.style.transform=`translate(${cx}px,${cy}px)`;k<1?requestAnimationFrame(f):res()})(performance.now())})}
+function centerOf(e){const fr=frame.getBoundingClientRect(),r=e.getBoundingClientRect();return [r.left-fr.left+Math.min(r.width*.5,60),r.top-fr.top+r.height*.5]}
+async function grab(k,col,top){const e=byK[k];e.classList.add("anim");pos[k]=[col,top];
+  snap.style.left=colX(col)+"%";snap.classList.add("on");place();const fr=frame.getBoundingClientRect();
+  const tx=colX(col)/100*fr.width+Math.min(e.getBoundingClientRect().width*.5,60),ty=top/100*fr.height+e.getBoundingClientRect().height*.5;await moveCur(tx,ty,700);snap.classList.remove("on");e.classList.remove("anim")}
+// размер тянет за правый нижний угол, как в Figma
+async function resize(cqw){const h=byK.head;h.classList.add("anim");hot("fw");hot("fh");h.style.width=cqw+"cqw";const fr=frame.getBoundingClientRect(),r=h.getBoundingClientRect(),k=cqw/100*fr.width/r.width;
+  await moveCur(r.left-fr.left+r.width*k,r.top-fr.top+r.height*k,600);h.classList.remove("anim");await wait(300)}
+const ok=()=>auto&&!reduce&&home.classList.contains("on");
+async function script(){const M=mob;
+  while(true){
+    if(!ok()){await wait(500);continue}
+    const h=byK.head;
+    await moveCur(...centerOf(h),900);if(!ok())continue;select(h);await wait(500);
+    await grab("head",M()?0:3,M()?26:24);if(!ok())continue;await wait(400);
+    await resize(M()?88:56);if(!ok())continue;await wait(1200);
+    await moveCur(...centerOf(byK.year),800);select(byK.year);await wait(500);
+    await grab("year",M()?2:9,M()?92:88);await wait(500);await grab("year",M()?3:11,M()?92:88);if(!ok())continue;
+    await moveCur(...centerOf(h),800);select(h);await wait(300);
+    await grab("head",0,M()?38:36);await resize(M()?76:40);await wait(1600);
+    select(null);await moveCur(frame.clientWidth*.7,frame.clientHeight*.65,900);await wait(1500)}}
+cur.style.transform=`translate(${cx}px,${cy}px)`;
+setTimeout(script,600);
+
+// руками: выделить и подвинуть, прилипает к колонкам, размер не меняется
+let drag=null;
+els.forEach(e=>{
+  e.addEventListener("pointerdown",ev=>{if(ev.button)return;auto=false;userT=Date.now();cur.style.opacity=0;select(e);e.setPointerCapture(ev.pointerId);
+    const r=e.getBoundingClientRect();drag={e,k:e.dataset.k,ox:ev.clientX-r.left,oy:ev.clientY-r.top,fr:frame.getBoundingClientRect(),sx:ev.clientX,sy:ev.clientY,moved:0}});
+  e.addEventListener("pointermove",ev=>{if(!drag||drag.e!==e)return;drag.moved=Math.max(drag.moved,Math.hypot(ev.clientX-drag.sx,ev.clientY-drag.sy));if(drag.moved<4)return;
+    const fr=drag.fr,x=(ev.clientX-drag.ox-fr.left)/fr.width*100,y=(ev.clientY-drag.oy-fr.top)/fr.height*100;
+    let best=0,bd=1e9;for(let k=0;k<N;k++){const d=Math.abs(colX(k)-x);if(d<bd){bd=d;best=k}}
+    pos[drag.k]=[best,Math.max(2,Math.min(92,Math.round(y)))];place();snap.style.left=colX(best)+"%";snap.classList.add("on")});
+  const end=()=>{if(!drag||drag.e!==e)return;drag=null;snap.classList.remove("on");userT=Date.now()};
+  e.addEventListener("pointerup",end);e.addEventListener("pointercancel",end);
+  e.addEventListener("pointerenter",()=>document.querySelector(`.layers li[data-for="${e.dataset.k}"]`)?.classList.add("hov"));
+  e.addEventListener("pointerleave",()=>document.querySelector(`.layers li[data-for="${e.dataset.k}"]`)?.classList.remove("hov"));
+});
+setInterval(()=>{if(!auto&&!drag&&Date.now()-userT>10000){auto=true;cur.style.opacity=1}},1000);
+frame.addEventListener("pointerdown",ev=>{if(!ev.target.closest(".el"))select(null)});
+let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(setupGrid,150)});
+})();
+</script>
+</body>
+</html>
