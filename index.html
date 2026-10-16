@@ -292,16 +292,17 @@ const plate=t=>{const c=document.createElement("canvas");c.width=620;c.height=87
 // журнал: обложка — 1-я полоса PDF, внутри разворот 2–3. Зин: 1-й разворот PDF — обложки (1 передняя, 2 задняя), внутри 3–4, 5–6, 7–8
 const BOOKS={magazine:{r:1754/1241,staples:1,crease:1,label:"Журнал",p:[1,2,3].map(n=>[`mag/p-${n}.jpg`,`Полоса ${n} журнала GUTTER`]).concat([[plate("gutter · май 2025")]])},
   zine:{r:1737/1224,label:"Зин",p:[1,3,4,5,6,7,8,2].map(n=>[`zine/p-${n}.jpg`,`Полоса ${n} зина Seaside`])},
+  // ?v=2: имена файлов совпадают со старыми заглушками, без метки браузер показывает их из кэша
   // газета Youth Lens: 8 полос, тонкая, поэтому без корешка и тени в сгибе
-  newspaper:{r:1753/1240,flat:1,label:"Газета",p:[1,2,3,4,5,6,7,8].map(n=>[`news/p-${n}.jpg`,`Полоса ${n} газеты Youth Lens`])}};
+  newspaper:{r:1753/1240,flat:1,label:"Газета",p:[1,2,3,4,5,6,7,8].map(n=>[`news/p-${n}.jpg?v=2`,`Полоса ${n} газеты Youth Lens`])}};
 // евробуклет «М.М.М.»: клик раскрывает сначала левую панель, потом правую, третий клик складывает обратно
-const foldHtml=()=>{const f=(n,a)=>`<i class="${n}"><img src="booklet/${a}.jpg" alt=""></i>`;
+const foldHtml=()=>{const f=(n,a)=>`<i class="${n}"><img src="booklet/${a}.jpg?v=2" alt=""></i>`;
   return `<div class="fold" id="book" role="button" tabindex="0" aria-label="Евробуклет: клик раскрывает"><div class="m">${f("in","p-2")}</div><div class="r">${f("in","p-3")+f("out","flap")}</div><div class="l">${f("in","p-1")+f("out","cover")}</div></div>`};
 function bindFold(){const el=document.getElementById("book");let s=0;
   const set=t=>{s=(t+3)%3;el.className="fold"+(s?" s"+s:"")};
   el.onclick=()=>set(s+1);el.onkeydown=e=>{if(e.key==="ArrowRight"||e.key==="Enter")set(s+1);if(e.key==="ArrowLeft")set(s-1)};
   const pick=[["cover"],["p-1","p-2","flap"],["p-1","p-2","p-3"]];
-  el.visible=()=>pick[s].map(n=>Object.assign(new Image(),{src:`booklet/${n}.jpg`,alt:"Панель буклета"}));el.go=d=>{set(s+d);showLb()}}
+  el.visible=()=>pick[s].map(n=>Object.assign(new Image(),{src:`booklet/${n}.jpg?v=2`,alt:"Панель буклета"}));el.go=d=>{set(s+d);showLb()}}
 // описание слева: своё у работы, у остальных заглушка
 const cInfo=document.getElementById("cInfo"),INFO0=cInfo.innerHTML;
 const sec=(h,...ps)=>`<div><h3>${h}</h3>${ps.map(p=>`<p>${p}</p>`).join("")}</div>`;
