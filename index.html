@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Natalia Makienko</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;900&display=swap">
 <style>
 /* шаг 1: первый экран. Фон и чернила нейтральные, цвет только у рисунка (синий, как у annaamb) */
 :root{--paper:#F7F6F4;--ink:#111;--crayon:#4A6FC0;--m:40px}
@@ -27,11 +27,10 @@ a{color:inherit;text-decoration:none}
 .top nav a{transition:filter .25s,opacity .25s}
 @media (hover:hover){.top:has(a:hover) a:not(:hover){filter:blur(2px);opacity:.5}}
 
-/* главная: слово portfolio из чёрного кружева конверта (home/lace.webp — карман конверта из contact/base.jpg с поднятым контрастом, плитка с зеркальным повтором) */
+/* главная: слово portfolio из чёрного кружева конверта (home/lace.webp из contact/base.jpg: нити чёрные с рельефом, сквозь крупные дырки виден фон) */
 #home.on{display:grid;place-content:center;justify-items:center;gap:2dvh;padding:0 var(--m) var(--m);min-height:0}
-/* буквы — рукописный portfolio с артборда Figma (home/portfolio.svg) как маска поверх кружева */
-#home h1{width:min(78vw,150dvh);aspect-ratio:474/126;font-size:0;background:url(home/lace.webp?v=3) center/clamp(260px,34vw,620px) auto repeat;
-  -webkit-mask:url(home/portfolio.svg) center/100% 100% no-repeat;mask:url(home/portfolio.svg) center/100% 100% no-repeat}
+#home h1{font:900 clamp(64px,min(21vw,36dvh),360px)/.86 "Inter",sans-serif;letter-spacing:-.065em;padding:0 .06em .04em 0;color:transparent;
+  background:url(home/lace.webp?v=4) center/1.6em auto repeat;-webkit-background-clip:text;background-clip:text}
 #home p{display:flex;gap:2em;font-size:13px;text-transform:uppercase;letter-spacing:.06em;opacity:.55}
 
 /* страницы: главная и Artworks */
@@ -153,7 +152,7 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 </header>
 
 <main class="page" id="home" aria-label="Главная">
-  <h1 role="img" aria-label="portfolio">portfolio</h1>
+  <h1>portfolio</h1>
   <p><span>Санкт-Петербург</span><span>2026</span></p>
 </main>
 
