@@ -159,7 +159,24 @@ a{color:inherit;text-decoration:none}
   .lb .book-hint,.c-media .book-hint{display:none}}
 .book-hint{font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.5}
 .book:focus{outline:none}
-.book canvas{position:absolute;left:-2%;top:-12%;width:104%;height:124%}
+/* холст шире книги на 10% с каждой стороны, чтобы размытая тень не обрезалась краем в жёсткую линию */
+.book canvas{position:absolute;left:-10%;top:-12%;width:120%;height:124%}
+/* евробуклет: лист А4 в три панели; сначала открывается левая (обложка), потом правая, получается полотно из трёх полос */
+.fold{position:relative;width:min(88cqw,124cqh);aspect-ratio:2100/1485;perspective:2600px;cursor:pointer}
+.fold>div{position:absolute;top:0;width:33.34%;height:100%;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.6,.05,.3,1)}
+.fold .m{left:33.33%}.fold .l{left:0;transform-origin:100% 50%;transform:rotateY(180deg)}.fold .r{left:66.66%;transform-origin:0 50%;transform:rotateY(-180deg)}
+.fold.s1 .l,.fold.s2 .l,.fold.s2 .r{transform:none}
+.fold:not(.s1):not(.s2) .l{transition-delay:.5s}
+.fold i{position:absolute;inset:0;backface-visibility:hidden;box-shadow:0 24px 60px -18px rgba(0,0,0,.22),0 6px 18px -8px rgba(0,0,0,.08)}
+.fold i img{width:100%;height:100%;display:block}
+.fold i.out{transform:rotateY(180deg)}
+/* мягкие следы сгибов на внутренней стороне */
+.fold .m i::after,.fold .l .in::after,.fold .r .in::after{content:"";position:absolute;inset:0;pointer-events:none}
+.fold .m i::after{background:linear-gradient(90deg,rgba(0,0,0,.07),transparent 6%,transparent 94%,rgba(0,0,0,.07))}
+.fold .l .in::after{background:linear-gradient(270deg,rgba(0,0,0,.07),transparent 6%)}.fold .r .in::after{background:linear-gradient(90deg,rgba(0,0,0,.07),transparent 6%)}
+.fold{transition:transform 1.1s cubic-bezier(.6,.05,.3,1)}.fold.s1{transform:translateX(16.67%)}
+.fold:focus{outline:none}
+@media (prefers-reduced-motion:reduce){.fold>div{transition:none}}
 
 /* Contact: белый экран, по центру кружевной конверт. Слои из одного фото (contact/build.py), поэтому кружево не меняется:
    клапан лежит сложенным на конверте (тот же клапан, повёрнутый на 180° вокруг сгиба), плавно поднимается, потом лист выезжает */
@@ -255,7 +272,7 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 </dialog>
 <script>
 // shortcut: примеры работ по форматам, которые ты называла; заменить на настоящие названия и годы
-const WORKS=[["Magazine","magazine layout"],["Petersburg Diary Award","website"],["Research","research website"],["Longread","longread"],["Zine","zine"],["Booklets","print"],["Short Film","film"],["Podcast","podcast"]];
+const WORKS=[["Magazine","magazine layout"],["Petersburg Diary Award","website"],["Research","research website"],["Longread","longread"],["Zine","zine"],["Booklets","booklet"],["Short Film","film"],["Newspaper","newspaper"]];
 document.getElementById("list").innerHTML=WORKS.map(([t,k],i)=>`<li><a href="#/work/${i}">${t}<sup>${k}, 20··</sup></a></li>`).join("");
 // фото из Figma-фрейма «galereya» (порядок слева направо), размеры в px как во фрейме
 const GALLERY=[[1,120,170],[2,120,170],[3,120,168],[4,120,170],[5,120,162],[6,212,150]];
@@ -274,7 +291,17 @@ const plate=t=>{const c=document.createElement("canvas");c.width=620;c.height=87
   x.fillStyle="#2A2827";x.fillRect(0,0,620,877);x.fillStyle="#F4F1EC";x.font="500 14px Inter,sans-serif";x.fillText(t.toUpperCase(),43,822);return c};
 // журнал: обложка — 1-я полоса PDF, внутри разворот 2–3. Зин: 1-й разворот PDF — обложки (1 передняя, 2 задняя), внутри 3–4, 5–6, 7–8
 const BOOKS={magazine:{r:1754/1241,staples:1,crease:1,label:"Журнал",p:[1,2,3].map(n=>[`mag/p-${n}.jpg`,`Полоса ${n} журнала GUTTER`]).concat([[plate("gutter · май 2025")]])},
-  zine:{r:1737/1224,label:"Зин",p:[1,3,4,5,6,7,8,2].map(n=>[`zine/p-${n}.jpg`,`Полоса ${n} зина Seaside`])}};
+  zine:{r:1737/1224,label:"Зин",p:[1,3,4,5,6,7,8,2].map(n=>[`zine/p-${n}.jpg`,`Полоса ${n} зина Seaside`])},
+  // газета: макет-заглушка из mock/build.html, листается как журнал; свои полосы — положить вместо news/p-*.jpg
+  newspaper:{r:1414/1000,crease:1,label:"Газета",p:[1,2,3,4,5,6].map(n=>[`news/p-${n}.jpg`,`Полоса ${n} газеты`])}};
+// евробуклет: клик раскрывает сначала левую панель, потом правую, третий клик складывает обратно; макет-заглушка, свои полосы — вместо booklet/*.jpg
+const foldHtml=()=>{const f=(n,a)=>`<i class="${n}"><img src="booklet/${a}.jpg" alt=""></i>`;
+  return `<div class="fold" id="book" role="button" tabindex="0" aria-label="Евробуклет: клик раскрывает"><div class="m">${f("in","p-2")}</div><div class="r">${f("in","p-3")+f("out","flap")}</div><div class="l">${f("in","p-1")+f("out","cover")}</div></div>`};
+function bindFold(){const el=document.getElementById("book");let s=0;
+  const set=t=>{s=(t+3)%3;el.className="fold"+(s?" s"+s:"")};
+  el.onclick=()=>set(s+1);el.onkeydown=e=>{if(e.key==="ArrowRight"||e.key==="Enter")set(s+1);if(e.key==="ArrowLeft")set(s-1)};
+  const pick=[["cover"],["p-1","p-2","flap"],["p-1","p-2","p-3"]];
+  el.visible=()=>pick[s].map(n=>Object.assign(new Image(),{src:`booklet/${n}.jpg`,alt:"Панель буклета"}));el.go=d=>{set(s+d);showLb()}}
 // описание слева: своё у работы, у остальных заглушка
 const cInfo=document.getElementById("cInfo"),INFO0=cInfo.innerHTML;
 const sec=(h,...ps)=>`<div><h3>${h}</h3>${ps.map(p=>`<p>${p}</p>`).join("")}</div>`;
@@ -299,7 +326,7 @@ function bindBook(b){const book=document.getElementById("book"),cv=book.querySel
   const N=Math.ceil((P.length+1)/2);let s=0,f=null,anim=0,W,H,w,ox,oy,dpr;
   const fast=matchMedia("(prefers-reduced-motion:reduce)").matches;
   const size=()=>{dpr=devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;
-    w=W/1.04/2;ox=W/2;oy=H*.12/1.24;draw()};
+    w=W/1.2/2;ox=W/2;oy=H*.12/1.24;draw()};
   new ResizeObserver(size).observe(cv);
   const h=()=>w*b.r;
   const ok=i=>P[i]&&P[i].complete!==false&&(P[i].naturalWidth??1);
@@ -313,7 +340,7 @@ function bindBook(b){const book=document.getElementById("book"),cv=book.querySel
   const path=poly=>{ctx.beginPath();poly.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath()};
   // страница x0..x0+w; dir — зеркало системы координат, картинку разворачиваем обратно
   function pageAt(i,x0,dir,shadow){if(!P[i])return;ctx.save();
-    if(shadow){ctx.shadowColor="rgba(0,0,0,.16)";ctx.shadowBlur=30*dpr;ctx.shadowOffsetY=10*dpr;ctx.fillStyle="#f4f1ec";ctx.fillRect(x0,0,w,h());ctx.shadowColor="transparent"}
+    if(shadow){ctx.shadowColor="rgba(0,0,0,.13)";ctx.shadowBlur=48*dpr;ctx.shadowOffsetY=14*dpr;ctx.fillStyle="#f4f1ec";ctx.fillRect(x0,0,w,h());ctx.shadowColor="transparent"}
     if(ok(i)){ctx.translate(x0+w/2,0);ctx.scale(dir,1);ctx.drawImage(P[i],-w/2,0,w,h());ctx.scale(dir,1);ctx.translate(-x0-w/2,0)}
     // у обложки журнала только вдавленная линия сгиба (как у прошитого журнала), у обложки зина ничего; у внутренних полос мягкая тень в развороте
     const g=ctx.createLinearGradient(0,0,x0<0?-w*.12:w*.12,0),cover=i===0||i===P.length-1;
@@ -394,15 +421,15 @@ function route(){const h=location.hash,m=h.match(/^#\/work\/(\d+)$/),w=m&&WORKS[
     const roles=document.getElementById("cRoles");if(roles)roles.innerHTML=w[1].split(" ").map(x=>`<span>${x}</span>`).join("");
     const b=BOOKS[key];
     const site=SITES[w[1]];
-    document.getElementById("cStage").innerHTML=b?bookHtml(b):site?siteHtml(site):'<div class="ph" style="width:100%;height:100%">фото или видео работы</div>';
-    if(b)bindBook(b);
+    document.getElementById("cStage").innerHTML=b?bookHtml(b):key==="booklet"?foldHtml():site?siteHtml(site):'<div class="ph" style="width:100%;height:100%">фото или видео работы</div>';
+    if(b)bindBook(b);if(key==="booklet")bindFold();
     if(site&&embed){
       // сайт рендерится в ширину настольного экрана и уменьшается целиком, чтобы пропорции были как у настоящего; на телефоне — его мобильная версия
       const win=document.querySelector(".site-win"),f=win.firstChild;
       new ResizeObserver(()=>{const W=win.clientWidth<600?win.clientWidth:1470,k=win.clientWidth/W;
         f.style.width=W+"px";f.style.height=win.clientHeight/k+"px";f.style.transform=`scale(${k})`}).observe(win);
     }
-    document.getElementById("cZoom").hidden=!b;
+    document.getElementById("cZoom").hidden=!b&&key!=="booklet";
     // название стоит одно по центру, потом уезжает в угол
     timer=setTimeout(()=>c.classList.add("settled"),900)}
   scrollTo(0,0)}
