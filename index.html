@@ -157,12 +157,33 @@ a{color:inherit;text-decoration:none}
 .book-hint{font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.5}
 .book:focus{outline:none}
 .book canvas{position:absolute;left:-2%;top:-12%;width:104%;height:124%}
+
+/* Contact: белый экран, по центру кружевной конверт. Слои из двух фото (contact/build.py):
+   верхний клапан закрытого конверта откидывается вверх, на его месте раскрывается клапан открытого, лист чуть выезжает */
+body:has(#contact.on){--paper:#fff;--ink:#111}
+.contact.on{display:grid;place-items:center;padding:0 var(--m) var(--m);min-height:0;container-type:size}
+.env{position:relative;width:min(100cqw,100cqh*1024/1160);aspect-ratio:1024/1160;perspective:1800px}
+.env:not(.go){visibility:hidden}
+.env img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.env .slot{position:absolute;inset:0;clip-path:polygon(20.02% -12.93%,20.12% 31.29%,20.90% 46.29%,21.68% 47.07%,22.46% 47.76%,23.24% 48.45%,24.02% 49.22%,24.80% 49.91%,25.59% 50.60%,26.37% 51.47%,27.15% 52.07%,27.93% 52.84%,28.71% 53.53%,29.49% 54.22%,30.27% 54.91%,31.05% 55.60%,31.84% 56.38%,32.62% 57.07%,33.40% 57.84%,34.18% 58.45%,34.96% 59.22%,35.74% 59.91%,36.52% 60.69%,37.30% 61.47%,38.09% 62.16%,38.87% 62.93%,39.65% 63.62%,40.43% 64.40%,41.21% 65.09%,41.99% 65.34%,42.77% 65.34%,43.55% 65.09%,44.34% 65.09%,45.12% 65.17%,45.90% 65.09%,46.68% 64.91%,47.46% 65.00%,48.24% 65.09%,49.02% 65.09%,49.80% 65.17%,50.59% 65.17%,51.37% 65.17%,52.15% 65.17%,52.93% 65.17%,53.71% 65.26%,54.49% 65.26%,55.27% 65.17%,56.05% 65.34%,56.84% 65.34%,57.62% 65.34%,58.40% 65.52%,59.18% 65.52%,59.96% 64.74%,60.74% 63.88%,61.52% 63.19%,62.30% 62.41%,63.09% 61.64%,63.87% 60.95%,64.65% 60.26%,65.43% 59.31%,66.21% 58.53%,66.99% 57.84%,67.77% 56.98%,68.55% 56.29%,69.34% 55.43%,70.12% 54.74%,70.90% 53.97%,71.68% 53.19%,72.46% 52.33%,73.24% 51.47%,74.02% 50.78%,74.80% 50.09%,75.59% 49.40%,76.37% 48.62%,77.15% 47.84%,77.93% 47.07%,78.71% 46.29%,79.10% 31.29%,79.20% -12.93%)}
+.env .f-open,.env .c-flap{transform-origin:50% 34.31%}
+.env .c-body,.env .c-flap{opacity:0}
+.env.go .c-flap{animation:c-flap .6s cubic-bezier(.55,0,.8,.3) .35s both}
+.env.go .f-open{animation:f-open .7s cubic-bezier(.2,.6,.35,1) .95s both}
+.env.go .c-body{animation:c-body .6s ease-in .35s both}
+.env.go .letter{animation:letter 1.1s cubic-bezier(.3,.7,.25,1) 1.45s both}
+/* ребром клапан виден как черта, поэтому в крайних точках он скрыт */
+@keyframes c-flap{0%{opacity:1;transform:none;filter:none}99%{opacity:1;transform:rotateX(89deg);filter:brightness(1.6)}100%{opacity:0;transform:rotateX(90deg)}}
+@keyframes f-open{0%{opacity:0;transform:rotateX(-90deg)}1%{opacity:1;transform:rotateX(-89deg);filter:brightness(1.6)}100%{opacity:1;transform:none;filter:none}}
+@keyframes c-body{from{opacity:1}to{opacity:0}}
+@keyframes letter{from{transform:translateY(11.21%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.env.go *{animation:none!important}}
 </style>
 </head>
 <body>
 <header class="top">
   <a class="brand" href="#/">Natalia Makienko</a>
-  <nav><a href="#">[ about ]</a></nav>
+  <nav><a href="#">[ about ]</a><a href="#/contact">[ contact ]</a></nav>
   <a class="brand big" href="#/artworks">Artworks</a>
 </header>
 
@@ -203,6 +224,14 @@ a{color:inherit;text-decoration:none}
 
 <main class="works page" id="artworks">
   <ol id="list"></ol>
+</main>
+
+<main class="contact page" id="contact" aria-label="Contact">
+  <div class="env" id="env" role="img" aria-label="Кружевной конверт открывается, из него выглядывает лист">
+    <img src="contact/base.jpg" alt=""><img class="f-open" src="contact/flap-open.webp" alt="">
+    <div class="slot"><img class="letter" src="contact/letter.webp" alt=""></div>
+    <img class="c-body" src="contact/closed-body.webp" alt=""><img class="c-flap" src="contact/closed-flap.webp" alt="">
+  </div>
 </main>
 
 <main class="case page" id="case">
@@ -348,9 +377,12 @@ document.getElementById("cZoom").onclick=()=>{lbPages.classList.remove("big");sh
 lb.onclick=e=>{const t=e.target;if(t.dataset.go)document.getElementById("book").go(+t.dataset.go);else if("close" in t.dataset)lb.close();else if(t.tagName==="IMG")lbPages.classList.toggle("big")};
 lb.onkeydown=e=>{if(e.key==="ArrowRight")document.getElementById("book").go(1);if(e.key==="ArrowLeft")document.getElementById("book").go(-1)};
 function route(){const h=location.hash,m=h.match(/^#\/work\/(\d+)$/),w=m&&WORKS[+m[1]];
-  const id=w?"case":h==="#/artworks"?"artworks":"home";
-  for(const v of ["home","artworks","case"])document.getElementById(v).classList.toggle("on",v===id);
-  document.querySelector(".big").toggleAttribute("aria-current",id!=="home");
+  const id=w?"case":h==="#/artworks"?"artworks":h==="#/contact"?"contact":"home";
+  for(const v of ["home","artworks","case","contact"])document.getElementById(v).classList.toggle("on",v===id);
+  document.querySelector(".big").toggleAttribute("aria-current",id==="artworks"||id==="case");
+  // конверт открывается при каждом заходе, но только когда все слои загружены
+  const env=document.getElementById("env");env.classList.remove("go");
+  if(id==="contact")Promise.all([...env.querySelectorAll("img")].map(i=>i.decode().catch(()=>{}))).then(()=>location.hash==="#/contact"&&env.classList.add("go"));
   const c=document.getElementById("case");c.classList.remove("settled");clearTimeout(timer);
   if(w){document.getElementById("cTitle").textContent=w[0];document.getElementById("cKind").textContent=w[1];
     const key=w[1].split(" ")[0];cInfo.innerHTML=INFO[key]||INFO0;cInfo.scrollTop=0;
