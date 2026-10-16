@@ -19,6 +19,9 @@ a{color:inherit;text-decoration:none}
 /* меню как у Olga Minina: имя и пункты в квадратных скобках сверху справа от него */
 .top{position:relative;z-index:2;padding:28px var(--m);display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap}
 .big{margin-left:auto}
+/* Artworks по центру шапки, Contact в правом углу */
+.mid{position:absolute;left:50%;transform:translateX(-50%)}
+@media (max-width:760px){.mid{position:static;transform:none;margin-left:auto}.mid+.big{margin-left:14px}}
 .brand{transition:filter .25s,opacity .25s;font:400 clamp(32px,4vw,56px)/1 "Inter",Helvetica,sans-serif;letter-spacing:-.02em}
 .top nav{display:flex;gap:14px;font-size:13px;letter-spacing:.02em;text-transform:uppercase;padding-top:2px}
 .top nav a{transition:filter .25s,opacity .25s}
@@ -89,7 +92,7 @@ a{color:inherit;text-decoration:none}
 
 /* страницы: главная и Artworks */
 .page{display:none}.page.on{display:flex}
-.big[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.top [aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
 
 /* Artworks: названия списком по центру (Esther Ramon), рядом мелко тип и год (Coscia),
    при наведении превью у курсора (Korkunova), остальные бледнеют */
@@ -157,13 +160,34 @@ a{color:inherit;text-decoration:none}
 .book-hint{font-size:11px;text-transform:uppercase;letter-spacing:.03em;opacity:.5}
 .book:focus{outline:none}
 .book canvas{position:absolute;left:-2%;top:-12%;width:104%;height:124%}
+
+/* Contact: белый экран, по центру кружевной конверт. Слои из одного фото (contact/build.py), поэтому кружево не меняется:
+   клапан лежит сложенным на конверте (тот же клапан, повёрнутый на 180° вокруг сгиба), плавно поднимается, потом лист выезжает */
+body:has(#contact.on){--paper:#fff;--ink:#111}
+.contact.on{display:grid;place-items:center;padding:0 var(--m) var(--m);min-height:0;container-type:size}
+.env{position:relative;width:min(72cqw,72cqh*1024/1160);aspect-ratio:1024/1160;perspective:2400px}
+.env:not(.go){visibility:hidden}
+.env img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.env .slot{position:absolute;inset:0;clip-path:polygon(20.02% -12.93%,20.12% 31.29%,20.90% 46.29%,21.68% 47.07%,22.46% 47.67%,23.24% 48.45%,24.02% 49.22%,24.80% 49.91%,25.59% 50.60%,26.37% 51.38%,27.15% 52.07%,27.93% 52.76%,28.71% 53.53%,29.49% 54.22%,30.27% 54.91%,31.05% 55.52%,31.84% 56.38%,32.62% 56.98%,33.40% 57.84%,34.18% 58.45%,34.96% 59.22%,35.74% 59.91%,36.52% 60.69%,37.30% 61.47%,38.09% 62.16%,38.87% 62.93%,39.65% 63.62%,40.43% 64.40%,41.21% 65.09%,41.99% 65.34%,42.77% 65.34%,43.55% 65.09%,44.34% 65.09%,45.12% 65.17%,45.90% 65.09%,46.68% 64.91%,47.46% 65.00%,48.24% 65.09%,49.02% 65.09%,49.80% 65.17%,50.59% 65.17%,51.37% 65.17%,52.15% 65.17%,52.93% 65.17%,53.71% 65.26%,54.49% 65.26%,55.27% 65.17%,56.05% 65.34%,56.84% 65.34%,57.62% 65.34%,58.40% 65.52%,59.18% 65.52%,59.96% 64.57%,60.74% 63.71%,61.52% 63.19%,62.30% 62.24%,63.09% 61.47%,63.87% 60.95%,64.65% 60.17%,65.43% 59.31%,66.21% 58.53%,66.99% 57.84%,67.77% 56.98%,68.55% 56.12%,69.34% 55.43%,70.12% 54.74%,70.90% 53.97%,71.68% 53.19%,72.46% 52.33%,73.24% 51.47%,74.02% 50.78%,74.80% 50.09%,75.59% 49.40%,76.37% 48.62%,77.15% 47.84%,77.93% 46.98%,78.71% 46.29%,79.10% 31.29%,79.20% -12.93%)}
+.env .fd,.env .fu{transform-origin:50% 34.31%}
+.env .fd{opacity:0}
+/* клапан идёт одним движением: до вертикали он поверх листа (fd), после — под ним (fu); ребром не виден */
+.env.go .fd{animation:fd 1.3s cubic-bezier(.4,0,.8,.6) .5s both}
+.env.go .fu{animation:fu 1.3s cubic-bezier(.2,.4,.6,1) 1.8s both}
+.env.go .letter{animation:l-in .6s linear .5s both,letter 1.9s cubic-bezier(.35,0,.15,1) 2.6s both}
+@keyframes fd{0%{opacity:1;transform:rotateX(180deg)}99%{opacity:1;transform:rotateX(91deg)}100%{opacity:0;transform:rotateX(90deg)}}
+@keyframes fu{0%{opacity:0;transform:rotateX(90deg)}1%{opacity:1;transform:rotateX(89deg)}100%{opacity:1;transform:none}}
+@keyframes l-in{from{opacity:0}to{opacity:1}}
+@keyframes letter{from{transform:translateY(11.21%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){.env.go *{animation:none!important}}
 </style>
 </head>
 <body>
 <header class="top">
   <a class="brand" href="#/">Natalia Makienko</a>
   <nav><a href="#">[ about ]</a></nav>
-  <a class="brand big" href="#/artworks">Artworks</a>
+  <a class="brand mid" href="#/artworks">Artworks</a>
+  <a class="brand big" href="#/contact">Contact</a>
 </header>
 
 <main class="page" id="home" aria-label="Главная">
@@ -203,6 +227,14 @@ a{color:inherit;text-decoration:none}
 
 <main class="works page" id="artworks">
   <ol id="list"></ol>
+</main>
+
+<main class="contact page" id="contact" aria-label="Contact">
+  <div class="env" id="env" role="img" aria-label="Кружевной конверт открывается, из него выглядывает лист">
+    <img src="contact/base.jpg" alt=""><img class="fu" src="contact/flap.webp" alt="">
+    <div class="slot"><img class="letter" src="contact/letter.webp" alt=""></div>
+    <img class="fd" src="contact/flap.webp" alt="">
+  </div>
 </main>
 
 <main class="case page" id="case">
@@ -348,9 +380,13 @@ document.getElementById("cZoom").onclick=()=>{lbPages.classList.remove("big");sh
 lb.onclick=e=>{const t=e.target;if(t.dataset.go)document.getElementById("book").go(+t.dataset.go);else if("close" in t.dataset)lb.close();else if(t.tagName==="IMG")lbPages.classList.toggle("big")};
 lb.onkeydown=e=>{if(e.key==="ArrowRight")document.getElementById("book").go(1);if(e.key==="ArrowLeft")document.getElementById("book").go(-1)};
 function route(){const h=location.hash,m=h.match(/^#\/work\/(\d+)$/),w=m&&WORKS[+m[1]];
-  const id=w?"case":h==="#/artworks"?"artworks":"home";
-  for(const v of ["home","artworks","case"])document.getElementById(v).classList.toggle("on",v===id);
-  document.querySelector(".big").toggleAttribute("aria-current",id!=="home");
+  const id=w?"case":h==="#/artworks"?"artworks":h==="#/contact"?"contact":"home";
+  for(const v of ["home","artworks","case","contact"])document.getElementById(v).classList.toggle("on",v===id);
+  document.querySelector(".mid").toggleAttribute("aria-current",id==="artworks"||id==="case");
+  document.querySelector(".big").toggleAttribute("aria-current",id==="contact");
+  // конверт открывается при каждом заходе, но только когда все слои загружены
+  const env=document.getElementById("env");env.classList.remove("go");
+  if(id==="contact")Promise.all([...env.querySelectorAll("img")].map(i=>i.decode().catch(()=>{}))).then(()=>location.hash==="#/contact"&&env.classList.add("go"));
   const c=document.getElementById("case");c.classList.remove("settled");clearTimeout(timer);
   if(w){document.getElementById("cTitle").textContent=w[0];document.getElementById("cKind").textContent=w[1];
     const key=w[1].split(" ")[0];cInfo.innerHTML=INFO[key]||INFO0;cInfo.scrollTop=0;
