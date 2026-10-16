@@ -174,11 +174,11 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 /* клапан идёт одним движением: до вертикали он поверх листа (fd), после — под ним (fu); ребром не виден */
 .env.go .fd{animation:fd 1.3s cubic-bezier(.4,0,.8,.6) .5s both}
 .env.go .fu{animation:fu 1.3s cubic-bezier(.2,.4,.6,1) 1.8s both}
-/* лист лежит внутри с самого начала и двигается, только когда клапан открыт; в начале он целиком утоплен в кармане, иначе его края видны из-под сложенного клапана */
-.env.go .letter{animation:letter 2.2s cubic-bezier(.35,0,.15,1) 2.7s both}
+/* лист лежит внутри с самого начала и двигается, только когда клапан открыт; в начале его верх стоит на линии сгиба */
+.env.go .letter{animation:letter 1.4s cubic-bezier(.35,0,.15,1) 3.1s both}
 @keyframes fd{0%{opacity:1;transform:rotateX(180deg)}99%{opacity:1;transform:rotateX(91deg)}100%{opacity:0;transform:rotateX(90deg)}}
 @keyframes fu{0%{opacity:0;transform:rotateX(90deg)}1%{opacity:1;transform:rotateX(89deg)}100%{opacity:1;transform:none}}
-@keyframes letter{from{transform:translateY(35.34%)}to{transform:none}}
+@keyframes letter{from{transform:translateY(4.31%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.env.go *{animation:none!important}}
 </style>
 </head>
