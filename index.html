@@ -272,7 +272,7 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 </dialog>
 <script>
 // shortcut: примеры работ по форматам, которые ты называла; заменить на настоящие названия и годы
-const WORKS=[["Magazine","magazine layout"],["Petersburg Diary Award","website"],["Research","research website"],["Longread","longread"],["Zine","zine"],["Booklets","booklet"],["Short Film","film"],["Newspaper","newspaper"]];
+const WORKS=[["Magazine","magazine layout"],["Petersburg Diary Award","website"],["University Project","university"],["Black Sea Longread","longread"],["Zine","zine"],["Booklets","booklet"],["Newspaper","newspaper"]];
 document.getElementById("list").innerHTML=WORKS.map(([t,k],i)=>`<li><a href="#/work/${i}">${t}<sup>${k}, 20··</sup></a></li>`).join("");
 // фото из Figma-фрейма «galereya» (порядок слева направо), размеры в px как во фрейме
 const GALLERY=[[1,120,170],[2,120,170],[3,120,168],[4,120,170],[5,120,162],[6,212,150]];
