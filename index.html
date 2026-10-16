@@ -28,10 +28,16 @@ a{color:inherit;text-decoration:none}
 @media (hover:hover){.top:has(a:hover) a:not(:hover){filter:blur(2px);opacity:.5}}
 
 /* главная: слово portfolio из чёрного кружева конверта (home/lace.webp — кусок фото конверта из contact/base.jpg как есть, плитка с зеркальным повтором) */
+#home{position:relative}
 #home.on{display:grid;place-content:center;justify-items:center;gap:2dvh;padding:0 var(--m) var(--m);min-height:0}
 #home h1{font:900 clamp(64px,min(21vw,36dvh),360px)/.86 "Inter",sans-serif;letter-spacing:-.065em;padding:0 .06em .04em 0;color:transparent;
   background:url(home/lace.webp?v=5) center/1.6em auto repeat;-webkit-background-clip:text;background-clip:text}
-#home p{display:flex;gap:2em;font-size:13px;text-transform:uppercase;letter-spacing:.06em;opacity:.55}
+/* три блока надписей — по скриншоту Натали; последняя строка каждого серая */
+#home .note{position:absolute;margin:0;font:500 13px/1.4 "Inter",sans-serif;text-transform:uppercase;letter-spacing:.02em}
+#home .note span{display:block;margin-top:1.4em}
+#home .note span:last-child{opacity:.5}
+#home .n1{left:6%;top:6%}#home .n2{left:38%;top:70%}#home .n3{left:63%;bottom:4%}
+@media (max-width:700px){#home .note{position:static;justify-self:start;margin-top:2dvh}#home .n1{order:-1;margin:0 0 2dvh}#home.on{place-content:center stretch}}
 
 /* страницы: главная и Artworks */
 .page{display:none}.page.on{display:flex}
@@ -153,7 +159,9 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 
 <main class="page" id="home" aria-label="Главная">
   <h1>portfolio</h1>
-  <p><span>Санкт-Петербург</span><span>2026</span></p>
+  <p class="note n1">Designing it,<br>seeing it,<br>making it real.<span>Portfolio</span><span>2K26</span></p>
+  <p class="note n2">Portfolio<br>graphic &amp;<br>editorial designer<span>Natalia Makienko</span><span>2026</span></p>
+  <p class="note n3">Magazines<br>zines<br>websites<span>Saint Petersburg</span><span>Open for work</span></p>
 </main>
 
 <main class="works page" id="artworks">
