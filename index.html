@@ -377,19 +377,24 @@ function bindBook(b){const book=document.getElementById("book"),cv=book.querySel
   let down=null,peek=false,rew=false;
   const lay=()=>{const g=f&&!peek?f.dir:0;book.classList.toggle("closed-front",s===0&&g<=0);book.classList.toggle("closed-back",s===N-1&&g>=0)};
   function start(dir,top){if(f||s+dir<0||s+dir>N-1)return false;const c={x:w,y:top?0:h()};f={dir,c,p:{...c}};lay();return true}
-  function animate(to,done){cancelAnimationFrame(anim);const a={...f.p},t0=performance.now(),D=fast?1:(rew?300:650)*Math.max(.35,Math.hypot(to.x-a.x,to.y-a.y)/(2*w));
+  function animate(to,done){cancelAnimationFrame(anim);const a={...f.p},t0=performance.now(),D=fast?1:650*Math.max(.35,Math.hypot(to.x-a.x,to.y-a.y)/(2*w));
     const lift=(f.c.y?-1:1)*h()*.1*Math.abs(to.x-a.x)/(2*w);
     const step=t=>{const k=Math.min(1,(t-t0)/D),e=k<.5?2*k*k:1-(-2*k+2)**2/2;
       f.p=clampP({x:a.x+(to.x-a.x)*e,y:a.y+(to.y-a.y)*e+Math.sin(Math.PI*e)*lift},f.c);draw();
       if(k<1)anim=requestAnimationFrame(step);else done()};anim=requestAnimationFrame(step)}
-  // rew: клик по задней обложке быстро листает всё назад до передней, как складывается буклет
-  const finish=()=>animate({x:-w,y:f.c.y},()=>{s+=f.dir;f=null;lay();draw();if(rew&&s>0&&start(-1,0))finish();else rew=false});
+  const finish=()=>animate({x:-w,y:f.c.y},()=>{s+=f.dir;f=null;lay();draw()});
+  // клик по задней обложке листает всё назад до передней одним движением: общий разгон и торможение на все страницы, без остановок между ними
+  function rewind(){cancelAnimationFrame(anim);rew=true;const n=s,t0=performance.now(),T=fast?1:450+150*n;
+    const step=t=>{const k=Math.min(1,(t-t0)/T),g=(k<.5?2*k*k:1-(-2*k+2)**2/2)*n;
+      while(n-s<Math.floor(g)&&s>0){s--;f=null}
+      if(s>0&&(f||start(-1,0))){const u=g-(n-s),c=f.c;f.p=clampP({x:w-2*w*u,y:c.y+Math.sin(Math.PI*u)*(c.y?-1:1)*h()*.1},c)}
+      lay();draw();if(k<1)anim=requestAnimationFrame(step);else{f=null;rew=false;lay();draw()}};anim=requestAnimationFrame(step)}
   const revert=()=>animate({...f.c},()=>{f=null;lay();draw()});
-  const go=d=>{if(f&&!f.drag)return;if(d>0&&s===N-1){rew=true;d=-1}if(start(d,0))finish()};
+  const go=d=>{if(f&&!f.drag||rew)return;if(d>0&&s===N-1)return rewind();if(start(d,0))finish()};
   const sideOf=q=>q.x>0?1:-1, local=(q,dir)=>({x:q.x*dir,y:q.y});
-  cv.onpointerdown=e=>{const q=pt(e);down={q,dir:s===0?1:s===N-1?-1:sideOf(q)};if(!peek&&!f)start(down.dir,q.y<h()/2&&q.y>0);
+  cv.onpointerdown=e=>{if(rew)return;const q=pt(e);down={q,dir:s===0?1:s===N-1?-1:sideOf(q)};if(!peek&&!f)start(down.dir,q.y<h()/2&&q.y>0);
     if(f&&f.dir===down.dir){f.drag=true;peek=false;lay();cv.setPointerCapture(e.pointerId)}};
-  cv.onpointermove=e=>{const q=pt(e);
+  cv.onpointermove=e=>{if(rew)return;const q=pt(e);
     if(down&&f&&f.drag){if(Math.hypot(q.x-down.q.x,q.y-down.q.y)>6)down.moved=true;
       if(down.moved){cancelAnimationFrame(anim);f.p=clampP(local(q,f.dir),f.c);draw()}return}
     // уголок чуть приподнимается, когда к нему подводишь мышку
@@ -399,7 +404,7 @@ function bindBook(b){const book=document.getElementById("book"),cv=book.querySel
     else if(peek){peek=false;revert()}};
   cv.onpointerleave=()=>{if(peek&&!down){peek=false;revert()}};
   const up=e=>{if(!down)return;const d=down;down=null;
-    if(f&&f.drag){f.drag=false;peek=false;if(!d.moved&&s===N-1)rew=true;if(!d.moved||f.p.x<w*.25)finish();else revert()}};
+    if(f&&f.drag){f.drag=false;peek=false;if(!d.moved&&s===N-1)rewind();else if(!d.moved||f.p.x<w*.25)finish();else revert()}};
   cv.onpointerup=up;cv.onpointercancel=e=>{if(down&&f&&f.drag){down=null;f.drag=false;revert()}};
   book.onkeydown=e=>{if(e.key==="ArrowRight"||e.key==="Enter")go(1);if(e.key==="ArrowLeft")go(-1)};lay();
   book.visible=()=>[P[2*s-1],P[2*s]].filter(i=>i&&i.tagName==="IMG");
