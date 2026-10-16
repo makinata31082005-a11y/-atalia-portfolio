@@ -9,7 +9,8 @@ src, out = sys.argv[1], sys.argv[2]
 FOLD = 548          # линия сгиба клапана
 Y0, Y1 = 150, 1310  # кадр
 L, R, LT = 208, 808, 503  # лист: левый/правый край, верх
-D = 280             # насколько лист утоплен в начале (в CSS translateY(24%))
+D = 50              # насколько лист утоплен в начале: верх на линии сгиба (в CSS translateY(4.31%))
+HALO = 34           # ширина тени сложенного клапана, px фото
 
 op = np.asarray(Image.open(f"{src}/open.png").convert("RGB")).astype(float)
 lum = op.mean(2)
@@ -67,7 +68,14 @@ base = Image.composite(nolI, white, Image.fromarray(below))
 flap = flI.convert("RGBA"); flap.putalpha(flapA)
 letter = Image.fromarray(op.astype(np.uint8)).convert("RGBA"); letter.putalpha(lm)
 base.crop((0, Y0, W, Y1)).save(f"{out}/base.jpg", quality=88)
-for k, im in {"flap": flap, "letter": letter}.items():
+# сложенный клапан: тот же клапан с тёмной каймой по косым краям — это тень клапана на конверте,
+# она закрывает щели у боков, чтобы закрытый конверт не выглядел приоткрытым и лист не выглядывал
+halo = Image.fromarray(np.asarray(flapA)).filter(ImageFilter.MaxFilter(HALO * 2 + 1)).filter(ImageFilter.GaussianBlur(HALO / 2.5))
+ha = np.asarray(halo).astype(float); ha[FOLD - 1:] = 0  # кайма только по косым краям, не над сгибом
+ys = np.arange(FOLD); ha[:FOLD] *= sa[(2 * FOLD - ys).clip(0, H - 1), :, 0]  # и только поверх конверта (после переворота клапан ляжет ниже сгиба)
+shadow = Image.new("RGBA", (W, H), (12, 11, 11, 0)); shadow.putalpha(Image.fromarray((ha * .92).astype(np.uint8)))
+flap_closed = Image.alpha_composite(shadow, flap)
+for k, im in {"flap": flap, "flap-closed": flap_closed, "letter": letter}.items():
     im.crop((0, Y0, W, Y1)).save(f"{out}/{k}.webp", quality=88, method=6)
 
 # граница кармана для clip-path листа, в % кадра
