@@ -1,0 +1,163 @@
+<!doctype html>
+<!-- макеты газеты и евробуклета: каждая .pg снимается отдельной картинкой (mock/build.mjs).
+     Когда будут настоящие полосы, просто положи свои jpg вместо news/p-*.jpg и booklet/*.jpg -->
+<html lang="ru"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;700;800&display=block">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#888;display:flex;flex-wrap:wrap;gap:40px;padding:40px;font-family:Inter,sans-serif;color:#151515}
+.pg{position:relative;overflow:hidden;background:#f2f2ef}
+.news{width:1000px;height:1414px;padding:56px 54px;display:flex;flex-direction:column;gap:18px}
+.bk{width:700px;height:1485px;padding:64px 56px;background:#fbfbfa;display:flex;flex-direction:column;gap:22px}
+.ph{background:radial-gradient(circle,#0000002e 1.1px,transparent 1.5px) 0 0/5px 5px,linear-gradient(160deg,#c9c9c5,#9d9d99);position:relative}
+.ph.dark{background:radial-gradient(circle,#ffffff22 1.1px,transparent 1.5px) 0 0/5px 5px,linear-gradient(160deg,#5d5d5a,#2b2b2a)}
+.cap{font-size:13px;line-height:1.3;color:#555;margin-top:6px}
+.rule{border-top:2px solid #151515}.hair{border-top:1px solid #151515}
+.cols{column-gap:26px;font:400 15.5px/1.42 "Liberation Serif",Georgia,serif;text-align:justify;hyphens:auto}
+.cols p{text-indent:1.4em}.cols p:first-child{text-indent:0}
+.cols p:first-child::first-letter{float:left;font:700 58px/.84 "Instrument Serif",serif;margin:4px 6px 0 0}
+.kick{font:500 12px/1 Inter;text-transform:uppercase;letter-spacing:.12em}
+.hd{font:400 64px/.95 "Instrument Serif",serif;letter-spacing:-.01em}
+.hd i{font-style:italic}
+.meta{display:flex;justify-content:space-between;font:500 12px/1 Inter;text-transform:uppercase;letter-spacing:.08em}
+.mast{font:400 132px/.8 "Instrument Serif",serif;letter-spacing:-.03em;text-align:center}
+.grid{display:grid;gap:26px}
+.q{font:400 italic 46px/1.05 "Instrument Serif",serif}
+.n{position:absolute;bottom:26px;font:500 12px/1 Inter}
+.list li{list-style:none;display:grid;grid-template-columns:110px 1fr;gap:16px;padding:12px 0;border-top:1px solid #151515;font:400 16px/1.35 "Liberation Serif",serif}
+.list b{font:500 13px/1.3 Inter;text-transform:uppercase;letter-spacing:.06em}
+/* буклет */
+.bk .big{font:800 112px/.86 Inter;letter-spacing:-.06em}
+.bk .t{font:400 17px/1.45 Inter}
+.bk .s{font:400 52px/1 "Instrument Serif",serif}
+.bk ol{list-style:none;counter-reset:i}.bk ol li{counter-increment:i;display:grid;grid-template-columns:44px 1fr;padding:14px 0;border-top:1px solid #151515;font:400 17px/1.35 Inter}
+.bk ol li::before{content:"0" counter(i);font:500 13px/1.8 Inter}
+</style></head><body>
+
+<!-- ГАЗЕТА: 6 полос -->
+<div class="pg news" id="news-1">
+  <div class="meta"><span>№ 01 · октябрь 2026</span><span>Санкт-Петербург</span><span>Выходит по пятницам</span></div>
+  <div class="rule"></div>
+  <div class="mast">Северная сторона</div>
+  <div class="meta" style="border-bottom:1px solid;padding-bottom:12px"><span>городская газета</span><span>культура · люди · места</span><span>6 полос</span></div>
+  <div class="grid" style="grid-template-columns:2fr 1fr;flex:1">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <span class="kick">Город</span>
+      <h1 class="hd" style="font-size:78px">Как дворы-колодцы <i>стали</i> новыми площадями</h1>
+      <div class="ph" style="height:430px"></div><p class="cap">Двор на Петроградской стороне в субботу утром. Фото: заглушка</p>
+      <div class="cols" style="columns:2"><p>Ещё несколько лет назад внутренние дворы центра были проходными: сюда заходили, чтобы срезать путь или спрятаться от ветра. Теперь в них открываются кофейни, мастерские и маленькие выставочные пространства, а жители сами решают, как будет выглядеть общий двор.</p><p>Редакция провела неделю в шести дворах и поговорила с теми, кто их меняет: архитекторами, соседями и владельцами первых этажей. Получилась карта новых мест, где город собирается заново.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;border-left:1px solid;padding-left:26px">
+      <span class="kick">В номере</span>
+      <ul class="list"><li><b>стр. 2</b>Интервью с художницей, которая рисует набережные</li><li><b>стр. 3</b>Фоторепортаж: ночной Невский</li><li><b>стр. 4</b>Пять книжных, куда стоит зайти</li><li><b>стр. 6</b>Афиша на неделю</li></ul>
+      <div class="ph dark" style="height:300px;margin-top:8px"></div>
+      <h2 class="hd" style="font-size:40px">Последний трамвай на Васильевском</h2>
+      <div class="cols"><p>Маршрут, который ходил почти сто лет, закрывают на реконструкцию. Мы проехали его целиком с водителем, который работает на нём двадцать лет.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="pg news" id="news-2">
+  <div class="meta"><span>Интервью</span><span>Северная сторона · 2</span></div><div class="rule"></div>
+  <span class="kick" style="margin-top:20px">Разговор</span>
+  <h1 class="hd" style="font-size:86px">«Город нужно <i>рисовать</i> пешком»</h1>
+  <div class="grid" style="grid-template-columns:1fr 1fr;flex:1">
+    <div style="display:flex;flex-direction:column"><div class="ph" style="flex:1"></div><p class="cap">Героиня в мастерской на Обводном канале</p></div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <p class="q">«Я не ищу красивые виды. Мне интересно, как люди живут рядом с водой.»</p><div class="hair"></div>
+      <div class="cols" style="columns:2"><p>Она выходит из дома в семь утра, берёт складной стул и альбом и идёт вдоль канала, пока не найдёт место, где хочется остановиться. За год таких прогулок набралось больше трёхсот рисунков.</p><p>— С чего всё началось? — С того, что я перестала ездить на метро. Пешком город выглядит совсем иначе: видны мелочи, которые из окна не заметить.</p><p>— Что дальше? — Хочу собрать рисунки в книгу и сделать выставку прямо на набережной, чтобы её видели те, кто там гуляет.</p><p>— А зимой? — Зимой рисую из окон кафе. Там тепло, а вид на канал такой же.</p><p>— Любимое место? — Пешеходный мост у Новой Голландии. С него видно сразу три воды: канал, Мойку и небо в лужах.</p></div>
+      <div class="ph" style="flex:1"></div>
+    </div>
+  </div>
+  <span class="n" style="left:54px">2</span>
+</div>
+
+<div class="pg news" id="news-3">
+  <div class="meta"><span>Северная сторона · 3</span><span>Фоторепортаж</span></div><div class="rule"></div>
+  <div class="ph dark" style="flex:1;margin-top:8px"></div>
+  <div class="grid" style="grid-template-columns:1.3fr 1fr;align-items:end">
+    <h1 class="hd" style="font-size:96px">Ночной <i>Невский</i></h1>
+    <div class="cols"><p>С полуночи до шести утра главная улица города живёт своей жизнью: развозят хлеб, моют тротуары, разводят мосты. Наш фотограф прошёл её от Адмиралтейства до Александро-Невской лавры.</p></div>
+  </div>
+  <span class="n" style="right:54px">3</span>
+</div>
+
+<div class="pg news" id="news-4">
+  <div class="meta"><span>Места</span><span>Северная сторона · 4</span></div><div class="rule"></div>
+  <h1 class="hd" style="font-size:72px;margin-top:20px">Пять книжных, куда стоит зайти этой осенью</h1>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);flex:1;align-content:start">
+    <div><div class="ph" style="height:250px"></div><h3 class="hd" style="font-size:30px;margin:12px 0 8px">На Литейном</h3><div class="cols"><p>Маленький магазин на втором этаже, где продают только книги об архитектуре и дизайне. По четвергам здесь проходят открытые лекции.</p></div></div>
+    <div><div class="ph" style="height:250px"></div><h3 class="hd" style="font-size:30px;margin:12px 0 8px">У Пяти углов</h3><div class="cols"><p>Букинистический с огромным разделом старых журналов и открыток. Хозяин помнит, где лежит каждая книга.</p></div></div>
+    <div><div class="ph" style="height:250px"></div><h3 class="hd" style="font-size:30px;margin:12px 0 8px">На Васильевском</h3><div class="cols"><p>Книжный и кафе в бывшей типографии. Можно взять книгу с полки и читать её за чашкой кофе.</p></div></div>
+    <div style="grid-column:1/3"><div class="ph" style="height:330px"></div><h3 class="hd" style="font-size:30px;margin:12px 0 8px">В Новой Голландии</h3><div class="cols" style="columns:2"><p>Большой светлый магазин с детским залом и полкой местных самиздатов. Здесь же продают зины петербургских художников и студентов.</p><p>Каждые выходные в магазине проходят встречи с авторами, а в декабре открывается ярмарка независимых издательств.</p></div></div>
+    <div><div class="ph dark" style="height:330px"></div><h3 class="hd" style="font-size:30px;margin:12px 0 8px">На Петроградке</h3><div class="cols"><p>Магазин-библиотека: книги можно не только купить, но и взять почитать на две недели.</p></div></div>
+  </div>
+  <span class="n" style="left:54px">4</span>
+</div>
+
+<div class="pg news" id="news-5">
+  <div class="meta"><span>Северная сторона · 5</span><span>Город</span></div><div class="rule"></div>
+  <div class="grid" style="grid-template-columns:1fr 2fr;flex:1;margin-top:20px">
+    <div style="display:flex;flex-direction:column;gap:18px;border-right:1px solid;padding-right:26px">
+      <span class="kick">Колонка</span><h2 class="hd" style="font-size:44px">Почему мы любим серое небо</h2>
+      <div class="cols"><p>Приезжие жалуются на погоду, а местные защищают её как родственника. Серое небо делает город графичным: фасады становятся чётче, вода темнее, а жёлтые окна заметнее. Кажется, именно поэтому здесь так много художников и фотографов.</p><p>Попробуйте в следующий пасмурный день выйти на набережную без зонта и просто посмотреть вокруг.</p></div>
+      <div class="ph dark" style="flex:1"></div><p class="cap">Набережная в ноябре</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <span class="kick">Последний трамвай</span><h1 class="hd" style="font-size:70px">Сто лет по одному маршруту</h1>
+      <div class="ph" style="flex:1"></div><p class="cap">Трамвай на 6-й линии Васильевского острова</p>
+      <div class="cols" style="columns:2"><p>Маршрут открыли в двадцатых годах, и с тех пор он почти не менялся. Водитель знает каждого постоянного пассажира и здоровается с ними по имени.</p><p>После реконструкции линию обещают вернуть, но уже с новыми вагонами. Старые отправятся в музей городского транспорта.</p></div>
+    </div>
+  </div>
+  <span class="n" style="right:54px">5</span>
+</div>
+
+<div class="pg news" id="news-6">
+  <div class="meta"><span>Афиша</span><span>Северная сторона · 6</span></div><div class="rule"></div>
+  <h1 class="hd" style="font-size:110px;margin-top:20px">Афиша <i>недели</i></h1>
+  <ul class="list" style="flex:1">
+    <li><b>пятница<br>19:00</b>Открытие выставки графики в Манеже. Вход свободный, нужна регистрация</li>
+    <li><b>суббота<br>12:00</b>Прогулка по дворам Петроградской стороны с архитектором</li>
+    <li><b>суббота<br>18:00</b>Ярмарка зинов и самиздата в Новой Голландии</li>
+    <li><b>воскресенье<br>11:00</b>Детская мастерская: делаем свою газету</li>
+    <li><b>воскресенье<br>20:00</b>Кино под открытым небом на крыше бывшей типографии</li>
+  </ul>
+  <div class="grid" style="grid-template-columns:1fr 1fr;border-top:2px solid;padding-top:16px">
+    <p class="cap">Учредитель и издатель: заглушка. Главный редактор: заглушка. Дизайн и вёрстка: Наталья Макиенко</p>
+    <p class="cap" style="text-align:right">Тираж 1000 экз. Распространяется бесплатно. Подписано в печать: октябрь 2026</p>
+  </div>
+</div>
+
+<!-- ЕВРОБУКЛЕТ: обложка, внутренний клапан снаружи, три полосы внутри -->
+<div class="pg bk" id="bk-cover" style="background:#151515;color:#f2f2ef">
+  <span class="kick">Открытая лекция · 2026</span>
+  <div class="ph dark" style="flex:1"></div>
+  <h1 class="big">Шрифт в&nbsp;городе</h1>
+  <p class="t" style="opacity:.7">Как вывески, таблички и афиши говорят с прохожими</p>
+</div>
+<div class="pg bk" id="bk-flap">
+  <span class="kick">О лекции</span>
+  <p class="s">Город читается как книга, если знать, куда смотреть</p>
+  <p class="t">За час мы пройдём по самым узнаваемым вывескам центра, разберём, как менялась уличная типографика за сто лет, и посмотрим, почему одни надписи хочется сохранить, а другие хочется снять.</p>
+  <div class="ph" style="flex:1"></div>
+</div>
+<div class="pg bk" id="bk-1">
+  <span class="kick">01 · Начало</span>
+  <h2 class="s" style="font-size:64px">Старые вывески</h2>
+  <p class="t">Эмалированные таблички, рисованные буквы на стекле и первые неоновые вывески. Что из этого дожило до наших дней и почему.</p>
+  <div class="ph" style="flex:1"></div>
+</div>
+<div class="pg bk" id="bk-2">
+  <span class="kick">02 · Программа</span>
+  <h2 class="s" style="font-size:64px">Что будет на лекции</h2>
+  <ol><li>Как устроена городская навигация</li><li>Вывески, которые стали символами улиц</li><li>Шрифты, нарисованные для города</li><li>Практика: свой эскиз таблички</li><li>Вопросы и обсуждение</li></ol>
+  <div class="ph dark" style="flex:1"></div>
+</div>
+<div class="pg bk" id="bk-3">
+  <span class="kick">03 · Как попасть</span>
+  <h2 class="s" style="font-size:64px">Пятница, 19:00</h2>
+  <p class="t">Библиотека на Литейном, второй этаж, большой зал. Вход свободный по регистрации, количество мест ограничено.</p>
+  <div class="ph" style="flex:1"></div>
+  <p class="kick" style="line-height:1.6">Регистрация по ссылке<br>в описании мероприятия</p>
+</div>
+</body></html>
