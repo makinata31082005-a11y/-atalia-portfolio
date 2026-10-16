@@ -9,7 +9,7 @@ src, out = sys.argv[1], sys.argv[2]
 FOLD = 548          # линия сгиба клапана
 Y0, Y1 = 150, 1310  # кадр
 L, R, LT = 208, 808, 503  # лист: левый/правый край, верх
-D = 50              # насколько лист утоплен в начале: верх на линии сгиба
+D = 280             # насколько лист утоплен в начале (в CSS translateY(24%))
 
 op = np.asarray(Image.open(f"{src}/open.png").convert("RGB")).astype(float)
 lum = op.mean(2)
