@@ -172,14 +172,14 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 .env .fd,.env .fu{transform-origin:50% 34.31%}
 .env .fd{opacity:0}
 /* клапан идёт одним движением: до вертикали он поверх листа (fd), после — под ним (fu); ребром не виден */
-.env.go .fd{animation:fd 1.9s cubic-bezier(.4,0,.8,.6) .6s both}
-.env.go .fu{animation:fu 1.9s cubic-bezier(.2,.4,.6,1) 2.5s both}
+.env.go .fd{animation:fd 1.3s cubic-bezier(.4,0,.8,.6) 1.1s both}
+.env.go .fu{animation:fu 1.3s cubic-bezier(.2,.4,.6,1) 2.4s both}
 /* лист лежит внутри с самого начала и двигается, только когда клапан открыт; в начале его верх стоит на линии сгиба */
-.env.go .letter{animation:letter 1.8s cubic-bezier(.35,0,.15,1) 4.3s both}
-/* сложенный клапан чуть вытянут вниз, чтобы закрытый конверт был закрыт целиком и лист не выглядывал по бокам */
+.env.go .letter{animation:letter 1.4s cubic-bezier(.35,0,.15,1) 3.6s both}
+/* сложенный клапан чуть вытянут вниз и с тенью по краям, чтобы закрытый конверт был закрыт целиком и лист не выглядывал по бокам */
 @keyframes fd{0%{opacity:1;transform:rotateX(180deg) scale(1,1.3)}99%{opacity:1;transform:rotateX(91deg) scale(1,1)}100%{opacity:0;transform:rotateX(90deg) scale(1,1)}}
 @keyframes fu{0%{opacity:0;transform:rotateX(90deg)}1%{opacity:1;transform:rotateX(89deg)}100%{opacity:1;transform:none}}
-@keyframes letter{from{transform:translateY(24%)}to{transform:none}}
+@keyframes letter{from{transform:translateY(4.31%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.env.go *{animation:none!important}}
 </style>
 </head>
@@ -234,7 +234,7 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
   <div class="env" id="env" role="img" aria-label="Кружевной конверт открывается, из него выглядывает лист">
     <img src="contact/base.jpg" alt=""><img class="fu" src="contact/flap.webp" alt="">
     <div class="slot"><img class="letter" src="contact/letter.webp" alt=""></div>
-    <img class="fd" src="contact/flap.webp" alt="">
+    <img class="fd" src="contact/flap-closed.webp" alt="">
   </div>
 </main>
 
