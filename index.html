@@ -174,14 +174,11 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 /* клапан идёт одним движением: до вертикали он поверх листа (fd), после — под ним (fu); ребром не виден */
 .env.go .fd{animation:fd 1.3s cubic-bezier(.4,0,.8,.6) .5s both}
 .env.go .fu{animation:fu 1.3s cubic-bezier(.2,.4,.6,1) 1.8s both}
-/* лист лежит внутри с самого начала; пока клапан сложен, видна только часть под ним, чтобы края листа не торчали по бокам */
-.env .rv{position:absolute;inset:0}
-.env.go .rv{animation:rv 1.3s cubic-bezier(.4,0,.8,.6) .5s both}
-.env.go .letter{animation:letter 1.9s cubic-bezier(.35,0,.15,1) 2.6s both}
+/* лист лежит внутри с самого начала и двигается, только когда клапан открыт; в начале он целиком утоплен в кармане, иначе его края видны из-под сложенного клапана */
+.env.go .letter{animation:letter 2.2s cubic-bezier(.35,0,.15,1) 2.7s both}
 @keyframes fd{0%{opacity:1;transform:rotateX(180deg)}99%{opacity:1;transform:rotateX(91deg)}100%{opacity:0;transform:rotateX(90deg)}}
 @keyframes fu{0%{opacity:0;transform:rotateX(90deg)}1%{opacity:1;transform:rotateX(89deg)}100%{opacity:1;transform:none}}
-@keyframes rv{from{clip-path:polygon(0 0,100% 0,86.5% 34.31%,50% 63.5%,13.5% 34.31%)}to{clip-path:polygon(0 0,100% 0,100% 100%,50% 100%,0 100%)}}
-@keyframes letter{from{transform:translateY(11.21%)}to{transform:none}}
+@keyframes letter{from{transform:translateY(35.34%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.env.go *{animation:none!important}}
 </style>
 </head>
@@ -235,7 +232,7 @@ body:has(#contact.on){--paper:#fff;--ink:#111}
 <main class="contact page" id="contact" aria-label="Contact">
   <div class="env" id="env" role="img" aria-label="Кружевной конверт открывается, из него выглядывает лист">
     <img src="contact/base.jpg" alt=""><img class="fu" src="contact/flap.webp" alt="">
-    <div class="slot"><div class="rv"><img class="letter" src="contact/letter.webp" alt=""></div></div>
+    <div class="slot"><img class="letter" src="contact/letter.webp" alt=""></div>
     <img class="fd" src="contact/flap.webp" alt="">
   </div>
 </main>
