@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ru" data-paper="warm" data-align="left">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Seaside. Black Sea</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=PT+Mono&display=swap">
+<style>
+/* Одна система: чёрное море и бумажные карточки с волной по краю, как у тебя.
+   Заголовки PT Mono (машинописный, как в макете), текст Manrope, логотип твой.
+   Без 3D: только твои иллюстрации и фото. */
+:root{
+  --paper:#fffbed; --ink:#040101; --soft:#3d3a33; --mute:#6f6a5e; --sea:#000; --on-sea:#ece9df;
+  --type:"PT Mono","Courier New",monospace; --body:"Manrope",system-ui,sans-serif;
+  --mark:#7f93b8; /* her blue for numbers and quote rules */
+}
+[data-paper="cold"]{--paper:#f2f3f4;--soft:#33373b;--mute:#666b70}
+*{box-sizing:border-box}
+html{background:var(--sea);color-scheme:light;scroll-behavior:smooth}
+body{margin:0;background:var(--sea);color:var(--ink);font:18px/1.75 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+p{margin:0 0 1.1em}
+[data-align="justify"] p{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+:focus-visible{outline:2px solid var(--mark);outline-offset:3px}
+b,strong{font-weight:600}
+
+/* paper sheets with her wave edge */
+.sheet{position:relative;background:var(--paper);margin:0 16px;border-radius:32px;padding:96px 0 104px}
+.sheet+.sheet{margin-top:16px}
+.col{max-width:720px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+.wide{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+h2{font:400 34px/1.25 var(--type);margin:0;text-align:center;text-wrap:balance}
+.sub{font:400 15px var(--type);text-align:center;color:var(--soft);margin:8px 0 48px}
+h3{font:400 24px/1.3 var(--type);margin:0 0 18px;text-transform:uppercase;letter-spacing:.02em}
+blockquote{margin:6px 0 1.4em;padding:2px 0 2px 26px;border-left:3px solid var(--mark);font:500 19px/1.65 var(--body);color:var(--soft)}
+blockquote cite{display:block;font:400 14px var(--type);font-style:normal;margin-top:10px;color:var(--ink)}
+.num{color:var(--mark);font-weight:600}
+.cap{font:400 12px/1.4 var(--type);color:var(--soft)}
+
+/* 01 hero */
+.hero{position:relative;background:var(--paper);overflow:hidden;padding-top:min(6vw,90px)}
+.hero .art{width:100%}
+[data-paper="cold"] .logo,[data-paper="cold"] .tanker{filter:grayscale(1)}
+.hero .head{position:absolute;z-index:1;right:5vw;top:min(7vw,100px);width:min(560px,44vw);text-align:center}
+.logo{width:min(400px,80%);margin:0 auto}
+.hero h1{font:400 clamp(15px,1.4vw,19px)/1.55 var(--type);margin:28px 0 0}
+
+/* 02 intro on black */
+.intro{position:relative;color:var(--on-sea);padding:120px 0 140px;overflow:hidden}
+.intro .tag{font:400 14px var(--type);color:#9c978b;margin-bottom:26px}
+.intro p{font-size:19px}
+.intro blockquote{color:#cfcabd;border-color:#8a8678}
+.intro blockquote cite{color:var(--on-sea)}
+.bag{position:absolute;pointer-events:none;opacity:.9}
+
+/* 03 chronicle */
+.chron{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:64px;align-items:start}
+.chron .date{font:400 15px var(--type);color:var(--soft);text-align:left;margin:-36px 0 32px}
+.chron h2{text-align:left}
+.chron aside{position:sticky;top:40px}
+.chron aside img{width:100%;border-radius:6px;filter:grayscale(1)}
+.chron aside .cap{margin-top:10px}
+.chron .tanker{width:220px;margin:34px 0 0 auto;mix-blend-mode:multiply}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;max-width:1120px;margin:0 auto;padding:64px 48px 72px;color:var(--on-sea)}
+.fact b{display:block;font:400 clamp(40px,5vw,64px)/1 var(--type);letter-spacing:-.03em}
+.fact span{display:block;font-size:14px;line-height:1.45;opacity:.75;margin-top:12px;max-width:22ch}
+
+/* 04 fauna */
+.animal{display:grid;grid-template-columns:220px minmax(0,1fr);gap:64px;align-items:start;margin-top:88px}
+.animal.r{grid-template-columns:minmax(0,1fr) 220px}
+.animal.r .card{order:2}
+.card{position:sticky;top:40px}
+.card img{width:100%;border-radius:12px;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.card:hover img{transform:rotate(-2deg) translateY(-4px)}
+.card dl{margin:16px 0 0;font:400 13px/1.4 var(--type);display:grid;gap:10px}
+.card dt{font-size:28px;line-height:1;color:var(--ink)}
+.card dd{margin:2px 0 0;color:var(--soft)}
+.strip{display:grid;gap:28px;margin-top:56px;align-items:end}
+.strip.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.strip.n3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.strip figure{margin:0}
+.strip .clip{overflow:hidden;clip-path:inset(0 46% 0 46%);border-radius:4px}
+.strip img{width:100%;filter:grayscale(1)}
+.strip figcaption{margin-top:8px;text-align:right}
+.strip figure:nth-child(even){transform:translateY(36px)}
+
+/* 05 people */
+.mosaic{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin:48px 0 56px}
+.mosaic figure{margin:0;overflow:hidden;border-radius:4px}
+.mosaic img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.mosaic .a{grid-column:span 2;aspect-ratio:2/3}.mosaic .b{grid-column:span 4;aspect-ratio:2/1.27}
+.mosaic .c{grid-column:span 3;aspect-ratio:3/2}
+
+/* 06 recovery */
+.recov{overflow:hidden}
+.coral{position:absolute;left:-90px;top:300px;width:300px;pointer-events:none}
+.arms{position:absolute;right:0;bottom:0;width:150px;pointer-events:none}
+.vs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ink);border-radius:16px;margin:28px 0 36px;overflow:hidden}
+.vs>div{padding:20px 22px}
+.vs>div+div{border-left:1px solid var(--ink);background:var(--ink);color:var(--paper)}
+.vs h4{font:400 14px var(--type);margin:0 0 12px;opacity:.8}
+.vs ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px;line-height:1.4}
+.vs ul b{font:400 22px var(--type);display:block}
+
+/* 07 final */
+.final{position:relative;color:var(--on-sea);padding:150px 0 150px;overflow:hidden}
+.final .hand{position:absolute;pointer-events:none;opacity:.85}
+.final p{font-size:19px}
+.final p:first-child{font:400 26px/1.45 var(--type);margin-bottom:1.4em}
+.foot{border-top:1px solid #3c3a35;color:#b9b4a6;max-width:1120px;margin:0 auto;padding:36px 32px 48px;display:grid;grid-template-columns:1fr 2fr auto;gap:32px;font-size:14px;line-height:1.6}
+.foot h4{font:400 12px var(--type);margin:0 0 6px;color:#8a8678}
+.foot a{color:var(--on-sea);font:400 15px var(--type)}
+
+@media (max-width:820px){
+  body{font-size:16px}
+  .sheet{margin:0 8px;border-radius:22px;padding:56px 0 64px}
+  .col,.wide{padding:0 20px}
+  h2{font-size:24px}
+  .hero{padding-top:48px}.hero .head{position:static;width:auto;margin:0 20px}.hero .art{margin-top:8px}
+  .intro,.final{padding:72px 0 88px}
+  .chron,.animal,.animal.r{grid-template-columns:minmax(0,1fr);gap:28px}
+  .animal.r .card{order:0}
+  .card{position:static;display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start}
+  .card dl{margin:0}
+  .chron aside{position:static}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr));padding:44px 20px 52px}
+  .strip.n4,.strip.n3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mosaic .a,.mosaic .b,.mosaic .c{grid-column:span 1;aspect-ratio:3/4}
+  .coral{width:150px;left:-60px;opacity:.5}.arms{width:80px;opacity:.6}
+  .vs{grid-template-columns:1fr}.vs>div+div{border-left:0}
+  .final .hand{width:130px!important;opacity:.4}
+  .foot{grid-template-columns:1fr}
+  .bag{width:90px!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}.strip .clip{clip-path:none!important}}
+</style>
+
+<!-- 01 · Первый экран -->
+<header class="hero" id="top">
+  <div class="head">
+    <img class="logo" src="img/s-logo.png" alt="seaside black sea">
+    <h1>Черное море стало чернее:<br>как разлив нефти у берегов Анапы убивает жизнь</h1>
+  </div>
+  <img class="art" src="img/s-hero.webp" alt="Человек по плечи в чёрной воде закрывает лицо руками">
+</header>
+
+<!-- 02 · Нефтяные разливы -->
+<section class="intro" id="intro">
+  <img class="bag" src="img/s-bag0.webp" alt="" style="left:-40px;bottom:40px;width:170px">
+  <img class="bag" src="img/s-bag2.webp" alt="" style="left:90px;bottom:-30px;width:130px">
+  <img class="bag" src="img/s-bag1.webp" alt="" style="right:-30px;top:280px;width:160px">
+  <div class="col">
+    <div class="tag">нефтяные разливы</div>
+    <p>Нефтяные разливы — одна из самых разрушительных экологических катастроф, наносящих ущерб как экосистемам, так и человеческим сообществам. С 15 декабря 2024 года Анапа стала свидетелем масштабного разлива нефти, последствия которого ощутили как местные жители, так и туристы.</p>
+    <blockquote>«Вода в тот день была мутной, с химическим запахом. Мы увидели первую чайку — она сидела на песке и не пыталась взлететь. Крылья были облеплены густой, чёрной плёнкой», <cite>— вспоминает Дарья Михеева, жительница Анапы.</cite></blockquote>
+    <p>В этом лонгриде мы разберем как один разлив меняет всё — от дыхания планктона до жизни людей.</p>
+  </div>
+</section>
+
+<!-- 03 · Хроника -->
+<section class="sheet" id="chronicle">
+  <div class="wide chron">
+    <div>
+      <h2>Хроника катастрофы: море накрыло мазутом</h2>
+      <p class="sub" style="text-align:left">15–18 декабря 2024</p>
+      <p>Разлив произошёл 15 декабря 2024 года в районе Черноморского побережья недалеко от Анапы. Причина — шторм и повреждение корпуса танкера «Волгонефть-239», следовавшего через Керченский пролив. Судно перевозило мазут — тяжёлый нефтепродукт, который плохо растворяется в воде и практически не испаряется, оседая на берегах и на морском дне.</p>
+      <p>По данным «BBC Verify» и экологов, в воду попало до 5000 тонн нефтепродуктов, которые покрыли около 90 км² акватории.</p>
+      <p>Первые спутниковые снимки с видимой нефтяной плёнкой появились через два дня после разлива. На них — чёткая полоса загрязнения от центра до побережья Анапы. Уже 16 декабря на берегу появились первые следы мазута — плёнка на воде, мёртвые чайки и мутные волны. К 18 декабря загрязнение стало визуально масштабным, а местные жители и волонтёры начали выходить на очистку пляжей.</p>
+    </div>
+    <aside>
+      <img src="img/s-map.webp" alt="Спутниковый снимок: контур нефтяного пятна у Анапы">
+      <p class="cap">Фрагмент радиолокационного изображения спутниковой миссии RSM3 от 19.12. Изображение: РКИ, Government of Canada</p>
+      <img class="tanker" src="img/s-tanker.webp" alt="">
+    </aside>
+  </div>
+</section>
+
+<!-- главные цифры из твоего же текста -->
+<div class="facts">
+  <div class="fact"><b>5000 т</b><span>нефтепродуктов попало в воду</span></div>
+  <div class="fact"><b>90 км²</b><span>акватории покрыла плёнка</span></div>
+  <div class="fact"><b>8000</b><span>пострадавших птиц собрали в первые дни</span></div>
+  <div class="fact"><b>600</b><span>волонтёров убирали побережье первые три недели</span></div>
+</div>
+
+<!-- 04 · Фауна -->
+<section class="sheet" id="fauna">
+  <div class="col">
+    <h2>Море молчит, животные — нет</h2>
+    <p class="sub">последствия для фауны</p>
+    <p>Разлив нефти на побережье Анапы стал катастрофой для местных животных. Уже в первые часы после утечки в соцсетях начали появляться фотографии — птицы, покрытые жирной плёнкой, медленно выбрасывающиеся на берег, дельфины, пытающиеся всплыть, но увязшие в нефти. Визуальные материалы документировали серьезные повреждения фауны, подтверждая высокую смертность среди животных.</p>
+  </div>
+  <div class="wide">
+    <div class="animal">
+      <div class="card"><img src="img/card-birds.svg" alt="Карточка 01: птицы"><dl><div><dt>≈8000</dt><dd>птиц собрали в первые дни</dd></div><div><dt>121</dt><dd>удалось стабилизировать</dd></div></dl></div>
+      <div>
+        <h3>Птицы</h3>
+        <p>Птицы стали самыми первыми жертвами. Согласно оценке волонтёрских групп, принимавших участие в ликвидации последствий, в первые дни после разлива было собрано около 8000 пострадавших птиц. В реабилитационных центрах удалось стабилизировать состояние лишь 121 из них. Большинство погибли ещё до прибытия специалистов.</p>
+        <blockquote>По словам орнитолога Светланы Смирновой, работающей в пункте спасения птиц в Витязево, причиной высокой смертности стало не только токсичное воздействие мазута, но и отсутствие в России системы экстренной ветеринарной помощи для диких животных.</blockquote>
+      </div>
+    </div>
+    <div class="strip n4">
+      <figure><div class="clip"><img src="img/bird1.jpg" alt="Птица в мазуте" loading="lazy"></div><figcaption class="cap">администрация Анапы</figcaption></figure>
+      <figure><div class="clip"><img src="img/bird2.jpg" alt="Волонтёр держит птицу" loading="lazy"></div><figcaption class="cap">Штаб #МЫВМЕСТЕ</figcaption></figure>
+      <figure><div class="clip"><img src="img/bird3.jpg" alt="Птица в мазуте на берегу" loading="lazy"></div><figcaption class="cap">Сергей Мальгавко/ТАСС</figcaption></figure>
+      <figure><div class="clip"><img src="img/bird4.jpg" alt="Волонтёры отмывают птиц" loading="lazy"></div><figcaption class="cap">РИА Новости. Алексей Майшев</figcaption></figure>
+    </div>
+
+    <div class="animal r" style="margin-top:120px">
+      <div class="card"><img src="img/card-dolph.webp" alt="Карточка 02: дельфины"><dl><div><dt>8</dt><dd>мёртвых особей</dd></div><div><dt>3</dt><dd>спасённых</dd></div></dl></div>
+      <div>
+        <h3>Дельфины</h3>
+        <p>Дельфины пострадали не менее тяжело, хотя их гибель была не столь очевидной в первые дни, как гибель птиц. По данным экологов, было обнаружено восемь мёртвых особей, три спасённых, а более десятка выбросились на берег в течение недели. Причина — острое отравление мазутом через кожу и дыхательные пути. дельфины не могут выйти на сушу, в отличии от птиц, чтобы избавиться от плёнки, и длительное пребывание в загрязнённой воде нарушает их физиологические функции, что значительно увеличивает риск гибели.</p>
+      </div>
+    </div>
+    <div class="strip n3">
+      <figure><div class="clip"><img src="img/d1.webp" alt="Мёртвые дельфины на галечном берегу" loading="lazy"></div><figcaption class="cap">delfacenter / T.me</figcaption></figure>
+      <figure><div class="clip"><img src="img/d2.webp" alt="Человек склонился над дельфином на берегу" loading="lazy"></div><figcaption class="cap">Центр спасения дельфинов «Дельфа» / VK</figcaption></figure>
+      <figure><div class="clip"><img src="img/d3.webp" alt="Дельфин на песке" loading="lazy"></div><figcaption class="cap">Shutterstock/FOTODOM</figcaption></figure>
+    </div>
+
+    <div class="animal" style="margin-top:120px">
+      <div class="card"><img src="img/card-sea.webp" alt="Карточка 03: морские организмы"></div>
+      <div>
+        <h3>Моллюски, планктон и ракообразные</h3>
+        <p>Менее заметной, но не менее критической потерей стала гибель моллюсков, планктона и ракообразных. Экологи предполагают, что значительная часть этих организмов погибла в первые часы после разлива. Массовая гибель запускает цепную реакцию в пищевой цепи: страдают популяции мелких рыб, а затем и более крупные хищники и птицы. Таким образом, разрушение базового уровня экосистемы угрожает её устойчивости и может вызвать долгосрочные изменения в биологическом разнообразии региона.</p>
+      </div>
+    </div>
+    <div class="strip n3">
+      <figure><div class="clip"><img src="img/m1.webp" alt="Тёмная вода у берега" loading="lazy"></div><figcaption class="cap">ГТРК “Кубань”</figcaption></figure>
+      <figure><div class="clip"><img src="img/m2.webp" alt="Человек на берегу" loading="lazy"></div><figcaption class="cap">Фотограф Валерий Скурихин</figcaption></figure>
+      <figure><div class="clip"><img src="img/m3.webp" alt="Ноги в мазуте у кромки воды" loading="lazy"></div><figcaption class="cap">Фотограф Валерий Скурихин</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Люди против нефти -->
+<section class="sheet" id="people">
+  <div class="col">
+    <h2>Люди против нефти</h2>
+    <p class="sub">кто вынес мазут на себе</p>
+    <p>Около <span class="num">600</span> волонтёров приняли участие в уборке побережья в течение первых трёх недель после аварии. Условия, в которых они работали, зачастую противоречили санитарным нормам: защитные костюмы были закуплены за счёт частных пожертвований, маски — многоразовые, средства для обеззараживания отсутствовали. По данным <b>эколога Владимира Лифантьева</b>, не менее 150 участников пожаловались на проблемы со здоровьем: головные боли, ожоги, дерматологические реакции.</p>
+    <p>Государственные структуры при этом формально не признают волонтёров как единицу реагирования на ЧС, что ставит их вне правового поля и без медицинской поддержки.</p>
+  </div>
+  <div class="wide">
+    <div class="mosaic">
+      <figure class="a"><img src="img/v1.webp" alt="Волонтёр среди мешков с мазутом" loading="lazy"></figure>
+      <figure class="a"><img src="img/v6.webp" alt="Волонтёр тащит мешок по пляжу" loading="lazy"></figure>
+      <figure class="a"><img src="img/v5.webp" alt="Волонтёр на берегу" loading="lazy"></figure>
+    </div>
+  </div>
+  <div class="col">
+    <p>Местные жители и волонтёры спасали животных по мере сил, но условия для спасательной работы были трудными. Разрушенная инфраструктура и отсутствие достаточного оборудования — всё это усложняло задачи. <b>Игорь Петров, волонтёр</b> и координатор волонтерского центра «Сила Урала», рассказывает, как они боролись с этим:</p>
+    <blockquote>«Мы использовали даже старые пластиковые бутылки, чтобы собрать мазут с перьев птиц. Некоторые птицы пытались лететь, но нефть становилась такой тяжёлой, что они падали. Мы обрабатывали их маслами и водными растворами, чтобы снять мазут, но на это уходили часы, а на счету была каждая минута».</blockquote>
+    <p>Отсутствие государственной инфраструктуры по спасению дикой природы при экологических катастрофах стало очевидным. В России до сих пор не создана централизованная система экстренной реабилитации животных. Волонтёры действуют вслепую, без инструкций, страховки и доступа к оборудованию. Это говорит о структурной неготовности к спасению дикой природы - и делает подобные кризисы особенно разрушительными.</p>
+  </div>
+  <div class="wide">
+    <div class="mosaic">
+      <figure class="c"><img src="img/v3.webp" alt="Волонтёр с сачком собирает мазут" loading="lazy"></figure>
+      <figure class="c"><img src="img/v7.webp" alt="Волонтёр с сачком на берегу" loading="lazy"></figure>
+      <figure class="a"><img src="img/v2.webp" alt="Волонтёр у трактора на пляже" loading="lazy"></figure>
+      <figure class="b"><img src="img/v4.webp" alt="Волонтёры собирают мазут на песке" loading="lazy"></figure>
+    </div>
+  </div>
+  <div class="col">
+    <p>Кроме физических рисков, добровольцы столкнулись и <b>с психологическими:</b> работа с мёртвыми или умирающими животными, отсутствие координации, игнорирование со стороны местных властей. Истории участников заполнили социальные сети: в них — усталость, гнев, бессилие и ощущение полной отчуждённости от «официальной картины событий».</p>
+  </div>
+</section>
+
+<!-- 06 · Восстановление -->
+<section class="sheet recov" id="recovery">
+  <img class="coral" src="img/s-coral.webp" alt="">
+  <img class="arms" src="img/s-arms.webp" alt="">
+  <div class="col">
+    <h2>Сколько времени потребуется на восстановление?</h2>
+    <p class="sub">&nbsp;</p>
+    <p>Эксперты расходятся во мнениях относительно сроков восстановления.</p>
+    <blockquote>По словам Алексея Петрова, кандидата биологических наук и научного сотрудника Института биологии Южных морей, при активных мерах по очистке экосистема может стабилизироваться за 1,5–2 года.</blockquote>
+    <p><b>После предыдущего разлива в Керченском проливе в 2007 году было зафиксировано около 2000 тонн мазута, а восстановление морской флоры и фауны заняло около двух лет. Тогда площадь загрязнения составляла почти вдвое меньше, а количество пострадавших животных – около 5000. Нынешний инцидент в Анапе затронул в 1,5 раза большую территорию, а по некоторым оценкам - более 8000 птиц. Это указывает на рост масштабов и недостаточную эффективность текущих протоколов реагирования.</b></p>
+    <div class="vs" aria-label="Сравнение двух разливов">
+      <div><h4>Керченский пролив, 2007</h4><ul><li><b>≈2000 т</b>мазута</li><li><b>≈5000</b>пострадавших животных</li><li><b>≈2 года</b>на восстановление</li></ul></div>
+      <div><h4>Анапа, 2024</h4><ul><li><b>до 5000 т</b>нефтепродуктов</li><li><b>8000+</b>птиц</li><li><b>×1,5</b>площадь загрязнения</li></ul></div>
+    </div>
+    <blockquote>Поэтому другие специалисты, такие как эколог Асхат Каюмов, указывают. на более длительный срок — от 5 до 10 лет, учитывая масштаб ухудшения качества среды.</blockquote>
+    <p>Дополнительную тревогу вызывает и возможность вторичного загрязнения.</p>
+    <blockquote>По словам эколога Асхата Каюмова, мазут, осевший на дне, может начать всплывать летом 2025 года — при повышении температуры воды.</blockquote>
+    <p>В отличие от более лёгких нефтепродуктов, мазут практически не разлагается, оседает в донных отложениях и при определённых условиях поднимается на поверхность, особенно в районах с мелководьем и слабым течением. Это делает его «экологической миной» замедленного действия, создающей угрозу повторного загрязнения побережья даже спустя месяцы после визуальной очистки. Таким образом, ситуация требует не только краткосрочных мер, но и систематического мониторинга и долгосрочной стратегии реабилитации.</p>
+  </div>
+</section>
+
+<!-- 07 · Финал -->
+<section class="final" id="final">
+  <img class="hand" src="img/332-468.webp" alt="" style="left:-70px;top:280px;width:340px">
+  <img class="hand" src="img/332-469.webp" alt="" style="right:-10px;top:150px;width:250px">
+  <div class="col">
+    <p>Чёрное море стало ещё чернее не только от мазута, но и от боли тысяч погибших существ.</p>
+    <p>Разлив у берегов Анапы в декабре 2024 года оказался не просто экологическим инцидентом, а полномасштабной катастрофой, обнажившей уязвимость как природной среды, так и социальной инфраструктуры. Мазут разрушил морскую экосистему, а волонтёры, действовавшие в условиях острого дефицита ресурсов и отсутствия государственной поддержки, вынесли на себе основную тяжесть спасательных операций — как физически, так и эмоционально.</p>
+    <p>Происшествие показало: Россия не готова к оперативному и масштабному реагированию на экологические чрезвычайные ситуации, особенно в части спасения дикой природы.</p>
+    <p>Восстановление Чёрного моря займёт годы, но главное — без структурных изменений в системе экологической безопасности подобные катастрофы будут повторяться. Экология требует не только ликвидации последствий, но и устойчивой, системной политики предотвращения и защиты.</p>
+  </div>
+</section>
+<footer class="foot">
+  <div><h4>проект</h4>Seaside. Black Sea</div>
+  <div><h4>фото</h4>администрация Анапы, Штаб #МЫВМЕСТЕ, ТАСС, РИА Новости, delfacenter, центр «Дельфа», Shutterstock/FOTODOM, ГТРК «Кубань», Валерий Скурихин, РКИ / Government of Canada</div>
+  <a href="#">Наверх ↑</a>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement,q=new URLSearchParams(location.search);
+  ['paper','align'].forEach(function(k){if(q.get(k))root.dataset[k]=q.get(k)});
+  window.addEventListener('message',function(e){var d=e.data||{};if(d.go){var t=document.querySelector(d.go);if(t)t.scrollIntoView()}['paper','align'].forEach(function(k){if(d[k])root.dataset[k]=d[k]})});
+  // her idea kept: a photo opens from a thin strip as it scrolls into view
+  var clips=Array.prototype.slice.call(document.querySelectorAll('.strip .clip'));
+  function reveal(){var h=innerHeight;clips.forEach(function(c){var r=c.getBoundingClientRect();
+    var p=Math.max(0,Math.min(1,(h-r.top)/(h*.6)));var side=46*(1-p);c.style.clipPath='inset(0 '+side.toFixed(1)+'% 0 '+side.toFixed(1)+'%)'})}
+  addEventListener('scroll',reveal,{passive:true});addEventListener('resize',reveal);reveal();
+})();
+</script>
