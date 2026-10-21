@@ -109,8 +109,8 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 /* ============ Uspet ============ */
 .usp{--acc:#ffffff;--acc-ink:#111;--acc-soft:rgba(255,255,255,.08);background:var(--u-bg);color:var(--u-ink);font:16px/1.6 var(--u-body);container-type:inline-size;min-height:100%}
 [data-pal="pink"] .usp{--acc:#ff3d9a;--acc-ink:#1c1c1c;--acc-soft:rgba(255,61,154,.12)}
-[data-pal="chrome"] .usp{--acc:#ff7ab8;--acc-ink:#1c1c1c;--acc-soft:rgba(255,122,184,.12)}
-[data-pal="chrome"] .usp .chrome{filter:grayscale(1) sepia(.7) hue-rotate(285deg) saturate(2.6) brightness(1.04)}
+[data-pal="fig"] .usp{--acc:#ffffff;--acc-ink:#111;--acc-soft:rgba(255,255,255,.08)}
+[data-pal="fig"] .usp .chrome{filter:grayscale(1) sepia(.7) hue-rotate(285deg) saturate(2.6) brightness(1.04)}
 .usp .acc{color:var(--acc)}
 .usp nav{position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;gap:34px;font:500 13px var(--u-head);letter-spacing:.16em;text-transform:uppercase;padding:26px 60px;z-index:3}
 .usp nav a{color:var(--u-dim);text-decoration:none;padding-bottom:4px;border-bottom:1px solid transparent}
@@ -120,7 +120,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 @keyframes spin{to{transform:translate(-50%,-52%) rotate(360deg)}}
 .usp .hero h3{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);margin:0;text-align:center;font:700 230px/1 var(--u-head);text-transform:uppercase;letter-spacing:-.01em;mix-blend-mode:difference;color:#fff;z-index:2}
 [data-pal="pink"] .usp .hero h3{mix-blend-mode:normal;color:var(--acc)}
-[data-pal="chrome"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
+[data-pal="fig"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
 .usp .hero .cap-l,.usp .hero .cap-r{position:absolute;bottom:92px;width:330px;font:500 12px/1.6 var(--u-head);letter-spacing:.08em;text-transform:uppercase;color:var(--u-dim);z-index:2}
 .usp .hero .cap-l{left:60px}.usp .hero .cap-r{right:60px;text-align:right}
 .usp .hero .cap-l b,.usp .hero .cap-r b{color:var(--u-ink);font-weight:600;display:block;margin-bottom:6px;letter-spacing:.16em}
@@ -203,7 +203,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
   .usp .hero .fig{width:420px;top:42%}
   .usp .hero h3{font-size:92px;top:42%}
   .usp .hero .cap-l,.usp .hero .cap-r{position:absolute;left:22px;right:22px;width:auto;text-align:left}
-  .usp .hero .cap-l{bottom:200px}.usp .hero .cap-r{bottom:110px}
+  .usp .hero .cap-l{bottom:250px}.usp .hero .cap-r{bottom:110px}
   .usp .hero .nums{flex-direction:column;align-items:flex-start;gap:6px;left:22px;bottom:18px;display:none}
   .usp .pad{padding:50px 22px 60px}
   .usp .sec{font-size:36px}
@@ -215,16 +215,44 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 }
 /* her live Spline scene (full screen, as on the site) */
 .usp .hero spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.usp .hero{background:#000}
+.usp .hero{background:#1c1c1c}
 .usp .hero canvas.blob{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
 .usp .hero.gl .fig{display:none}
 .usp .hero h3,.usp .hero .cap-l,.usp .hero .cap-r,.usp .hero .nums{pointer-events:none}
-#uspet[data-hero="text"] .usp .hero h3{mix-blend-mode:normal;color:#ff3d9a}
-#uspet[data-hero="fig"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
+/* figures: 3D (one material, follows the cursor) or her chrome pictures */
+.usp .f3d{position:absolute;display:block;pointer-events:none}
+.usp .hero .f3d{inset:0;width:100%;height:100%;z-index:0}
+.usp .hero.gl h3{color:transparent!important;mix-blend-mode:normal!important}
+.usp .deco{z-index:0}
+.usp .dimg{position:absolute;pointer-events:none;z-index:0}
+.usp .pad>*:not(.f3d):not(.dimg):not(.ring){position:relative;z-index:1}
+.usp .calm,.usp .rts{overflow:hidden}
+[data-style="3d"] #uspet .usp .mine{display:none}
+[data-style="mine"] #uspet .usp .deco{display:none}
+/* 3D: cards are frosted glass, the figure shows through them like through the hero title */
+[data-style="3d"] #uspet .usp .pc,[data-style="3d"] #uspet .usp .r{background:rgba(40,40,40,.38);border-color:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2)}
+[data-style="3d"] #uspet .usp .note2{background:rgba(40,40,40,.4);color:var(--u-ink);border:1px solid rgba(255,255,255,.16);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+[data-style="3d"] #uspet .usp .note2 b{color:var(--acc)}
+[data-style="3d"] #uspet .usp .note2::before{display:none}
+[data-style="3d"] #uspet .usp .qa .ans p{background:rgba(40,40,40,.4);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.12)}
+[data-style="3d"] #uspet .usp .bigl .rw{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+/* her look: grey cards held by her pins */
+[data-style="mine"] #uspet .usp .r{background:#3a3a3a;border-color:#4a4a4a;position:relative}
+[data-style="mine"] #uspet .usp .r::after{content:"";position:absolute;right:-14px;top:-22px;width:70px;height:70px;background:url(img/79-15.webp) center/contain no-repeat}
+[data-align="justify"] .sea p,[data-align="justify"] .usp p,[data-align="justify"] .usp .r li{text-align:justify!important;hyphens:auto;-webkit-hyphens:auto}
+/* Seaside figures: oil drops in 3D, her hands and bird card otherwise */
+.sea .f3d{position:absolute;display:block;pointer-events:none;z-index:0}
+[data-style="3d"] #seaside .mine{display:none}
+[data-style="mine"] #seaside .deco{display:none}
+.sea .facts{position:relative;overflow:hidden}
+.sea .facts .fact{position:relative;z-index:1}
+.sea .flip .f .f3d{inset:0;width:100%;height:100%}
+.sea .flip .f .lbl3d{position:absolute;left:0;right:0;top:18px;text-align:center;font:400 22px var(--s-type);color:var(--paper);z-index:1}
+.sea .flip .f .no3d{position:absolute;left:0;right:0;bottom:16px;text-align:center;font:400 54px var(--s-type);color:var(--paper);z-index:1}
 </style>
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 
-<div class="wrap">
+<div class="wrap" data-style="3d" data-align="left">
   <header class="top">
     <div class="kicker">Предпросмотр правок · сайты не изменены</div>
     <h1>Seaside и «Успеть всё»: как бы я их поправила</h1>
@@ -235,15 +263,19 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
     <div class="seg" role="group" aria-label="Сайт"><button aria-pressed="true" data-site="seaside">Seaside. Black Sea</button><button aria-pressed="false" data-site="uspet">Успеть всё</button></div>
     <span class="lbl" data-for="seaside">Фон</span>
     <div class="seg" role="group" aria-label="Фон Seaside" data-for="seaside"><button aria-pressed="true" data-bg="warm"><span class="swatch" style="background:#fffbed"></span>Кремовый</button><button aria-pressed="false" data-bg="cold"><span class="swatch" style="background:#f2f3f4"></span>Холодный</button></div>
-    <span class="lbl" data-for="uspet" hidden>Палитра</span>
-    <div class="seg" role="group" aria-label="Палитра «Успеть всё»" data-for="uspet" hidden><button aria-pressed="false" data-pal="mono"><span class="swatch" style="background:#fff"></span>Монохром</button><button aria-pressed="true" data-pal="pink"><span class="swatch" style="background:#ff3d9a"></span>Розовый акцент</button><button aria-pressed="false" data-pal="chrome"><span class="swatch" style="background:#ff7ab8"></span>Розовый хром</button></div>
+    <span class="lbl">Фигуры</span>
+    <div class="seg" role="group" aria-label="Фигуры"><button aria-pressed="true" data-style="3d">3D</button><button aria-pressed="false" data-style="mine">Твои</button></div>
+    <span class="lbl" data-for="uspet" hidden>Цвет</span>
+    <div class="seg" role="group" aria-label="Палитра «Успеть всё»" data-for="uspet" hidden><button aria-pressed="false" data-pal="mono"><span class="swatch" style="background:#fff"></span>Монохром</button><button aria-pressed="true" data-pal="pink"><span class="swatch" style="background:#ff3d9a"></span>Розовый текст</button><button aria-pressed="false" data-pal="fig"><span class="swatch" style="background:#ff3d9a;box-shadow:inset 0 0 0 3px #1c1c1c"></span>Розовые фигуры</button></div>
+    <span class="lbl">Текст</span>
+    <div class="seg" role="group" aria-label="Выравнивание текста"><button aria-pressed="true" data-align="left">По левому краю</button><button aria-pressed="false" data-align="justify">По ширине</button></div>
   </div>
 
   <!-- ===================== SEASIDE ===================== -->
   <section id="seaside" data-panel>
     <div class="screen">
       <div class="note"><div class="n">Экран 1</div><h2>Хроника и главные цифры</h2>
-        <ul><li>Весь твой текст на месте, но выровнен влево: без дыр между словами.</li><li>Строка короче, текст крупнее, заголовок над текстом.</li><li>Под хроникой полоса с цифрами из твоего же текста.</li></ul></div>
+        <ul><li><b>3D</b>: за цифрами плавает чёрная глянцевая капля мазута, тот же материал, что у фигуры «Успеть всё».</li><li>Весь твой текст на месте, но выровнен влево: без дыр между словами.</li><li>Строка короче, текст крупнее, заголовок над текстом.</li><li>Под хроникой полоса с цифрами из твоего же текста.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокручивается внутри</span></div>
         <div class="laptop"><div class="device">
@@ -255,7 +287,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
     <div class="screen">
       <div class="note"><div class="n">Экран 2</div><h2>Птицы</h2>
-        <ul><li>Фото снова проявляются из узкой полоски при прокрутке, как ты придумала. Прокрути экран вниз.</li><li>Карточка «птицы 01» теперь переворачивается: на обороте цифры 8000 и 121. Наведи или нажми.</li><li>Абзац орнитолога, слово в слово, выделен как цитата.</li></ul></div>
+        <ul><li><b>3D</b>: на лицевой стороне карточки капля мазута вместо силуэта птицы. <b>Твои</b>: силуэт, как в макете.</li><li>Фото снова проявляются из узкой полоски при прокрутке, как ты придумала. Прокрути экран вниз.</li><li>Карточка «птицы 01» теперь переворачивается: на обороте цифры 8000 и 121. Наведи или нажми.</li><li>Абзац орнитолога, слово в слово, выделен как цитата.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокрути вниз, наведи на карточку</span></div>
         <div class="laptop"><div class="device">
@@ -267,7 +299,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
     <div class="screen">
       <div class="note"><div class="n">Экран 3</div><h2>Финал и подвал</h2>
-        <ul><li>Финальный блок с руками и весь текст остаются как были.</li><li>Ниже добавлен подвал: проект, кто делал, источники, ссылка «← Все проекты».</li><li>Роли в подвале примерные, их нужно поправить.</li></ul></div>
+        <ul><li><b>3D</b>: вместо рук две капли по краям. <b>Твои</b>: твои руки-контуры.</li><li>Финальный блок с руками и весь текст остаются как были.</li><li>Ниже добавлен подвал: проект, кто делал, источники, ссылка «← Все проекты».</li><li>Роли в подвале примерные, их нужно поправить.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокрути до подвала</span></div>
         <div class="laptop"><div class="device">
@@ -288,23 +320,23 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
   </section>
 
   <!-- ===================== USPET ===================== -->
-  <section id="uspet" data-panel hidden data-pal="pink" data-hero="text">
+  <section id="uspet" data-panel hidden data-pal="pink">
     <div class="screen">
       <div class="note"><div class="n">Экран 1</div><h2>Первый экран</h2>
-        <ul><li>Хромовое кольцо в духе твоей Spline-фигуры, нарисовано кодом. Оно поворачивается за курсором, поэтому его можно перекрасить.</li><li>Два варианта: розовое название и хромовое кольцо или розовое кольцо и белое название. Фон в обоих чёрный.</li><li>Пока Spline грузится, фон уже тёмный, а название читается.</li><li>Внизу одной строкой три цифры опроса.</li><li>Меню сверху: наведи на пункт.</li></ul></div>
+        <ul><li>Твоя фигура со скриншота: крест из трёх капсул, тёмное стекло. Повторена кодом, поэтому её можно перекрасить. Она поворачивается за курсором.</li><li>Название стоит за фигурой и преломляется в ней, как в твоей сцене.</li><li>Цвет переключается сверху: розовое название или розовая фигура.</li><li>Внизу одной строкой три цифры опроса.</li><li>Меню сверху: наведи на пункт.</li></ul></div>
       <div>
-        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><div class="seg" role="group" aria-label="Вариант первого экрана"><button aria-pressed="true" data-hero="text">Розовый текст</button><button aria-pressed="false" data-hero="fig">Розовая фигура</button></div><span class="hint">фигура грузится несколько секунд</span></div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">поводи мышкой: фигура следит за курсором</span></div>
         <div class="laptop"><div class="device">
           <div class="vp before" hidden><div class="usp"><div class="hero"><spline-viewer url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer></div></div></div>
           <div class="vp after"><div class="usp" data-mock="hero"></div></div>
         </div></div>
-        <div class="cap">«Было»: твоя Spline-сцена как на сайте. «Стало»: своё кольцо вместо сцены, поэтому название не двоится. Поводи мышкой по экрану.</div>
+        <div class="cap">«Было»: твоя Spline-сцена как на сайте (здесь она может не загрузиться). «Стало»: та же фигура, повторённая кодом.</div>
       </div>
     </div>
 
     <div class="screen">
       <div class="note"><div class="n">Экран 2</div><h2>Интервью</h2>
-        <ul><li>Нажми на вопрос, и под ним раскроется ответ. Ответы слово в слово из интервью.</li><li>Кольцо уходит за правый край и не лежит под текстом.</li></ul></div>
+        <ul><li><b>3D</b>: кольцо из того же тёмного стекла, ответы в матовых «стеклянных» плашках. <b>Твои</b>: твоё хромовое кольцо.</li><li>Нажми на вопрос, и под ним раскроется ответ. Ответы слово в слово из интервью.</li><li>Кольцо уходит за правый край и не лежит под текстом.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">нажимай на вопросы</span></div>
         <div class="laptop"><div class="device">
@@ -316,7 +348,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
     <div class="screen">
       <div class="note"><div class="n">Экран 3</div><h2>«Спокойствие, только спокойствие»: три варианта</h2>
-        <ul><li><b>Стикеры</b>: яркие заметки на скотче, чуть наискосок, выпрямляются при наведении.</li><li><b>Попробуй сейчас</b>: карточки, которые делают технику. Помодоро-таймер запускается, круг 4-7-8 дышит, в журнал эмоций можно написать.</li><li><b>Большие цифры</b>: техники списком, ключ каждой крупно.</li><li>Текст карточек твой, без изменений.</li></ul></div>
+        <ul><li><b>3D</b>: за карточками песочные часы (про время), карточки из матового стекла, фигура просвечивает сквозь них. <b>Твои</b>: две твои хромовые фигуры по краям.</li><li><b>Стикеры</b>: яркие заметки на скотче, чуть наискосок, выпрямляются при наведении.</li><li><b>Попробуй сейчас</b>: карточки, которые делают технику. Помодоро-таймер запускается, круг 4-7-8 дышит, в журнал эмоций можно написать.</li><li><b>Большие цифры</b>: техники списком, ключ каждой крупно.</li><li>Текст карточек твой, без изменений.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after" data-alt="calm-a">Стикеры</button><button aria-pressed="false" data-v="after" data-alt="calm-b">Попробуй сейчас</button><button aria-pressed="false" data-v="after" data-alt="calm-c">Большие цифры</button></div></div>
         <div class="laptop"><div class="device">
@@ -328,7 +360,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
     <div class="screen">
       <div class="note"><div class="n">Экран 4</div><h2>«Качай права»</h2>
-        <ul><li>Четыре карточки вместо стены текста.</li><li>«Подробнее» раскрывает полный текст раздела без сокращений.</li></ul></div>
+        <ul><li><b>3D</b>: две опирающиеся друг на друга капсулы (про поддержку), карточки стеклянные. <b>Твои</b>: хромовая фигура, серые карточки и твои кнопки-булавки.</li><li>Четыре карточки вместо стены текста.</li><li>«Подробнее» раскрывает полный текст раздела без сокращений.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">нажми «Подробнее»</span></div>
         <div class="laptop"><div class="device">
@@ -360,6 +392,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
       <p>Первые спутниковые снимки с видимой нефтяной плёнкой появились через два дня после разлива. На них — чёткая полоса загрязнения от центра до побережья Анапы. Уже 16 декабря на берегу появились первые следы мазута — плёнка на воде, мёртвые чайки и мутные волны. К 18 декабря загрязнение стало визуально масштабным, а местные жители и волонтёры начали выходить на очистку пляжей.</p>
     </div><div class="aside">Фрагмент радиолокационного изображения спутниковой миссии RSM3 от 19.12. Изображение: РКИ, Government of Canada</div></div></div>
     <div class="facts">
+      <canvas class="f3d deco" data-fig="drop" data-bg="#000000" data-geo=".1,0,.4,.26" style="right:-80px;top:-90px;width:560px;height:420px" aria-hidden="true"></canvas>
       <div class="fact"><b>5000 т</b><span>нефтепродуктов попало в воду</span></div>
       <div class="fact"><b>90 км²</b><span>акватории покрыла плёнка</span></div>
       <div class="fact"><b>8000</b><span>пострадавших птиц собрали волонтёры</span></div>
@@ -377,7 +410,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
       <div class="birds">
         <div>
           <button class="flip" type="button" aria-label="Перевернуть карточку «птицы»"><div class="in">
-            <div class="f"><img src="img/card-birds.svg" alt=""></div>
+            <div class="f"><img class="mine" src="img/card-birds.svg" alt=""><span class="deco lbl3d">(птицы)</span><canvas class="f3d deco" data-fig="drop" data-bg="#000000" data-geo="0,.02,.4,.3" aria-hidden="true"></canvas><span class="deco no3d">01</span></div>
             <div class="b"><small>(птицы) 01</small><div><b>8000</b><span>пострадавших птиц собрали в первые дни</span><hr><b>121</b><span>удалось стабилизировать</span></div><small>→ 02 дельфины</small></div>
           </div></button>
           <span class="mark">наведи, чтобы перевернуть</span>
@@ -401,8 +434,10 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
 <template id="m-final">
   <div class="end">
-    <img class="hand" src="img/332-468.webp" alt="" style="left:-70px;top:330px;width:340px">
-    <img class="hand" src="img/332-469.webp" alt="" style="right:-10px;top:200px;width:250px">
+    <img class="hand mine" src="img/332-468.webp" alt="" style="left:-70px;top:330px;width:340px">
+    <img class="hand mine" src="img/332-469.webp" alt="" style="right:-10px;top:200px;width:250px">
+    <canvas class="f3d deco" data-fig="drop" data-bg="#000000" data-geo="0,0,.5,.3" style="left:-120px;top:300px;width:460px;height:460px" aria-hidden="true"></canvas>
+    <canvas class="f3d deco" data-fig="drop" data-bg="#000000" data-geo="0,0,-.3,.4" style="right:-60px;top:120px;width:300px;height:300px" aria-hidden="true"></canvas>
     <div class="txt">
       <p>Чёрное море стало ещё чернее не только от мазута, но и от боли тысяч погибших существ.</p>
       <p>Разлив у берегов Анапы в декабре 2024 года оказался не просто экологическим инцидентом, а полномасштабной катастрофой, обнажившей уязвимость как природной среды, так и социальной инфраструктуры. Мазут разрушил морскую экосистему, а волонтёры, действовавшие в условиях острого дефицита ресурсов и отсутствия государственной поддержки, вынесли на себе основную тяжесть спасательных операций — как физически, так и эмоционально.</p>
@@ -422,8 +457,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 <template id="m-hero">
   <div class="hero">
     <nav aria-label="Разделы"><a href="#uspet">Статистика</a><a href="#uspet">Истории</a><a href="#uspet">Мнение</a><a href="#uspet">Тайм-менеджмент</a><a href="#uspet">Советы</a><a href="#uspet">Права</a></nav>
-    <canvas class="blob" aria-hidden="true"></canvas>
-    <img class="fig chrome" src="img/53-307.webp" alt="">
+    <canvas class="f3d hero3d" data-fig="cross" data-text="УСПЕТЬ ВСЁ" aria-hidden="true"></canvas>
     <h3>Успеть всё</h3>
     <div class="cap-l"><b>О проекте</b>«Успеть все» — о студентах, совмещающих учебу и работу. Истории, мнения, статистика, техники тайм-менеджмента и ресурсы для поиска вакансий.</div>
     <div class="cap-r"><b>Кто авторы</b>исследование студенток 2 курса программы “Журналистика” СПбГУП Макиенко Наталья, Дарья Чаус, Мария Дубинина, Ольга Разумова, Софья Веретенникова и Елизавета Савоськина</div>
@@ -433,7 +467,8 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
 <template id="m-interview">
   <div class="pad intv">
-    <img class="ring chrome" src="img/53-307.webp" alt="">
+    <img class="ring chrome mine" src="img/53-307.webp" alt="">
+    <canvas class="f3d deco" data-fig="ring" data-geo="0,0,.9,.36" style="right:-330px;top:20px;width:900px;height:900px" aria-hidden="true"></canvas>
     <h4 class="sec" style="text-align:left">Истории выживания</h4>
     <div class="secsub" style="text-align:left">Интервью со студентами</div>
     <div class="who"><img src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
@@ -447,7 +482,10 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <template id="m-calm-a">
-  <div class="pad">
+  <div class="pad calm">
+    <img class="chrome mine dimg" src="img/54-358.webp" alt="" style="right:-120px;top:-60px;width:420px">
+    <img class="chrome mine dimg" src="img/54-359.webp" alt="" style="left:-140px;bottom:40px;width:360px">
+    <canvas class="f3d deco" data-fig="hourglass" data-geo="0,0,.45,.42" style="right:-60px;top:40px;width:560px;height:620px" aria-hidden="true"></canvas>
     <h4 class="sec">Спокойствие, только спокойствие</h4>
     <div class="glabel">Как не выгореть?</div>
     <div class="notes">
@@ -467,7 +505,10 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <template id="m-calm-b">
-  <div class="pad">
+  <div class="pad calm">
+    <img class="chrome mine dimg" src="img/54-358.webp" alt="" style="right:-120px;top:-60px;width:420px">
+    <img class="chrome mine dimg" src="img/54-359.webp" alt="" style="left:-140px;bottom:40px;width:360px">
+    <canvas class="f3d deco" data-fig="hourglass" data-geo="0,0,.45,.42" style="right:-60px;top:40px;width:560px;height:620px" aria-hidden="true"></canvas>
     <h4 class="sec">Спокойствие, только спокойствие</h4>
     <div class="secsub">Попробуй прямо сейчас</div>
     <div class="prac">
@@ -484,7 +525,10 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <template id="m-calm-c">
-  <div class="pad">
+  <div class="pad calm">
+    <img class="chrome mine dimg" src="img/54-358.webp" alt="" style="right:-120px;top:-60px;width:420px">
+    <img class="chrome mine dimg" src="img/54-359.webp" alt="" style="left:-140px;bottom:40px;width:360px">
+    <canvas class="f3d deco" data-fig="hourglass" data-geo="0,0,.45,.42" style="right:-60px;top:40px;width:560px;height:620px" aria-hidden="true"></canvas>
     <h4 class="sec">Спокойствие, только спокойствие</h4>
     <div class="glabel">Как не выгореть?</div>
     <div class="bigl">
@@ -504,7 +548,9 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <template id="m-rights">
-  <div class="pad">
+  <div class="pad rts">
+    <img class="chrome mine dimg" src="img/205-2339.webp" alt="" style="left:-150px;top:-40px;width:430px">
+    <canvas class="f3d deco" data-fig="pair" data-geo="0,0,.5,.42" style="left:-120px;top:-30px;width:600px;height:560px" aria-hidden="true"></canvas>
     <h4 class="sec">Качай права</h4>
     <div class="secsub">Права работающих студентов</div>
     <div class="rights">
@@ -519,62 +565,103 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <script>
-// Chrome ring: ray-marched in a fragment shader, turns toward the cursor like the Spline figure.
-function blobRing(c){
-  var gl=c.getContext('webgl',{premultipliedAlpha:true,alpha:true,antialias:false});
-  if(!gl)return;
+// One material for every 3D figure: dark glossy glass that bends whatever is drawn behind it
+// (the hero title), turns toward the cursor and can be recoloured pink.
+var FIG_SHAPES={
+  // her Spline figure: three rounded cylinders melted into a cross, seen at an angle
+  cross:'mat3 QB(float th,float ya){return rz(.785)*rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float k=.36;return smin(smin(cyl(p,.40,1.45,.15),cyl(p.yxz,.40,1.45,.15),k),cyl(p.xzy,.5,1.5,.5),k);}',
+  // soft ring
+  ring:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float a=atan(p.z,p.x);float r1=1.05+.06*sin(3.*a+T*.5);float r2=.36+.05*sin(2.*a+T*.4);'+
+    'vec2 q=vec2(length(p.xz)-r1,p.y+.08*sin(2.*a+T*.3));return (length(q)-r2)*.7;}',
+  // hourglass: time, for the time-management block
+  hourglass:'mat3 QB(float th,float ya){return rz(.35)*rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float y=clamp(p.y,-1.,1.);float r=.16+.6*y*y;float d=(length(p.xz)-r)*.6;d=smax(d,abs(p.y)-1.05,.1);'+
+    'd=smin(d,cyl(p-vec3(0.,1.12,0.),.82,.12,.1),.12);d=smin(d,cyl(p+vec3(0.,1.12,0.),.82,.12,.1),.12);return d;}',
+  // two capsules leaning on each other: support, for the rights block
+  pair:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;vec3 a=rz(.5)*(p-vec3(-.45,0.,0.)),b=rz(-.5)*(p-vec3(.45,0.,.0));'+
+    'return smin(cyl(a,.38,1.25,.38),cyl(b,.38,1.25,.38),.3);}',
+  // oil drop, for Seaside
+  drop:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float d=length(p*vec3(1.,1.08,1.))-.8;'+
+    'd=smin(d,length(p-vec3(.95*sin(T*.37),.55*cos(T*.29),.2*sin(T*.5)))-.42,.55);'+
+    'd=smin(d,length(p-vec3(-.75,-.55*sin(T*.33),.3*cos(T*.41)))-.36,.55);return d;}'
+};
+function fig3d(c,o){
+  var gl=c.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false});
+  if(!gl)return false;
   var vs='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
   var fs=[
-  'precision highp float;uniform vec2 R;uniform float T,P;uniform vec2 M;',
+  'precision highp float;uniform vec2 R;uniform float T,P;uniform vec2 M;uniform vec3 TC,BG;uniform sampler2D TX;uniform vec4 G;',
   'mat3 rx(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}',
   'mat3 ry(float a){float c=cos(a),s=sin(a);return mat3(c,0.,-s,0.,1.,0.,s,0.,c);}',
   'mat3 rz(float a){float c=cos(a),s=sin(a);return mat3(c,s,0.,-s,c,0.,0.,0.,1.);}',
   'mat3 Q;',
-  'float map(vec3 p){p=Q*p;float a=atan(p.z,p.x);',
-  ' float r1=1.+.07*sin(3.*a+T*.5)+.035*sin(5.*a-T*.35);',
-  ' float r2=.24+.05*sin(2.*a+1.3+T*.45)+.025*sin(7.*a+T*.8);',
-  ' vec2 q=vec2(length(p.xz)-r1,p.y+.12*sin(2.*a+T*.3));return (length(q)-r2)*.6;}',
-  'vec3 nor(vec3 p){vec2 e=vec2(.0015,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}',
-  'vec3 env(vec3 d){float y=d.y;vec3 c=mix(vec3(.04),vec3(.45),smoothstep(-.4,.8,y));',
-  ' c+=.9*smoothstep(.02,0.,abs(y-.18))+.6*smoothstep(.05,0.,abs(y+.25));',
-  ' c+=1.1*smoothstep(.93,.99,.5+.5*sin(d.x*4.+1.))*smoothstep(-.1,.6,y);',
-  ' c+=1.4*pow(max(dot(d,normalize(vec3(-.5,.7,.6))),0.),30.);',
-  ' c+=.7*pow(max(dot(d,normalize(vec3(.8,.1,.6))),0.),10.);',
-  ' c+=.5*smoothstep(.8,1.,abs(d.x))*smoothstep(-.5,.3,y);',
-  ' c+=.25*smoothstep(-.2,-.9,y);return vec3(c);}',
-  'void main(){vec2 uv=(gl_FragCoord.xy-.5*R)/R.y;',
-  ' Q=rx(1.15+M.y*.45+.08*sin(T*.4))*ry(M.x*.7+.15*sin(T*.25))*rz(.25+.05*sin(T*.3));',
-  ' vec3 ro=vec3(0.,0.,4.8),rd=normalize(vec3(uv*1.25,-1.6));float t=0.,d=1.;',
-  ' for(int i=0;i<90;i++){d=map(ro+rd*t);if(d<.001||t>8.)break;t+=d;}',
-  ' if(t>8.){gl_FragColor=vec4(0.);return;}',
-  ' vec3 p=ro+rd*t,n=nor(p),r=reflect(rd,n);float f=pow(1.-max(dot(n,-rd),0.),3.);',
-  ' vec3 col=env(r)*(.85+.6*f)+.03;',
-  ' float l=dot(col,vec3(.33));',
-  ' vec3 pink=mix(col*vec3(1.,.22,.58)*1.35,vec3(1.,.86,.93),smoothstep(.85,1.6,l));',
-  ' col=mix(col,pink,P);gl_FragColor=vec4(col,1.);}'].join('\n');
-  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+  'float cyl(vec3 p,float r,float h,float e){vec2 d=vec2(length(p.xz)-r+e,abs(p.y)-h+e);return min(max(d.x,d.y),0.)+length(max(d,0.))-e;}',
+  'float smin(float a,float b,float k){float h=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,h)-k*h*(1.-h);}',
+  'float smax(float a,float b,float k){return -smin(-a,-b,k);}',
+  FIG_SHAPES[o.shape||'cross'],
+  'vec3 nor(vec3 p){vec2 e=vec2(.002,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}',
+  'vec3 env(vec3 d){float y=d.y;vec3 c=vec3(.02)+.10*smoothstep(-.6,.9,y);',
+  ' c+=2.2*smoothstep(.6,.9,dot(d,normalize(vec3(-.3,.85,.45))));',
+  ' c+=.8*smoothstep(.75,1.,dot(d,normalize(vec3(.4,.8,.3))));',
+  ' c+=.9*smoothstep(.6,.97,dot(d,normalize(vec3(.75,.45,.45))));',
+  ' c+=.35*smoothstep(.3,.9,dot(d,normalize(vec3(0.,-.8,.5))));return c;}',
+  'float tx(vec2 u){return texture2D(TX,vec2(u.x,1.-u.y)).r;}',
+  'void main(){vec2 fu=gl_FragCoord.xy/R;vec2 uv=(gl_FragCoord.xy-.5*R)/R.y;uv-=G.xy;',
+  ' Q=QB(G.z+M.y*.35+.03*sin(T*.4),M.x*.6+.07*sin(T*.3));',
+  ' vec3 ro=vec3(0.,0.,6.),rd=normalize(vec3(uv*G.w,-1.));float t=0.,d=1.;',
+  ' vec3 bg=mix(BG,TC,tx(fu));',
+  ' for(int i=0;i<96;i++){d=map(ro+rd*t);if(d<.001||t>10.)break;t+=d;}',
+  ' if(t>10.){gl_FragColor=vec4(bg,1.);return;}',
+  ' vec3 p=ro+rd*t,n=nor(p),r=reflect(rd,n);float f=pow(1.-max(dot(n,-rd),0.),2.5);',
+  ' vec2 off=refract(rd,n,.72).xy*.09;float tr=tx(fu+off*vec2(R.y/R.x,1.));',
+  ' vec3 base=mix(vec3(.035),vec3(.30,.012,.13),P);',
+  ' vec3 tint=mix(vec3(1.),vec3(1.,.33,.64),P);',
+  ' vec3 col=base+env(r)*tint*(.35+.9*f)+TC*tr*.78*(1.-.5*f);',
+  ' gl_FragColor=vec4(col,1.);}'].join('\n');
+  function sh(t,s){var x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(x);return x}
   var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
   var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
   var al=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
-  var uR=gl.getUniformLocation(pr,'R'),uT=gl.getUniformLocation(pr,'T'),uP=gl.getUniformLocation(pr,'P'),uM=gl.getUniformLocation(pr,'M');
-  var hero=c.parentElement,box=document.getElementById('uspet'),m=[0,0],sm=[0,0],pk=0,t0=performance.now();
-  hero.classList.add('gl');
-  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();m=[(e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1]});
-  hero.addEventListener('pointerleave',function(){m=[0,0]});
+  var U={};['R','T','P','M','TC','BG','TX','G'].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
+  var tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+  [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER].forEach(function(k){gl.texParameteri(gl.TEXTURE_2D,k,gl.LINEAR)});
+  [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T].forEach(function(k){gl.texParameteri(gl.TEXTURE_2D,k,gl.CLAMP_TO_EDGE)});
+  var tc=document.createElement('canvas'),tctx=tc.getContext('2d');
+  function drawText(w,h){
+    // the title lives in a texture so the figure can bend it (as in her Spline scene)
+    tc.width=w;tc.height=h;tctx.fillStyle='#000';tctx.fillRect(0,0,w,h);
+    if(o.text){var fz=h*(o.size||.245);tctx.font='700 '+fz+'px '+(o.font||'Oswald');
+      var tw0=tctx.measureText(o.text).width;if(tw0>w*.9){fz*=w*.9/tw0;tctx.font='700 '+fz+'px '+(o.font||'Oswald');}
+      tctx.fillStyle='#fff';tctx.textAlign='center';tctx.textBaseline='middle';tctx.fillText(o.text,w*.5,h*(h>w?.4:(o.ty||.475)));}
+    gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,tc);
+  }
+  var area=o.hover||c.parentElement,m=[0,0],sm=[0,0],pk=0,t0=performance.now(),tw=0,th=0;
+  window.addEventListener('pointermove',function(e){var r=area.getBoundingClientRect();if(!r.width)return;
+    m=[Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))]});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){tw=0});
+  function hex(s){s=s.replace('#','');return [0,2,4].map(function(i){return parseInt(s.substr(i,2),16)/255})}
   (function frame(){
     if(!c.isConnected)return;
     var r=c.getBoundingClientRect();
-    if(r.width>0){
-      // canvas sized to what is actually on screen (the page is scaled down)
-      var w=Math.round(r.width*Math.min(devicePixelRatio,2)),h=Math.round(r.height*Math.min(devicePixelRatio,2));
+    // draw only while on screen
+    if(r.width>0&&r.bottom>0&&r.top<innerHeight&&c.offsetParent){
+      var k=Math.min(devicePixelRatio,1.5),w=Math.round(r.width*k),h=Math.round(r.height*k);
       if(c.width!==w||c.height!==h){c.width=w;c.height=h;gl.viewport(0,0,w,h)}
+      if(tw!==w||th!==h){drawText(w,h);tw=w;th=h}
       sm[0]+=(m[0]-sm[0])*.06;sm[1]+=(m[1]-sm[1])*.06;
-      pk+=((box&&box.dataset.hero==='fig'?1:0)-pk)*.12;
-      gl.uniform2f(uR,w,h);gl.uniform1f(uT,(performance.now()-t0)/1000);gl.uniform1f(uP,pk);gl.uniform2f(uM,sm[0],sm[1]);
+      var st=o.state();pk+=(st.pink-pk)*.12;
+      var tcol=hex(st.tc||'#ffffff'),bg=hex(o.bg||'#1c1c1c'),g=o.geo||[0,0,-.6,.47];
+      gl.uniform2f(U.R,w,h);gl.uniform1f(U.T,(performance.now()-t0)/1000);gl.uniform1f(U.P,pk);gl.uniform2f(U.M,sm[0],sm[1]);
+      gl.uniform3f(U.TC,tcol[0],tcol[1],tcol[2]);gl.uniform3f(U.BG,bg[0],bg[1],bg[2]);gl.uniform1i(U.TX,0);gl.uniform4f(U.G,g[0],g[1]+(h>w&&o.text?.075:0),g[2],g[3]*Math.max(1,h/w*.9));
       gl.drawArrays(gl.TRIANGLES,0,3);
     }
     requestAnimationFrame(frame);
   })();
+  return true;
 }
 </script>
 <script>
@@ -618,16 +705,25 @@ function blobRing(c){
     document.getElementById('uspet').dataset.pal=b.dataset.pal;
   })});
 
-  $('button[data-hero]').forEach(function(b){b.addEventListener('click',function(){
-    $('button[data-hero]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
-    document.getElementById('uspet').dataset.hero=b.dataset.hero;
-    var after=b.closest('.stagehead').querySelector('[data-v="after"]');if(after.getAttribute('aria-pressed')!=='true')after.click();
+  $('button[data-style]').forEach(function(b){b.addEventListener('click',function(){
+    $('button[data-style]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    document.querySelector('.wrap').dataset.style=b.dataset.style;
+  })});
+  $('button[data-align]').forEach(function(b){b.addEventListener('click',function(){
+    $('button[data-align]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    document.querySelector('.wrap').dataset.align=b.dataset.align;
   })});
 
   // Interactions inside mocks
   function wire(root){
-    // chrome ring drawn in WebGL; the pink variant recolours the metal only
-    $('canvas.blob',root).forEach(blobRing);
+    // 3D figures: colour follows the palette switch
+    $('canvas[data-fig]',root).forEach(function(c){
+      var box=c.closest('section')||document.getElementById('uspet');
+      var ok=false;try{ok=fig3d(c,{shape:c.dataset.fig,text:c.dataset.text,geo:c.dataset.geo?c.dataset.geo.split(',').map(Number):[.0,.025,-.6,.7],
+        hover:c.closest('.vp'),bg:c.dataset.bg,
+        state:function(){var p=box.dataset.pal;return {pink:p==='fig'?1:0,tc:p==='pink'?'#ff3d9a':'#ffffff'}}})}catch(e){console.error(e)}
+      if(ok&&c.classList.contains('hero3d'))c.parentElement.classList.add('gl');
+    });
     // interview accordion
     $('.qa .item>button',root).forEach(function(b){b.addEventListener('click',function(){
       var it=b.parentElement,open=!it.classList.contains('open');
