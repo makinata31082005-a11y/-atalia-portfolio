@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Лонгриды: было и стало</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=PT+Mono&family=Manrope:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Unbounded:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: review sheet. Each screen = notes + a laptop-shaped frame (1440×900 page, scaled down, scrolls inside like the real site). */
+:root{
+  --bg:#eef0f2; --panel:#ffffff; --ink:#15171a; --muted:#5d636b; --line:#d5d9de; --accent:#2f5bd3;
+  --ui:"Golos Text",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --s-paper:#fffbed; --s-ink:#040101; --s-quote:#3d3a33; --s-type:"PT Mono","Courier New",monospace; --s-body:"Manrope",system-ui,sans-serif;
+  --u-bg:#1c1c1c; --u-ink:#f2f2f2; --u-dim:#a7a7a7; --u-head:"Oswald","Arial Narrow",sans-serif; --u-wide:"Unbounded","Arial Black",sans-serif; --u-body:"Manrope",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121417;--panel:#1b1e22;--ink:#e9ecef;--muted:#9aa1a9;--line:#2c3137;--accent:#8aa8ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--ink:#e9ecef;--muted:#9aa1a9;--line:#2c3137;--accent:#8aa8ff;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 var(--ui);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1240px;margin:0 auto}
+header.top{display:grid;gap:10px;margin-bottom:10px}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
+.lede{max-width:70ch;color:var(--muted);margin:0}
+.bar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin:18px 0 8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+.bar .lbl{font:500 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel);gap:2px}
+.seg button{font:500 14px/1 var(--ui);border:0;background:transparent;color:var(--ink);padding:9px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid var(--line)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.screen{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);gap:24px;padding:24px 0;border-bottom:1px solid var(--line)}
+.note h2{font:600 20px/1.25 var(--ui);margin:0 0 8px;text-wrap:balance}
+.note ul{margin:0;padding-left:18px;color:var(--muted);display:grid;gap:6px;font-size:15px}
+.note .n{font:500 12px var(--mono);color:var(--muted);margin-bottom:6px}
+.stagehead{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.hint{font:12px var(--mono);color:var(--muted)}
+/* device frames */
+.laptop{background:#0d0e10;border-radius:14px;padding:10px 10px 14px;box-shadow:0 1px 0 var(--line)}
+.device{position:relative;overflow:hidden;border-radius:4px;background:#000}
+.laptop .device{aspect-ratio:16/10}
+.vp{position:absolute;left:0;top:0;transform-origin:0 0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.laptop .vp{width:1440px;height:900px}
+.phones{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+.phones>div{flex:0 1 330px;min-width:0}
+.phone{background:#0d0e10;border-radius:38px;padding:10px}
+.phone .device{aspect-ratio:390/844;border-radius:28px}
+.phone .vp{width:390px;height:844px}
+.vp>img{display:block;width:100%}
+.plabel{font:500 13px var(--ui);margin-bottom:8px}
+.cap{font:12px/1.4 var(--mono);color:var(--muted);margin-top:8px}
+@media (max-width:860px){.screen{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ============ Seaside ============ */
+.sea{--paper:var(--s-paper);background:#000;color:var(--s-ink);font:17px/1.75 var(--s-body);container-type:inline-size;min-height:100%}
+.cold .sea,.sea.cold{--paper:#f2f3f4}
+.sea .card{background:var(--paper);border-radius:32px;margin:0 20px;padding:72px 150px 80px}
+.sea h3{font:400 32px/1.25 var(--s-type);margin:0 0 6px;text-wrap:balance}
+.sea .sub{font:400 15px var(--s-type);margin:0 0 34px;color:var(--s-quote)}
+.sea p{margin:0 0 1.15em;max-width:64ch;hyphens:auto}
+.sea .cols{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:56px;align-items:start}
+.sea .aside{font:400 12px/1.5 var(--s-type);color:var(--s-quote);border-top:1px solid var(--s-ink);padding-top:10px;margin-top:92px}
+.sea .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding:56px 170px 70px;color:var(--paper)}
+.sea .fact b{display:block;font:400 64px/1 var(--s-type);letter-spacing:-.03em}
+.sea .fact span{display:block;font:14px/1.45 var(--s-body);opacity:.75;margin-top:12px;max-width:20ch}
+.sea .birds{display:grid;grid-template-columns:230px minmax(0,1fr);gap:64px;align-items:start;margin-top:40px}
+.sea .flip{perspective:1200px;cursor:pointer;width:230px;aspect-ratio:200/350;border:0;padding:0;background:none;position:sticky;top:30px}
+.sea .flip .in{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
+.sea .flip.on .in,.sea .flip:hover .in{transform:rotateY(180deg)}
+.sea .flip .f,.sea .flip .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;overflow:hidden}
+.sea .flip .f img{width:100%;height:100%;object-fit:cover;display:block}
+.sea .flip .b{transform:rotateY(180deg);background:#000;color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:22px 18px;text-align:left}
+.sea .flip .b small{font:400 15px var(--s-type)}
+.sea .flip .b b{font:400 54px/1 var(--s-type);display:block}
+.sea .flip .b span{font:13px/1.4 var(--s-body);opacity:.8;display:block;margin-top:6px}
+.sea .flip .b hr{border:0;border-top:1px dashed #555;margin:10px 0;width:100%}
+.sea .mark{font:400 13px var(--s-type);display:block;margin-top:10px;color:var(--s-quote);text-align:center}
+.sea blockquote{margin:8px 0 1.4em;padding:2px 0 2px 24px;border-left:3px solid var(--s-ink);font:500 20px/1.6 var(--s-body);max-width:58ch}
+.sea .scatter{position:relative;height:760px;margin-top:40px}
+.sea .ph{position:absolute;margin:0}
+.sea .ph .clip{overflow:hidden;clip-path:inset(0 46% 0 46%);transition:clip-path .15s linear}
+.sea .ph img{display:block;width:100%;filter:grayscale(1)}
+.sea .ph figcaption{font:400 11px/1.4 var(--s-type);margin-top:6px;color:var(--s-quote);text-align:right}
+.sea .end{position:relative;color:#ece9df;padding:150px 0 140px;overflow:hidden}
+.sea .end .txt{width:820px;margin:0 auto;position:relative;z-index:1}
+.sea .end .txt p{max-width:none;text-align:left}
+.sea .hand{position:absolute;pointer-events:none}
+.sea .wave{display:block;width:100%;height:100px;margin-bottom:-2px}
+.sea .credits{background:#000;color:#ece9df;border-top:1px solid #3c3a35;padding:44px 170px 56px;display:grid;grid-template-columns:1.1fr 1fr 1.3fr auto;gap:40px;font:14px/1.6 var(--s-body)}
+.sea .credits h4{font:400 12px var(--s-type);margin:0 0 8px;opacity:.6}
+.sea .credits a{color:#ece9df;font:400 15px var(--s-type);text-decoration:none;border-bottom:1px solid #6a665c;align-self:start}
+.ex{font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid #6a665c;border-radius:4px;padding:1px 5px;margin-left:6px;opacity:.8}
+@container (max-width:620px){
+  .sea{font-size:16px}
+  .sea .card{margin:0 8px;padding:40px 22px 44px;border-radius:24px}
+  .sea h3{font-size:23px}
+  .sea .cols,.sea .birds{grid-template-columns:minmax(0,1fr);gap:24px}
+  .sea .aside{margin-top:0}
+  .sea .facts{grid-template-columns:repeat(2,minmax(0,1fr));padding:36px 22px 44px;row-gap:30px}
+  .sea .fact b{font-size:40px}
+  .sea .credits{grid-template-columns:minmax(0,1fr);padding:32px 22px}
+}
+
+/* ============ Uspet ============ */
+.usp{--acc:#ffffff;--acc-ink:#111;--acc-soft:rgba(255,255,255,.08);background:var(--u-bg);color:var(--u-ink);font:16px/1.6 var(--u-body);container-type:inline-size;min-height:100%}
+[data-pal="pink"] .usp{--acc:#ff3d9a;--acc-ink:#1c1c1c;--acc-soft:rgba(255,61,154,.12)}
+[data-pal="chrome"] .usp{--acc:#ff7ab8;--acc-ink:#1c1c1c;--acc-soft:rgba(255,122,184,.12)}
+[data-pal="chrome"] .usp .chrome{filter:grayscale(1) sepia(.7) hue-rotate(285deg) saturate(2.6) brightness(1.04)}
+.usp .acc{color:var(--acc)}
+.usp nav{position:absolute;left:0;right:0;top:0;display:flex;justify-content:center;gap:34px;font:500 13px var(--u-head);letter-spacing:.16em;text-transform:uppercase;padding:26px 60px;z-index:3}
+.usp nav a{color:var(--u-dim);text-decoration:none;padding-bottom:4px;border-bottom:1px solid transparent}
+.usp nav a:hover{color:var(--acc);border-color:var(--acc)}
+.usp .hero{position:relative;height:900px;overflow:hidden}
+.usp .hero .fig{position:absolute;left:50%;top:50%;width:760px;transform:translate(-50%,-52%);animation:spin 26s linear infinite}
+@keyframes spin{to{transform:translate(-50%,-52%) rotate(360deg)}}
+.usp .hero h3{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);margin:0;text-align:center;font:700 230px/1 var(--u-head);text-transform:uppercase;letter-spacing:-.01em;mix-blend-mode:difference;color:#fff;z-index:2}
+[data-pal="pink"] .usp .hero h3{mix-blend-mode:normal;color:var(--acc)}
+[data-pal="chrome"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
+.usp .hero .cap-l,.usp .hero .cap-r{position:absolute;bottom:92px;width:330px;font:500 12px/1.6 var(--u-head);letter-spacing:.08em;text-transform:uppercase;color:var(--u-dim);z-index:2}
+.usp .hero .cap-l{left:60px}.usp .hero .cap-r{right:60px;text-align:right}
+.usp .hero .cap-l b,.usp .hero .cap-r b{color:var(--u-ink);font-weight:600;display:block;margin-bottom:6px;letter-spacing:.16em}
+.usp .hero .nums{position:absolute;left:0;right:0;bottom:30px;display:flex;justify-content:center;gap:46px;font:500 12px var(--u-head);letter-spacing:.14em;text-transform:uppercase;color:var(--u-dim);z-index:2}
+.usp .hero .nums b{font:600 22px var(--u-wide);color:var(--acc);letter-spacing:-.02em;margin-right:8px;vertical-align:-3px}
+.usp .spl{position:absolute;right:60px;top:74px;font:11px var(--mono);color:#6d6d6d;z-index:2}
+.usp .sec{font:700 52px/1 var(--u-head);text-transform:uppercase;margin:0;text-align:center}
+.usp .secsub{font:500 12px var(--u-head);letter-spacing:.22em;text-transform:uppercase;color:var(--u-dim);margin:10px 0 40px;text-align:center}
+.usp .pad{padding:70px 120px 90px;position:relative}
+/* interview */
+.usp .intv{overflow:hidden;min-height:900px}
+.usp .intv .ring{position:absolute;right:-300px;top:40px;width:900px;pointer-events:none;opacity:.95}
+.usp .who{display:flex;gap:26px;align-items:center;position:relative;z-index:1}
+.usp .who img{width:150px;height:150px;border-radius:50%;object-fit:cover;filter:grayscale(1)}
+.usp .who b{font:600 22px var(--u-wide);text-transform:uppercase;display:block}
+.usp .who span{color:var(--u-dim);font-size:14px}
+.usp .qa{margin:40px 0 0;max-width:720px;position:relative;z-index:1}
+.usp .qa .item{border-top:1px solid #444}
+.usp .qa .item:last-child{border-bottom:1px solid #444}
+.usp .qa button{all:unset;cursor:pointer;display:grid;grid-template-columns:54px minmax(0,1fr) 34px;gap:12px;align-items:center;width:100%;padding:18px 0;font:500 19px/1.35 var(--u-body);color:var(--u-ink)}
+.usp .qa button:focus-visible{outline:2px solid var(--acc)}
+.usp .qa .no{font:600 13px var(--u-head);letter-spacing:.1em;color:var(--u-dim)}
+.usp .qa .pm{width:30px;height:30px;border:1px solid var(--u-dim);border-radius:50%;display:grid;place-items:center;font:400 18px/1 var(--u-body);transition:transform .3s,background .3s,color .3s}
+.usp .qa .item.open .pm{transform:rotate(45deg);background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.usp .qa .item.open .no,.usp .qa button:hover .no{color:var(--acc)}
+.usp .qa .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s ease}
+.usp .qa .item.open .ans{grid-template-rows:1fr}
+.usp .qa .ans>div{overflow:hidden}
+.usp .qa .ans p{margin:0 0 22px 66px;padding:18px 22px;background:var(--acc-soft);border-radius:16px 16px 16px 4px;color:#d9d9d9;font-size:16px;line-height:1.65;max-width:62ch}
+/* calm */
+.usp .glabel{font:500 13px var(--u-head);letter-spacing:.18em;text-transform:uppercase;color:var(--u-dim);margin:38px 0 18px;display:flex;align-items:center;gap:14px}
+.usp .glabel::after{content:"";flex:1;height:1px;background:#3a3a3a}
+.usp .notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+.usp .notes.five{grid-template-columns:repeat(5,minmax(0,1fr));gap:22px}
+.usp .note2{background:var(--acc);color:var(--acc-ink);padding:30px 24px 28px;min-height:230px;position:relative;transform:rotate(var(--r,-1.5deg));transition:transform .3s;box-shadow:0 18px 30px rgba(0,0,0,.45)}
+[data-pal="mono"] .usp .note2{background:#e6e6e6}
+.usp .note2:hover{transform:rotate(0) translateY(-6px)}
+.usp .note2::before{content:"";position:absolute;top:-12px;left:50%;width:84px;height:26px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,255,255,.45);backdrop-filter:blur(2px)}
+.usp .note2 b{font:700 17px/1.2 var(--u-wide);text-transform:uppercase;display:block;margin-bottom:12px}
+.usp .note2 span{font:500 15px/1.5 var(--u-body)}
+.usp .note2 em{font-style:normal;font:700 15px var(--u-wide);text-transform:uppercase}
+.usp .prac{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.usp .pc{border:1px solid #3d3d3d;border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:250px;background:#212121;position:relative;overflow:hidden}
+.usp .pc.big{grid-column:span 2}
+.usp .pc .k{font:600 13px var(--u-head);letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.usp .pc b{font:600 19px/1.2 var(--u-wide);text-transform:uppercase}
+.usp .pc span{color:#c9c9c9;font-size:15px}
+.usp .pc .clock{font:600 64px/1 var(--u-wide);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.usp .pc .row{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
+.usp .pc button,.usp .pill{font:600 12px var(--u-head);letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:999px;padding:10px 16px;cursor:pointer}
+.usp .pc button.main{background:var(--acc);color:var(--acc-ink)}
+.usp .breath{position:absolute;right:26px;top:50%;width:150px;height:150px;margin-top:-75px;border-radius:50%;border:1px solid var(--acc);display:grid;place-items:center}
+.usp .breath i{position:absolute;inset:0;margin:auto;width:40%;height:40%;border-radius:50%;background:var(--acc);opacity:.85;transition:width 4s ease-in-out,height 4s ease-in-out}
+.usp .breath.in i{width:100%;height:100%}
+.usp .breath em{position:absolute;left:50%;bottom:-30px;transform:translateX(-50%);white-space:nowrap;font:600 13px var(--u-head);letter-spacing:.12em;text-transform:uppercase;font-style:normal;color:var(--u-ink)}
+.usp textarea{background:#181818;border:1px solid #3d3d3d;border-radius:12px;color:var(--u-ink);font:15px var(--u-body);padding:10px 12px;resize:none;height:70px}
+.usp .bigl{display:grid}
+.usp .bigl .rw{display:grid;grid-template-columns:230px minmax(0,1fr) minmax(0,1.1fr);gap:30px;align-items:baseline;padding:22px 0;border-top:1px solid #3a3a3a;transition:background .3s,padding .3s}
+.usp .bigl .rw:hover{background:var(--acc-soft);padding-inline:18px}
+.usp .bigl .rw .x{font:700 64px/1 var(--u-head);color:transparent;-webkit-text-stroke:1.2px var(--acc)}
+.usp .bigl .rw:hover .x{color:var(--acc)}
+.usp .bigl .rw b{font:600 18px/1.25 var(--u-wide);text-transform:uppercase}
+.usp .bigl .rw span{color:#c9c9c9}
+/* rights */
+.usp .rights{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:start}
+.usp .r{border:1px solid #3d3d3d;border-radius:22px;padding:24px;background:#212121}
+.usp .r .no{font:700 56px/1 var(--u-head);color:var(--acc)}
+.usp .r h5{font:600 17px/1.25 var(--u-wide);text-transform:uppercase;margin:14px 0 10px}
+.usp .r p{margin:0;color:#c9c9c9;font-size:15px}
+.usp .r details{margin-top:16px}
+.usp .r summary{list-style:none;cursor:pointer}
+.usp .r summary::-webkit-details-marker{display:none}
+.usp .r details[open] summary{background:var(--acc);color:var(--acc-ink)}
+.usp .r ul ul{margin:6px 0 0;gap:4px}
+.usp .r ul{margin:14px 0 0;padding-left:16px;display:grid;gap:6px;font-size:14px;color:#dcdcdc}
+.usp .r .sublbl{list-style:none;margin-left:-16px;color:var(--u-dim);font-size:13px;margin-top:6px}
+@container (max-width:620px){
+  .usp nav{display:none}
+  .usp .hero{height:844px}
+  .usp .hero .fig{width:420px;top:42%}
+  .usp .hero h3{font-size:92px;top:42%}
+  .usp .hero .cap-l,.usp .hero .cap-r{position:absolute;left:22px;right:22px;width:auto;text-align:left}
+  .usp .hero .cap-l{bottom:200px}.usp .hero .cap-r{bottom:110px}
+  .usp .hero .nums{flex-direction:column;align-items:flex-start;gap:6px;left:22px;bottom:18px;display:none}
+  .usp .pad{padding:50px 22px 60px}
+  .usp .sec{font-size:36px}
+  .usp .intv .ring{width:420px;right:-210px;top:auto;bottom:-120px;opacity:.6}
+  .usp .who img{width:96px;height:96px}
+  .usp .who b{font-size:17px}
+  .usp .qa button{grid-template-columns:36px minmax(0,1fr) 30px;font-size:16px}
+  .usp .qa .ans p{margin-left:0}
+}
+/* her live Spline scene (full screen, as on the site) */
+.usp .hero spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.usp .hero .tint{position:absolute;inset:0;background:#ff3d9a;mix-blend-mode:color;pointer-events:none;z-index:1;display:none}
+.usp .hero.live .fig{opacity:0;transition:opacity .6s}
+.usp .hero h3,.usp .hero .cap-l,.usp .hero .cap-r,.usp .hero .nums{pointer-events:none}
+#uspet[data-hero="text"] .usp .hero h3{mix-blend-mode:normal;color:#ff3d9a}
+#uspet[data-hero="fig"] .usp .hero .tint{display:block}
+#uspet[data-hero="fig"] .usp .hero{background:#000}
+#uspet[data-hero="fig"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
+</style>
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">Предпросмотр правок · сайты не изменены</div>
+    <h1>Seaside и «Успеть всё»: как бы я их поправила</h1>
+    <p class="lede">Каждый экран показан в рамке ноутбука: внутри страница шириной 1440 px, её можно прокручивать как настоящий сайт. Кнопки работают. Твой текст оставлен без сокращений, менялись только вёрстка, цвет и подача.</p>
+  </header>
+
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Сайт"><button aria-pressed="true" data-site="seaside">Seaside. Black Sea</button><button aria-pressed="false" data-site="uspet">Успеть всё</button></div>
+    <span class="lbl" data-for="seaside">Фон</span>
+    <div class="seg" role="group" aria-label="Фон Seaside" data-for="seaside"><button aria-pressed="true" data-bg="warm"><span class="swatch" style="background:#fffbed"></span>Кремовый</button><button aria-pressed="false" data-bg="cold"><span class="swatch" style="background:#f2f3f4"></span>Холодный</button></div>
+    <span class="lbl" data-for="uspet" hidden>Палитра</span>
+    <div class="seg" role="group" aria-label="Палитра «Успеть всё»" data-for="uspet" hidden><button aria-pressed="false" data-pal="mono"><span class="swatch" style="background:#fff"></span>Монохром</button><button aria-pressed="true" data-pal="pink"><span class="swatch" style="background:#ff3d9a"></span>Розовый акцент</button><button aria-pressed="false" data-pal="chrome"><span class="swatch" style="background:#ff7ab8"></span>Розовый хром</button></div>
+  </div>
+
+  <!-- ===================== SEASIDE ===================== -->
+  <section id="seaside" data-panel>
+    <div class="screen">
+      <div class="note"><div class="n">Экран 1</div><h2>Хроника и главные цифры</h2>
+        <ul><li>Весь твой текст на месте, но выровнен влево: без дыр между словами.</li><li>Строка короче, текст крупнее, заголовок над текстом.</li><li>Под хроникой полоса с цифрами из твоего же текста.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокручивается внутри</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-s-chronicle.jpg" alt="Хроника на текущем сайте"></div>
+          <div class="vp after"><div class="sea" data-mock="chronicle"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 2</div><h2>Птицы</h2>
+        <ul><li>Фото снова проявляются из узкой полоски при прокрутке, как ты придумала. Прокрути экран вниз.</li><li>Карточка «птицы 01» теперь переворачивается: на обороте цифры 8000 и 121. Наведи или нажми.</li><li>Абзац орнитолога, слово в слово, выделен как цитата.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокрути вниз, наведи на карточку</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-s-birds.jpg" alt="Раздел про птиц на текущем сайте"></div>
+          <div class="vp after"><div class="sea" data-mock="birds"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 3</div><h2>Финал и подвал</h2>
+        <ul><li>Финальный блок с руками и весь текст остаются как были.</li><li>Ниже добавлен подвал: проект, кто делал, источники, ссылка «← Все проекты».</li><li>Роли в подвале примерные, их нужно поправить.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">прокрути до подвала</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-s-final.jpg" alt="Финальный блок на текущем сайте"></div>
+          <div class="vp after"><div class="sea" data-mock="final"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 4</div><h2>На телефоне</h2>
+        <ul><li>Сейчас текст уходит за правый край.</li><li>В новой версии тот же текст встаёт в одну колонку, цифры в две.</li></ul></div>
+      <div class="phones">
+        <div><div class="plabel">Было</div><div class="phone"><div class="device"><div class="vp"><img src="img/b-m-seaside-black-sea.jpg" alt="Seaside на телефоне сейчас"></div></div></div></div>
+        <div><div class="plabel">Стало</div><div class="phone"><div class="device"><div class="vp"><div class="sea" data-mock="chronicle"></div></div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== USPET ===================== -->
+  <section id="uspet" data-panel hidden data-pal="pink" data-hero="text">
+    <div class="screen">
+      <div class="note"><div class="n">Экран 1</div><h2>Первый экран</h2>
+        <ul><li>Твоя Spline-фигура на месте, во весь экран, как на сайте.</li><li>Два варианта: розовое название поверх твоей фигуры или розовая фигура и белое название.</li><li>Пока Spline грузится, фон уже тёмный, а название читается.</li><li>Внизу одной строкой три цифры опроса.</li><li>Меню сверху: наведи на пункт.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><div class="seg" role="group" aria-label="Вариант первого экрана"><button aria-pressed="true" data-hero="text">Розовый текст</button><button aria-pressed="false" data-hero="fig">Розовая фигура</button></div><span class="hint">фигура грузится несколько секунд</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><div class="usp"><div class="hero"><spline-viewer url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer></div></div></div>
+          <div class="vp after"><div class="usp" data-mock="hero"></div></div>
+        </div></div>
+        <div class="cap">«Было»: твоя Spline-сцена как на сайте. «Стало»: та же сцена, поверх неё название и подписи текстом. Если Spline не загрузится, на её месте крутится хромовое кольцо.</div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 2</div><h2>Интервью</h2>
+        <ul><li>Нажми на вопрос, и под ним раскроется ответ. Ответы слово в слово из интервью.</li><li>Кольцо уходит за правый край и не лежит под текстом.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">нажимай на вопросы</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-u-interview.jpg" alt="Интервью на текущем сайте"></div>
+          <div class="vp after"><div class="usp" data-mock="interview"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 3</div><h2>«Спокойствие, только спокойствие»: три варианта</h2>
+        <ul><li><b>Стикеры</b>: яркие заметки на скотче, чуть наискосок, выпрямляются при наведении.</li><li><b>Попробуй сейчас</b>: карточки, которые делают технику. Помодоро-таймер запускается, круг 4-7-8 дышит, в журнал эмоций можно написать.</li><li><b>Большие цифры</b>: техники списком, ключ каждой крупно.</li><li>Текст карточек твой, без изменений.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after" data-alt="calm-a">Стикеры</button><button aria-pressed="false" data-v="after" data-alt="calm-b">Попробуй сейчас</button><button aria-pressed="false" data-v="after" data-alt="calm-c">Большие цифры</button></div></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-u-calm.jpg" alt="Блок «Спокойствие» на текущем сайте"></div>
+          <div class="vp after" data-alt-box><div class="usp" data-mock="calm-a"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 4</div><h2>«Качай права»</h2>
+        <ul><li>Четыре карточки вместо стены текста.</li><li>«Подробнее» раскрывает полный текст раздела без сокращений.</li></ul></div>
+      <div>
+        <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><span class="hint">нажми «Подробнее»</span></div>
+        <div class="laptop"><div class="device">
+          <div class="vp before" hidden><img src="img/b-u-rights.jpg" alt="Блок «Качай права» на текущем сайте"></div>
+          <div class="vp after"><div class="usp" data-mock="rights"></div></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="screen">
+      <div class="note"><div class="n">Экран 5</div><h2>На телефоне</h2>
+        <ul><li>Сейчас блоки обрезаются справа.</li><li>В новой версии первый экран и интервью перестраиваются под телефон, вопросы так же раскрываются.</li></ul></div>
+      <div class="phones">
+        <div><div class="plabel">Было</div><div class="phone"><div class="device"><div class="vp"><img src="img/b-m-uspet-vse.jpg" alt="«Успеть всё» на телефоне сейчас"></div></div></div></div>
+        <div><div class="plabel">Стало</div><div class="phone"><div class="device"><div class="vp"><div class="usp" data-mock="hero,interview"></div></div></div></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ Seaside templates (text is the original, unchanged) ============ -->
+<template id="m-chronicle">
+  <div style="padding-top:20px">
+    <div class="card"><div class="cols"><div>
+      <h3>Хроника катастрофы: море накрыло мазутом</h3>
+      <p class="sub">15–18 декабря 2024</p>
+      <p>Разлив произошёл 15 декабря 2024 года в районе Черноморского побережья недалеко от Анапы. Причина — шторм и повреждение корпуса танкера «Волгонефть-239», следовавшего через Керченский пролив. Судно перевозило мазут — тяжёлый нефтепродукт, который плохо растворяется в воде и практически не испаряется, оседая на берегах и на морском дне.</p>
+      <p>По данным «BBC Verify» и экологов, в воду попало до 5000 тонн нефтепродуктов, которые покрыли около 90 км² акватории.</p>
+      <p>Первые спутниковые снимки с видимой нефтяной плёнкой появились через два дня после разлива. На них — чёткая полоса загрязнения от центра до побережья Анапы. Уже 16 декабря на берегу появились первые следы мазута — плёнка на воде, мёртвые чайки и мутные волны. К 18 декабря загрязнение стало визуально масштабным, а местные жители и волонтёры начали выходить на очистку пляжей.</p>
+    </div><div class="aside">Фрагмент радиолокационного изображения спутниковой миссии RSM3 от 19.12. Изображение: РКИ, Government of Canada</div></div></div>
+    <div class="facts">
+      <div class="fact"><b>5000 т</b><span>нефтепродуктов попало в воду</span></div>
+      <div class="fact"><b>90 км²</b><span>акватории покрыла плёнка</span></div>
+      <div class="fact"><b>8000</b><span>пострадавших птиц собрали волонтёры</span></div>
+      <div class="fact"><b>121</b><span>птицу удалось стабилизировать</span></div>
+    </div>
+  </div>
+</template>
+
+<template id="m-birds">
+  <div style="padding-block:20px">
+    <div class="card">
+      <h3 style="text-align:center">Море молчит, животные — нет</h3>
+      <p class="sub" style="text-align:center">последствия для фауны</p>
+      <p style="margin-inline:auto">Разлив нефти на побережье Анапы стал катастрофой для местных животных. Уже в первые часы после утечки в соцсетях начали появляться фотографии — птицы, покрытые жирной плёнкой, медленно выбрасывающиеся на берег, дельфины, пытающиеся всплыть, но увязшие в нефти. Визуальные материалы документировали серьезные повреждения фауны, подтверждая высокую смертность среди животных.</p>
+      <div class="birds">
+        <div>
+          <button class="flip" type="button" aria-label="Перевернуть карточку «птицы»"><div class="in">
+            <div class="f"><img src="img/card-birds.svg" alt=""></div>
+            <div class="b"><small>(птицы) 01</small><div><b>8000</b><span>пострадавших птиц собрали в первые дни</span><hr><b>121</b><span>удалось стабилизировать</span></div><small>→ 02 дельфины</small></div>
+          </div></button>
+          <span class="mark">наведи, чтобы перевернуть</span>
+        </div>
+        <div>
+          <h3 style="font-size:24px;margin-bottom:18px">Птицы</h3>
+          <p>Птицы стали самыми первыми жертвами. Согласно оценке волонтёрских групп, принимавших участие в ликвидации последствий, в первые дни после разлива было собрано около 8000 пострадавших птиц. В реабилитационных центрах удалось стабилизировать состояние лишь 121 из них. Большинство погибли ещё до прибытия специалистов.</p>
+          <blockquote>По словам орнитолога Светланы Смирновой, работающей в пункте спасения птиц в Витязево, причиной высокой смертности стало не только токсичное воздействие мазута, но и отсутствие в России системы экстренной ветеринарной помощи для диких животных.</blockquote>
+        </div>
+      </div>
+      <div class="scatter">
+        <figure class="ph" style="left:28%;top:0;width:300px"><div class="clip"><img src="img/bird1.jpg" alt="Птица в мазуте"></div><figcaption>администрация Анапы</figcaption></figure>
+        <figure class="ph" style="left:63%;top:40px;width:340px"><div class="clip"><img src="img/bird2.jpg" alt="Волонтёр держит птицу"></div><figcaption>Штаб #МЫВМЕСТЕ</figcaption></figure>
+        <figure class="ph" style="left:0;top:330px;width:330px"><div class="clip"><img src="img/bird3.jpg" alt="Птица в мазуте на берегу"></div><figcaption>Сергей Мальгавко/ТАСС</figcaption></figure>
+        <figure class="ph" style="left:52%;top:380px;width:320px"><div class="clip"><img src="img/bird4.jpg" alt="Волонтёры отмывают птиц"></div><figcaption>РИА Новости. Алексей Майшев</figcaption></figure>
+      </div>
+    </div>
+    <div style="height:260px"></div>
+  </div>
+</template>
+
+<template id="m-final">
+  <div class="end">
+    <img class="hand" src="img/332-468.webp" alt="" style="left:-70px;top:330px;width:340px">
+    <img class="hand" src="img/332-469.webp" alt="" style="right:-10px;top:200px;width:250px">
+    <div class="txt">
+      <p>Чёрное море стало ещё чернее не только от мазута, но и от боли тысяч погибших существ.</p>
+      <p>Разлив у берегов Анапы в декабре 2024 года оказался не просто экологическим инцидентом, а полномасштабной катастрофой, обнажившей уязвимость как природной среды, так и социальной инфраструктуры. Мазут разрушил морскую экосистему, а волонтёры, действовавшие в условиях острого дефицита ресурсов и отсутствия государственной поддержки, вынесли на себе основную тяжесть спасательных операций — как физически, так и эмоционально.</p>
+      <p>Происшествие показало: Россия не готова к оперативному и масштабному реагированию на экологические чрезвычайные ситуации, особенно в части спасения дикой природы.</p>
+      <p>Восстановление Чёрного моря займёт годы, но главное — без структурных изменений в системе экологической безопасности подобные катастрофы будут повторяться. Экология требует не только ликвидации последствий, но и устойчивой, системной политики предотвращения и защиты.</p>
+    </div>
+  </div>
+  <div class="credits">
+    <div><h4>проект</h4>Seaside. Black Sea<br>лонгрид о разливе мазута у Анапы<span class="ex">год?</span></div>
+    <div><h4>над проектом работала<span class="ex">пример</span></h4>Наталья Макиенко<br>текст, дизайн, вёрстка</div>
+    <div><h4>фото</h4>ТАСС, РИА Новости, администрация Анапы, Штаб #МЫВМЕСТЕ, центр «Дельфа», ГТРК «Кубань», Shutterstock</div>
+    <a href="#seaside">← Все проекты</a>
+  </div>
+</template>
+
+<!-- ============ Uspet templates ============ -->
+<template id="m-hero">
+  <div class="hero">
+    <nav aria-label="Разделы"><a href="#uspet">Статистика</a><a href="#uspet">Истории</a><a href="#uspet">Мнение</a><a href="#uspet">Тайм-менеджмент</a><a href="#uspet">Советы</a><a href="#uspet">Права</a></nav>
+    <spline-viewer url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer>
+    <div class="tint"></div>
+    <img class="fig chrome" src="img/53-307.webp" alt="">
+    <h3>Успеть всё</h3>
+    <div class="cap-l"><b>О проекте</b>«Успеть все» — о студентах, совмещающих учебу и работу. Истории, мнения, статистика, техники тайм-менеджмента и ресурсы для поиска вакансий.</div>
+    <div class="cap-r"><b>Кто авторы</b>исследование студенток 2 курса программы “Журналистика” СПбГУП Макиенко Наталья, Дарья Чаус, Мария Дубинина, Ольга Разумова, Софья Веретенникова и Елизавета Савоськина</div>
+    <div class="nums"><span><b>203</b>студента в опросе</span><span><b>52%</b>работают</span><span><b>22,7%</b>успевают всё</span></div>
+  </div>
+</template>
+
+<template id="m-interview">
+  <div class="pad intv">
+    <img class="ring chrome" src="img/53-307.webp" alt="">
+    <h4 class="sec" style="text-align:left">Истории выживания</h4>
+    <div class="secsub" style="text-align:left">Интервью со студентами</div>
+    <div class="who"><img src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
+    <div class="qa">
+      <div class="item open"><button type="button" aria-expanded="true"><span class="no">01</span><span>Чем вы занимаетесь на работе? Что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><p>Я работал курьером в Яндекс Лавке с августа по ноябрь. Тогда нужна была быстрая работа, которую легко выполнять. Мне нужно было себя чем-то занять, плюс я достаточно спортивный был когда-то, поэтому такая работа подходила. Пришлось уволиться, потому что возникли проблемы со здоровьем работал на велике, колени начали болеть, работать я больше не смог.<br>Потом я стал работать специалистом по отбору абитуриентов в регионах. Работаю, как не трудно догадаться в приемной комиссии своего университета. В мои обязанности входит: прозвон абитуриентов и их родителей, информирование и продажа услуг университета. Ну и все, что способствует продаже: подготовка почтовых рассылок, техническая работа.</p></div></div></div>
+      <div class="item"><button type="button" aria-expanded="false"><span class="no">02</span><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><p>Деньги никогда не лишние. Плюс, конечно, опыт, тем более в продажах, очень ценный для меня. Да и просто новый статус в университете и некоторые преимущества, которые я вместе с этим получаю. И последнее: я устроился через подругу и она очень классно "продала" мне эту идею. Ну, и не соврала.</p></div></div></div>
+      <div class="item"><button type="button" aria-expanded="false"><span class="no">03</span><span>Какие сложности вы испытываете, совмещая работу и учебу?</span><span class="pm">+</span></button><div class="ans"><div><p>Нехватка времени основная проблема совмещения работы и учёбы. Я работаю на полставки и должен отрабатывать 20 часов ва неделю. Это немного, тем более живу я в общежитии в университете, но это сложноватая ментально работа. Когда ты 5 часов в день разговариваешь по телефону, к концу дня сил ни на что не остается.</p></div></div></div>
+      <div class="item"><button type="button" aria-expanded="false"><span class="no">04</span><span>Как работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><p>На успеваемость в учёбе влияния я пока не заметил. Ни положительного, ни негативного. Но я думаю через пару месяцев, на первой сессии будет понятно.</p></div></div></div>
+    </div>
+  </div>
+</template>
+
+<template id="m-calm-a">
+  <div class="pad">
+    <h4 class="sec">Спокойствие, только спокойствие</h4>
+    <div class="glabel">Как не выгореть?</div>
+    <div class="notes">
+      <div class="note2" style="--r:-2deg"><b>Техника помодоро</b><span>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</span></div>
+      <div class="note2" style="--r:1.5deg"><span><em>Планируйте</em> отдых так же, как и работу<br><br><em>Учитесь</em> говорить нет лишним обязанностям</span></div>
+      <div class="note2" style="--r:-1deg"><b>Разграничивайте работу и учебу</b><span>например, не делайте рабочие задачи в перерывах между парами</span></div>
+    </div>
+    <div class="glabel">Техники для снижения стресса</div>
+    <div class="notes five">
+      <div class="note2" style="--r:1.5deg"><b>Метод 4-7-8</b><span>дыхательная техника для быстрого расслабления</span></div>
+      <div class="note2" style="--r:-2deg"><b>Прогрессивная мышечная релаксация</b><span>напряжение и расслабление мышц поочередно</span></div>
+      <div class="note2" style="--r:1deg"><b>Журнал эмоций</b><span>фиксируйте мысли и чувства, чтобы разгрузить голову</span></div>
+      <div class="note2" style="--r:-1.5deg"><b>Медитации</b><span>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</span></div>
+      <div class="note2" style="--r:2deg"><b>Йога</b><span>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</span></div>
+    </div>
+  </div>
+</template>
+
+<template id="m-calm-b">
+  <div class="pad">
+    <h4 class="sec">Спокойствие, только спокойствие</h4>
+    <div class="secsub">Попробуй прямо сейчас</div>
+    <div class="prac">
+      <div class="pc" data-timer="1500"><span class="k">Как не выгореть</span><b>Техника помодоро</b><span>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</span><div class="clock">25:00</div><div class="row"><button class="main" data-t="go">Старт</button><button data-t="reset">Сброс</button></div></div>
+      <div class="pc"><span class="k">Как не выгореть</span><b>Планируйте отдых</b><span>так же, как и работу. Учитесь говорить нет лишним обязанностям</span><div class="row"><span class="pill">Нет</span><span class="pill">Нет</span><span class="pill">Нет</span></div></div>
+      <div class="pc"><span class="k">Как не выгореть</span><b>Разграничивайте работу и учебу</b><span>например, не делайте рабочие задачи в перерывах между парами</span></div>
+      <div class="pc big"><span class="k">Снижаем стресс</span><b>Метод 4-7-8</b><span style="max-width:46ch">дыхательная техника для быстрого расслабления. Вдох на 4 счёта, задержка на 7, выдох на 8.</span><div class="breath"><i></i><em>готово?</em></div><div class="row"><button class="main" data-breath>Дышать</button></div></div>
+      <div class="pc"><span class="k">Снижаем стресс</span><b>Журнал эмоций</b><span>фиксируйте мысли и чувства, чтобы разгрузить голову</span><textarea id="mood" aria-label="Что я сейчас чувствую" placeholder="Что я сейчас чувствую…"></textarea></div>
+      <div class="pc"><span class="k">Снижаем стресс</span><b>Прогрессивная мышечная релаксация</b><span>напряжение и расслабление мышц поочередно</span></div>
+      <div class="pc" data-timer="300"><span class="k">Снижаем стресс</span><b>Медитации</b><span>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</span><div class="clock" style="font-size:44px">05:00</div><div class="row"><button class="main" data-t="go">Старт</button><button data-t="reset">Сброс</button></div></div>
+      <div class="pc" data-timer="600"><span class="k">Снижаем стресс</span><b>Йога</b><span>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</span><div class="clock" style="font-size:44px">10:00</div><div class="row"><button class="main" data-t="go">Старт</button><button data-t="reset">Сброс</button></div></div>
+    </div>
+  </div>
+</template>
+
+<template id="m-calm-c">
+  <div class="pad">
+    <h4 class="sec">Спокойствие, только спокойствие</h4>
+    <div class="glabel">Как не выгореть?</div>
+    <div class="bigl">
+      <div class="rw"><span class="x">25/5</span><b>Техника помодоро</b><span>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</span></div>
+      <div class="rw"><span class="x">≠</span><b>Планируйте отдых</b><span>так же, как и работу. Учитесь говорить нет лишним обязанностям</span></div>
+      <div class="rw"><span class="x">|</span><b>Разграничивайте работу и учебу</b><span>например, не делайте рабочие задачи в перерывах между парами</span></div>
+    </div>
+    <div class="glabel">Техники для снижения стресса</div>
+    <div class="bigl">
+      <div class="rw"><span class="x">4-7-8</span><b>Метод 4-7-8</b><span>дыхательная техника для быстрого расслабления</span></div>
+      <div class="rw"><span class="x">↕</span><b>Прогрессивная мышечная релаксация</b><span>напряжение и расслабление мышц поочередно</span></div>
+      <div class="rw"><span class="x">✎</span><b>Журнал эмоций</b><span>фиксируйте мысли и чувства, чтобы разгрузить голову</span></div>
+      <div class="rw"><span class="x">5′</span><b>Медитации</b><span>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</span></div>
+      <div class="rw"><span class="x">10′</span><b>Йога</b><span>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</span></div>
+    </div>
+  </div>
+</template>
+
+<template id="m-rights">
+  <div class="pad">
+    <h4 class="sec">Качай права</h4>
+    <div class="secsub">Права работающих студентов</div>
+    <div class="rights">
+      <div class="r"><div class="no">01</div><h5>Права в сфере образования</h5><p>Студенты-работники могут воспользоваться следующими академическими правами:</p>
+        <details><summary class="pill">Подробнее</summary><ul><li>Гибкий график обучения (если предусмотрено вузом).</li><li>Перевод на индивидуальный учебный план.</li><li>Выбор формы обучения (очная, заочная, очно-заочная).</li><li>Возможность дистанционного обучения (если вуз предоставляет такую возможность).</li><li>Академический отпуск (по уважительной причине, включая работу).</li><li>Перенос сессии или сдачи экзаменов (по договорённости с преподавателями).</li><li>Скидки и льготы (если вуз предоставляет их работающим студентам).</li></ul></details></div>
+      <div class="r"><div class="no">02</div><h5>Трудовые права работающих студентов</h5><p>По ТК РФ работающие студенты имеют те же права, что и другие работники, плюс дополнительные гарантии:</p>
+        <details><summary class="pill">Подробнее</summary><ul><li class="sublbl">А) Общие трудовые права:</li><li>Заключение трудового договора (срочного или бессрочного).</li><li>Оплачиваемый отпуск (28 дней в год).</li><li>Больничные и декретные выплаты (при наличии страхового стажа).</li><li>Защита от необоснованного увольнения.</li><li class="sublbl">Б) Специальные гарантии для студентов:</li><li>1. Учебный отпуск (ст. 173–176 ТК РФ):<ul><li>Оплачиваемый – для студентов-заочников и очно заочников:</li><li>Сессия (до 40 дней в году для промежуточной аттестации).</li><li>Госэкзамены и защита диплома (до 4 месяцев).</li><li>Неоплачиваемый – для студентов очной формы (по согласованию с работодателем).</li><li>Компенсация проезда (1 раз в год – для заочников, если это прописано в коллективном договоре).</li></ul></li><li>2. Сокращённый рабочий день (ст. 93 ТК РФ):<ul><li>По соглашению с работодателем можно установить неполный рабочий день (например, 4–6 часов).</li><li>Оплата пропорциональна отработанному времени.</li></ul></li><li>3. Запрет на сверхурочную работу и ночные смены (для несовершеннолетних студентов).</li><li>4. Дополнительные выходные (для студентов, обучающихся без отрыва от производства, если это предусмотрено коллективным договором).</li><li>5. Возможность дистанционной работы (если профессия позволяет).</li></ul></details></div>
+      <div class="r"><div class="no">03</div><h5>Налоговые льготы</h5><ul><li>Налоговый вычет за обучение (до 15 600 руб. в год по НДФЛ, ст. 219 НК РФ).</li><li>Освобождение от НДФЛ на стипендию (если студент получает её параллельно с зарплатой).</li></ul></div>
+      <div class="r"><div class="no">04</div><h5>Социальные гарантии</h5><ul><li>Сохранение места работы на время учебного отпуска.</li><li>Право на пересмотр графика работы в период сессии.</li></ul></div>
+    </div>
+  </div>
+</template>
+
+<script>
+(function(){
+  var $=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  function fill(el,ids){el.innerHTML='';ids.split(',').forEach(function(id){var t=document.getElementById('m-'+id.trim());if(t)el.appendChild(t.content.cloneNode(true))});wire(el)}
+  $('[data-mock]').forEach(function(el){fill(el,el.dataset.mock)});
+
+  // Scale each 1440×900 (or 390×844) page into its frame
+  function fit(){$('.device').forEach(function(d){var w=d.clientWidth;$('.vp',d).forEach(function(v){var s=w/v.offsetWidth;v.style.transform='scale('+s+')'})})}
+  fit(); window.addEventListener('resize',fit);
+  if(window.ResizeObserver){new ResizeObserver(fit).observe(document.body)}
+
+  // Было / Стало (+ alternative variants)
+  $('.stagehead').forEach(function(h){
+    var stage=h.parentElement.querySelector('.laptop');
+    $('[data-v]',h).forEach(function(b){b.addEventListener('click',function(){
+      $('[data-v]',h).forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+      $('.before',stage).forEach(function(v){v.hidden=b.dataset.v!=='before'});
+      $('.after',stage).forEach(function(v){v.hidden=b.dataset.v==='before'});
+      if(b.dataset.alt){var box=stage.querySelector('[data-alt-box]');var m=box.querySelector('.usp');m.dataset.mock=b.dataset.alt;fill(m,b.dataset.alt);box.scrollTop=0}
+      fit();
+    })});
+  });
+
+  // Site switch + per-site options
+  function show(site){
+    $('[data-site]').forEach(function(t){t.setAttribute('aria-pressed',String(t.dataset.site===site))});
+    $('[data-panel]').forEach(function(p){p.hidden=p.id!==site});
+    $('[data-for]').forEach(function(x){x.hidden=x.dataset.for!==site});
+    fit();
+  }
+  $('[data-site]').forEach(function(t){t.addEventListener('click',function(){show(t.dataset.site)})});
+  if(location.hash==='#uspet')show('uspet');
+  $('[data-bg]').forEach(function(b){b.addEventListener('click',function(){
+    $('[data-bg]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    document.getElementById('seaside').classList.toggle('cold',b.dataset.bg==='cold');
+  })});
+  $('[data-pal]').forEach(function(b){if(b.tagName!=='BUTTON')return;b.addEventListener('click',function(){
+    $('button[data-pal]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    document.getElementById('uspet').dataset.pal=b.dataset.pal;
+  })});
+
+  $('button[data-hero]').forEach(function(b){b.addEventListener('click',function(){
+    $('button[data-hero]').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    document.getElementById('uspet').dataset.hero=b.dataset.hero;
+    var after=b.closest('.stagehead').querySelector('[data-v="after"]');if(after.getAttribute('aria-pressed')!=='true')after.click();
+  })});
+
+  // Interactions inside mocks
+  function wire(root){
+    // hide the stand-in ring once her Spline scene has loaded
+    $('.hero spline-viewer',root).forEach(function(v){v.addEventListener('load-complete',function(){v.parentElement.classList.add('live')})});
+    // interview accordion
+    $('.qa .item>button',root).forEach(function(b){b.addEventListener('click',function(){
+      var it=b.parentElement,open=!it.classList.contains('open');
+      it.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open));
+    })});
+    // flip card
+    $('.flip',root).forEach(function(f){f.addEventListener('click',function(){f.classList.toggle('on')})});
+    // photos reveal from a thin strip as the page scrolls (original idea kept)
+    var vp=root.closest('.vp');
+    if(vp&&$('.ph',root).length){
+      var reveal=function(){var vr=vp.getBoundingClientRect();$('.ph .clip',root).forEach(function(c){
+        var r=c.getBoundingClientRect();var p=(vr.bottom-r.top)/(vr.height*0.75);p=Math.max(0,Math.min(1,p));
+        var side=46*(1-p);c.style.clipPath='inset(0 '+side+'% 0 '+side+'%)';})};
+      vp.addEventListener('scroll',reveal,{passive:true});reveal();
+    }
+    // timers
+    $('[data-timer]',root).forEach(function(card){
+      var total=+card.dataset.timer,left=total,id=null,clock=card.querySelector('.clock'),go=card.querySelector('[data-t="go"]');
+      var draw=function(){clock.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0')};
+      go.addEventListener('click',function(){
+        if(id){clearInterval(id);id=null;go.textContent='Старт';return}
+        go.textContent='Пауза';id=setInterval(function(){left=Math.max(0,left-1);draw();if(!left){clearInterval(id);id=null;go.textContent='Старт'}},1000);
+      });
+      card.querySelector('[data-t="reset"]').addEventListener('click',function(){clearInterval(id);id=null;left=total;go.textContent='Старт';draw()});
+    });
+    // 4-7-8 breathing
+    $('[data-breath]',root).forEach(function(btn){
+      var card=btn.closest('.pc'),ring=card.querySelector('.breath'),lab=ring.querySelector('em'),dot=ring.querySelector('i'),timer=null;
+      var steps=[['вдох',4,'in'],['задержка',7,'in'],['выдох',8,'out']];
+      function run(i,cycles){
+        var s=steps[i];lab.textContent=s[0]+' '+s[1];dot.style.transitionDuration=s[1]+'s';ring.classList.toggle('in',s[2]==='in');
+        timer=setTimeout(function(){var n=(i+1)%3;if(n===0)cycles--;if(cycles>0)run(n,cycles);else{stop()}},s[1]*1000);
+      }
+      function stop(){clearTimeout(timer);timer=null;ring.classList.remove('in');lab.textContent='готово?';btn.textContent='Дышать'}
+      btn.addEventListener('click',function(){if(timer){stop();return}btn.textContent='Стоп';run(0,4)});
+    });
+  }
+})();
+</script>
