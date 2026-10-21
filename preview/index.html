@@ -215,12 +215,11 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 }
 /* her live Spline scene (full screen, as on the site) */
 .usp .hero spline-viewer{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-.usp .hero .tint{position:absolute;inset:0;background:#ff3d9a;mix-blend-mode:color;pointer-events:none;z-index:1;display:none}
-.usp .hero.live .fig{opacity:0;transition:opacity .6s}
+.usp .hero{background:#000}
+.usp .hero canvas.blob{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+.usp .hero.gl .fig{display:none}
 .usp .hero h3,.usp .hero .cap-l,.usp .hero .cap-r,.usp .hero .nums{pointer-events:none}
 #uspet[data-hero="text"] .usp .hero h3{mix-blend-mode:normal;color:#ff3d9a}
-#uspet[data-hero="fig"] .usp .hero .tint{display:block}
-#uspet[data-hero="fig"] .usp .hero{background:#000}
 #uspet[data-hero="fig"] .usp .hero h3{mix-blend-mode:normal;color:#fff}
 </style>
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
@@ -292,14 +291,14 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
   <section id="uspet" data-panel hidden data-pal="pink" data-hero="text">
     <div class="screen">
       <div class="note"><div class="n">Экран 1</div><h2>Первый экран</h2>
-        <ul><li>Твоя Spline-фигура на месте, во весь экран, как на сайте.</li><li>Два варианта: розовое название поверх твоей фигуры или розовая фигура и белое название.</li><li>Пока Spline грузится, фон уже тёмный, а название читается.</li><li>Внизу одной строкой три цифры опроса.</li><li>Меню сверху: наведи на пункт.</li></ul></div>
+        <ul><li>Хромовое кольцо в духе твоей Spline-фигуры, нарисовано кодом. Оно поворачивается за курсором, поэтому его можно перекрасить.</li><li>Два варианта: розовое название и хромовое кольцо или розовое кольцо и белое название. Фон в обоих чёрный.</li><li>Пока Spline грузится, фон уже тёмный, а название читается.</li><li>Внизу одной строкой три цифры опроса.</li><li>Меню сверху: наведи на пункт.</li></ul></div>
       <div>
         <div class="stagehead"><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div><div class="seg" role="group" aria-label="Вариант первого экрана"><button aria-pressed="true" data-hero="text">Розовый текст</button><button aria-pressed="false" data-hero="fig">Розовая фигура</button></div><span class="hint">фигура грузится несколько секунд</span></div>
         <div class="laptop"><div class="device">
           <div class="vp before" hidden><div class="usp"><div class="hero"><spline-viewer url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer></div></div></div>
           <div class="vp after"><div class="usp" data-mock="hero"></div></div>
         </div></div>
-        <div class="cap">«Было»: твоя Spline-сцена как на сайте. «Стало»: та же сцена, поверх неё название и подписи текстом. Если Spline не загрузится, на её месте крутится хромовое кольцо.</div>
+        <div class="cap">«Было»: твоя Spline-сцена как на сайте. «Стало»: своё кольцо вместо сцены, поэтому название не двоится. Поводи мышкой по экрану.</div>
       </div>
     </div>
 
@@ -423,8 +422,7 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 <template id="m-hero">
   <div class="hero">
     <nav aria-label="Разделы"><a href="#uspet">Статистика</a><a href="#uspet">Истории</a><a href="#uspet">Мнение</a><a href="#uspet">Тайм-менеджмент</a><a href="#uspet">Советы</a><a href="#uspet">Права</a></nav>
-    <spline-viewer url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer>
-    <div class="tint"></div>
+    <canvas class="blob" aria-hidden="true"></canvas>
     <img class="fig chrome" src="img/53-307.webp" alt="">
     <h3>Успеть всё</h3>
     <div class="cap-l"><b>О проекте</b>«Успеть все» — о студентах, совмещающих учебу и работу. Истории, мнения, статистика, техники тайм-менеджмента и ресурсы для поиска вакансий.</div>
@@ -521,6 +519,65 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 </template>
 
 <script>
+// Chrome ring: ray-marched in a fragment shader, turns toward the cursor like the Spline figure.
+function blobRing(c){
+  var gl=c.getContext('webgl',{premultipliedAlpha:true,alpha:true,antialias:false});
+  if(!gl)return;
+  var vs='attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}';
+  var fs=[
+  'precision highp float;uniform vec2 R;uniform float T,P;uniform vec2 M;',
+  'mat3 rx(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}',
+  'mat3 ry(float a){float c=cos(a),s=sin(a);return mat3(c,0.,-s,0.,1.,0.,s,0.,c);}',
+  'mat3 rz(float a){float c=cos(a),s=sin(a);return mat3(c,s,0.,-s,c,0.,0.,0.,1.);}',
+  'mat3 Q;',
+  'float map(vec3 p){p=Q*p;float a=atan(p.z,p.x);',
+  ' float r1=1.+.07*sin(3.*a+T*.5)+.035*sin(5.*a-T*.35);',
+  ' float r2=.24+.05*sin(2.*a+1.3+T*.45)+.025*sin(7.*a+T*.8);',
+  ' vec2 q=vec2(length(p.xz)-r1,p.y+.12*sin(2.*a+T*.3));return (length(q)-r2)*.6;}',
+  'vec3 nor(vec3 p){vec2 e=vec2(.0015,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}',
+  'vec3 env(vec3 d){float y=d.y;vec3 c=mix(vec3(.04),vec3(.45),smoothstep(-.4,.8,y));',
+  ' c+=.9*smoothstep(.02,0.,abs(y-.18))+.6*smoothstep(.05,0.,abs(y+.25));',
+  ' c+=1.1*smoothstep(.93,.99,.5+.5*sin(d.x*4.+1.))*smoothstep(-.1,.6,y);',
+  ' c+=1.4*pow(max(dot(d,normalize(vec3(-.5,.7,.6))),0.),30.);',
+  ' c+=.7*pow(max(dot(d,normalize(vec3(.8,.1,.6))),0.),10.);',
+  ' c+=.5*smoothstep(.8,1.,abs(d.x))*smoothstep(-.5,.3,y);',
+  ' c+=.25*smoothstep(-.2,-.9,y);return vec3(c);}',
+  'void main(){vec2 uv=(gl_FragCoord.xy-.5*R)/R.y;',
+  ' Q=rx(1.15+M.y*.45+.08*sin(T*.4))*ry(M.x*.7+.15*sin(T*.25))*rz(.25+.05*sin(T*.3));',
+  ' vec3 ro=vec3(0.,0.,4.8),rd=normalize(vec3(uv*1.25,-1.6));float t=0.,d=1.;',
+  ' for(int i=0;i<90;i++){d=map(ro+rd*t);if(d<.001||t>8.)break;t+=d;}',
+  ' if(t>8.){gl_FragColor=vec4(0.);return;}',
+  ' vec3 p=ro+rd*t,n=nor(p),r=reflect(rd,n);float f=pow(1.-max(dot(n,-rd),0.),3.);',
+  ' vec3 col=env(r)*(.85+.6*f)+.03;',
+  ' float l=dot(col,vec3(.33));',
+  ' vec3 pink=mix(col*vec3(1.,.22,.58)*1.35,vec3(1.,.86,.93),smoothstep(.85,1.6,l));',
+  ' col=mix(col,pink,P);gl_FragColor=vec4(col,1.);}'].join('\n');
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o}
+  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);gl.useProgram(pr);
+  var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  var al=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+  var uR=gl.getUniformLocation(pr,'R'),uT=gl.getUniformLocation(pr,'T'),uP=gl.getUniformLocation(pr,'P'),uM=gl.getUniformLocation(pr,'M');
+  var hero=c.parentElement,box=document.getElementById('uspet'),m=[0,0],sm=[0,0],pk=0,t0=performance.now();
+  hero.classList.add('gl');
+  hero.addEventListener('pointermove',function(e){var r=hero.getBoundingClientRect();m=[(e.clientX-r.left)/r.width*2-1,(e.clientY-r.top)/r.height*2-1]});
+  hero.addEventListener('pointerleave',function(){m=[0,0]});
+  (function frame(){
+    if(!c.isConnected)return;
+    var r=c.getBoundingClientRect();
+    if(r.width>0){
+      // canvas sized to what is actually on screen (the page is scaled down)
+      var w=Math.round(r.width*Math.min(devicePixelRatio,2)),h=Math.round(r.height*Math.min(devicePixelRatio,2));
+      if(c.width!==w||c.height!==h){c.width=w;c.height=h;gl.viewport(0,0,w,h)}
+      sm[0]+=(m[0]-sm[0])*.06;sm[1]+=(m[1]-sm[1])*.06;
+      pk+=((box&&box.dataset.hero==='fig'?1:0)-pk)*.12;
+      gl.uniform2f(uR,w,h);gl.uniform1f(uT,(performance.now()-t0)/1000);gl.uniform1f(uP,pk);gl.uniform2f(uM,sm[0],sm[1]);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+    }
+    requestAnimationFrame(frame);
+  })();
+}
+</script>
+<script>
 (function(){
   var $=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
   function fill(el,ids){el.innerHTML='';ids.split(',').forEach(function(id){var t=document.getElementById('m-'+id.trim());if(t)el.appendChild(t.content.cloneNode(true))});wire(el)}
@@ -569,8 +626,8 @@ h1{font:600 clamp(28px,4vw,44px)/1.08 var(--ui);margin:0;text-wrap:balance}
 
   // Interactions inside mocks
   function wire(root){
-    // hide the stand-in ring once her Spline scene has loaded
-    $('.hero spline-viewer',root).forEach(function(v){v.addEventListener('load-complete',function(){v.parentElement.classList.add('live')})});
+    // chrome ring drawn in WebGL; the pink variant recolours the metal only
+    $('canvas.blob',root).forEach(blobRing);
     // interview accordion
     $('.qa .item>button',root).forEach(function(b){b.addEventListener('click',function(){
       var it=b.parentElement,open=!it.classList.contains('open');
