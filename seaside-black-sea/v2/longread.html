@@ -9,15 +9,17 @@
 <meta name="theme-color" content="#050505">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=PT+Mono&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap">
+<link rel="preload" href="fonts/FreeMono.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-/* Заголовки: машинопись (PT Mono — живая замена шрифта оригинала). Текст: Manrope. */
+/* Заголовки: машинопись с засечками, как в оригинале (FreeMono — свободный клон Courier с кириллицей). Текст: Manrope. */
+@font-face{font-family:"Seaside Mono";src:url(fonts/FreeMono.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Seaside Mono";src:url(fonts/FreeMonoBold.woff2) format("woff2");font-weight:700;font-display:swap}
 :root{
   --sea:#050505; --on-sea:#ecece8; --on-sea-soft:#a8a8a2;
   --ink:#0a0a0a; --soft:#45474a; --cap:#616366;
-  /* бумага темнеет от главы к главе: море чернеет, пока читаешь */
-  --p1:#f6f6f4; --p2:#ededea; --p3:#e3e3df; --p4:#d8d8d3;
-  --head:"PT Mono","Courier New",monospace; --body:"Manrope","Helvetica Neue",Arial,sans-serif;
+  --p1:#f6f6f4;
+  --head:"Seaside Mono","Courier New",Courier,monospace; --body:"Manrope","Helvetica Neue",Arial,sans-serif;
   --col:680px; --wide:1120px; --gut:32px;
 }
 *{box-sizing:border-box}
@@ -32,20 +34,21 @@ a:hover{text-decoration-thickness:2px}
 .skip:focus{top:12px}
 .col{max-width:calc(var(--col) + 2*var(--gut));margin:0 auto;padding:0 var(--gut);position:relative;z-index:1}
 .wide{max-width:calc(var(--wide) + 2*var(--gut));margin:0 auto;padding:0 var(--gut);position:relative;z-index:1}
-h2{font:400 clamp(26px,2.8vw,40px)/1.15 var(--head);letter-spacing:-.01em;margin:0 0 .35em;text-align:center;text-wrap:balance}
-h3{font:400 clamp(22px,2vw,26px)/1.2 var(--head);margin:0 0 .6em}
-.dek{font-size:16px;color:var(--soft);margin:0 auto 2.6em;text-align:center;hyphens:manual}
+h2{font:700 clamp(26px,2.8vw,40px)/1.15 var(--head);letter-spacing:-.02em;margin:0 0 .35em;text-align:center;text-wrap:balance}
+h3{font:700 clamp(22px,2vw,26px)/1.2 var(--head);letter-spacing:-.01em;margin:0 0 .6em}
+.dek{font:700 16px/1.45 var(--head);color:var(--soft);margin:0 auto 2.6em;text-align:center;hyphens:manual}
 blockquote{margin:1.6em 0;padding:0 0 0 24px;border-left:3px solid var(--ink);font-size:22px;line-height:1.5}
 blockquote p{margin:0;text-align:left;hyphens:manual}
 blockquote footer{font-size:14px;color:var(--soft);margin-top:.6em}
 figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 
 /* 1. первый экран */
-.hero{position:relative;background:var(--p1);overflow:hidden}
-.hero .art{width:100%;margin-top:-6vw}
-.hero .head{position:relative;z-index:1;margin-left:auto;width:min(620px,48vw);margin-right:4vw;padding-top:clamp(40px,5vw,80px);text-align:center}
-.logo{width:min(320px,70%);margin:0 auto 34px}
-.hero h1{font:400 clamp(16px,1.45vw,22px)/1.6 var(--head);margin:0;letter-spacing:.02em}
+/* ровно один экран: человек и волны целиком видны до скролла */
+.hero{position:relative;height:100vh;height:100svh;min-height:520px;background:var(--p1);overflow:hidden}
+.hero .art{position:absolute;left:0;bottom:0;width:100%;height:auto;max-height:94%;object-fit:cover;object-position:50% 100%}
+.hero .head{position:absolute;z-index:1;right:4vw;top:clamp(40px,11vh,130px);width:min(640px,48vw);text-align:center}
+.logo{width:min(380px,72%);margin:0 auto 34px}
+.hero h1{font:700 clamp(15px,1.5vw,22px)/1.55 var(--head);margin:0}
 .hero .meta{font-size:14px;color:var(--soft);margin:14px 0 0;text-align:center}
 
 /* 2. вступление на чёрном */
@@ -53,26 +56,26 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 .intro .lead{font-size:22px;line-height:1.5}
 .intro blockquote{border-color:var(--on-sea);color:var(--on-sea)}
 .intro blockquote footer{color:var(--on-sea-soft)}
-.bag{position:absolute;pointer-events:none}
+/* мешки из оригинала: те же файлы и координаты сетки 1200×413, только медленно покачиваются на воде */
+.bags{position:absolute;left:0;right:0;bottom:0;aspect-ratio:1200/413;pointer-events:none}
+.bag{position:absolute;height:auto;animation:bob var(--d,9s) ease-in-out var(--dl,0s) infinite;transform-origin:50% 80%}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(var(--r,1.5deg))}}
 
 /* листы бумаги на чёрной воде: прямоугольник со скруглением */
-.sheet{position:relative;background:var(--tone);margin:0 16px;border-radius:32px;padding:clamp(64px,8vw,112px) 0 clamp(72px,9vw,128px)}
+.sheet{position:relative;background:var(--p1);margin:0 16px;border-radius:32px;padding:clamp(64px,8vw,112px) 0 clamp(72px,9vw,128px)}
 .sheet+.sheet{margin-top:16px}
-.t1{--tone:var(--p1)}.t2{--tone:var(--p2)}.t3{--tone:var(--p3)}.t4{--tone:var(--p4)}
 
 /* 3. хроника */
-.chron{display:grid;grid-template-columns:minmax(0,var(--col)) 250px;gap:64px;justify-content:center;align-items:start}
-.chron aside{position:sticky;top:32px}
+.chron{display:grid;grid-template-columns:minmax(0,var(--col)) 250px;gap:64px;justify-content:center;align-items:center}
 .radar{position:relative;overflow:hidden;background:#111}
 .radar img{width:100%}
-/* «проход радара»: полоса сканирования открывает снимок сверху вниз */
-.js .radar::before{content:"";position:absolute;inset:0;background:var(--tone);transform:translateY(0);transition:transform 2.2s cubic-bezier(.45,0,.2,1)}
-.js .radar::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:#fff;box-shadow:0 0 12px 2px rgba(255,255,255,.7);opacity:0;transform:translateY(0)}
+/* «проход радара»: снимок проявляется сверху вниз, потом полоса сканирования ходит по нему всё время */
+.js .radar::before{content:"";position:absolute;inset:0;background:var(--p1);transform:translateY(0);transition:transform 2.2s cubic-bezier(.45,0,.2,1)}
+.radar::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:#fff;box-shadow:0 0 12px 2px rgba(255,255,255,.7);animation:scan 3.4s linear infinite}
+.js .radar::after{animation:none;opacity:0}
 .js .radar.open::before{transform:translateY(101%)}
-.js .radar.open::after{animation:scan 2.2s cubic-bezier(.45,0,.2,1) forwards}
-.js .radar.open:hover::after{animation:scan2 1.8s linear}
-@keyframes scan{0%{opacity:1;transform:translateY(0)}92%{opacity:1}100%{opacity:0;transform:translateY(250px)}}
-@keyframes scan2{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(250px)}}
+.js .radar.open::after{opacity:1;animation:scan 2.2s cubic-bezier(.45,0,.2,1),scan 3.4s linear 2.2s infinite}
+@keyframes scan{0%{top:0;opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
 
 /* цифры из текста */
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px;color:var(--on-sea);padding-top:clamp(56px,7vw,96px);padding-bottom:clamp(56px,7vw,96px)}
@@ -91,23 +94,29 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 .flip .in{display:block;position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .flip:hover .in,.flip:focus-visible .in,.flip.on .in{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;border-radius:12px;background:#050505;color:#f4f4f2;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;padding:26px 20px}
-.face .name{font:400 24px/1.15 var(--head);text-align:center}
-.front img{margin:auto;max-width:150px;max-height:230px;width:auto}
-.back{transform:rotateY(180deg);justify-content:center;align-items:flex-start;gap:18px;padding:28px 22px}
+.face .name{font:700 24px/1.15 var(--head);text-align:center}
+/* подсказка, что карточка переворачивается: значок и подпись внизу, как у кнопки */
+.turn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:7px 14px 7px 10px;border:1px solid #5b5b57;border-radius:999px;font:400 13px/1 var(--body);color:#e4e4e0;transition:background .2s,border-color .2s}
+.turn svg{width:16px;height:16px;flex:none}
+.flip:hover .turn,.flip:focus-visible .turn{background:#f4f4f2;color:#050505;border-color:#f4f4f2}
+.back .turn{margin-top:auto;align-self:flex-start}
+@keyframes peek{0%,100%{transform:rotateY(0)}40%{transform:rotateY(28deg)}}
+.flip.peek .in{animation:peek 1.1s cubic-bezier(.3,.7,.3,1) 2}
+.front img{margin:auto;max-width:150px;max-height:190px;width:auto}
+.back{transform:rotateY(180deg);justify-content:flex-start;align-items:flex-start;gap:16px;padding:26px 22px 22px}
 .back b{display:block;font:400 34px/1 var(--head)}
 .back span{display:block;font-size:14px;line-height:1.35;color:#c9c9c4;margin-top:6px}
-.back small{font-size:11px;line-height:1.35;color:#8e8e89;margin-top:auto}
+.back small{font-size:11px;line-height:1.35;color:#8e8e89}
 
 /* полоса фото: раскрывается из узкой щели, как у тебя в оригинале */
 .band{display:flex;flex-wrap:wrap;gap:20px 24px;align-items:flex-end;justify-content:center;margin:40px 0 0;padding:0}
 .band figure{margin:0;width:var(--w)}
 .ph{position:relative;overflow:hidden;background:#bbb}
 .ph img{width:100%;filter:grayscale(1)}
-.js .ph::before,.js .ph::after{content:"";position:absolute;top:0;bottom:0;width:50.5%;background:var(--tone);transition:transform 1.1s cubic-bezier(.65,0,.2,1)}
-.js .ph::before{left:0;transform:translateX(-4%)}
-.js .ph::after{right:0;transform:translateX(4%)}
-.js .ph.open::before{transform:translateX(-101%)}
-.js .ph.open::after{transform:translateX(101%)}
+/* шторки привязаны к прокрутке: --p от 0 до 1 считает скрипт, вниз раскрываются, вверх закрываются */
+.js .ph::before,.js .ph::after{content:"";position:absolute;top:0;bottom:0;width:50.5%;background:var(--p1);will-change:transform}
+.js .ph::before{left:0;transform:translateX(calc(-101% * var(--p,0)))}
+.js .ph::after{right:0;transform:translateX(calc(101% * var(--p,0)))}
 .band figcaption{text-align:right}
 .people-band{margin:44px 0 52px}
 
@@ -141,23 +150,26 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   body{font-size:17px}
   blockquote{font-size:19px;padding-left:18px}
   .intro .lead{font-size:20px}
-  .hero .head{width:auto;margin:0;padding:36px var(--gut) 0}
-  .hero .art{margin-top:16px}
+  .hero .head{left:0;right:0;width:auto;top:clamp(28px,6svh,56px);padding:0 var(--gut)}
+  .hero .art{height:56%;max-height:none;object-position:20% 100%}
   .logo{width:230px;margin-bottom:22px}
   .hero h1{font-size:15px}
   .sheet{margin:0 8px;border-radius:22px}
   .chron{grid-template-columns:minmax(0,1fr);gap:28px}
-  .chron aside{position:static;display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
+  .chron aside{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start}
   .facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 20px}
   .band{display:grid;grid-template-columns:1fr 1fr;gap:20px 14px;align-items:end}
   .band figure{width:auto}
   .vs{grid-template-columns:1fr}
+  .intro{padding-bottom:40vw}
   .foot-grid{grid-template-columns:1fr}
 }
 @media (max-width:560px){p{text-align:left}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js .ph::before,.js .ph::after,.js .radar::before,.js .radar::after{display:none}
+  .js .ph::before,.js .ph::after,.js .radar::before,.radar::after,.js .radar::after{display:none}
+  .bag{animation:none}
+  .flip.peek .in{animation:none}
   .flip .in{transition:none}
   .flip:hover .in,.flip:focus-visible .in,.flip.on .in{transform:none}
   .flip:hover .front,.flip:focus-visible .front,.flip.on .front{opacity:0}
@@ -180,9 +192,15 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 
 <main id="text">
 <section class="intro" id="intro" aria-label="Вступление">
-  <img class="bag" src="img/s-bag0.webp" width="247" height="294" alt="" aria-hidden="true" style="left:-70px;bottom:-40px;width:clamp(150px,24vw,360px)">
-  <img class="bag" src="img/s-bag2.webp" width="224" height="209" alt="" aria-hidden="true" style="left:clamp(60px,14vw,230px);bottom:-80px;width:clamp(120px,18vw,270px)">
-  <img class="bag" src="img/s-bag1.webp" width="231" height="260" alt="" aria-hidden="true" style="right:-60px;bottom:4%;width:clamp(140px,23vw,340px)">
+  <div class="bags" aria-hidden="true">
+    <img class="bag" src="img/ob1.png" alt="" style="left:-11.42%;top:26.39%;width:24.42%;--d:9s;--dl:-1s;--r:-1.5deg">
+    <img class="bag" src="img/ob3.png" alt="" style="left:-.83%;top:54%;width:19.17%;--d:11s;--dl:-4s">
+    <img class="bag" src="img/ob4.png" alt="" style="left:83.75%;top:30.02%;width:22.75%;--d:10s;--dl:-2s;--r:-1deg">
+    <img class="bag" src="img/ob5.png" alt="" style="left:81.67%;top:46.25%;width:16.58%;--d:8s;--dl:-6s;--r:2deg">
+    <img class="bag" src="img/ob6.png" alt="" style="left:79.67%;top:66.59%;width:13.75%;--d:12s;--dl:-3s">
+    <img class="bag" src="img/ob7.png" alt="" style="left:84.92%;top:55.21%;width:25.67%;--d:9.5s;--dl:-7s;--r:-2deg">
+    <img class="bag" src="img/ob2.png" alt="" style="left:-10.75%;top:48.18%;width:25.75%;--d:10.5s;--dl:-5s;--r:1deg">
+  </div>
   <div class="col">
     <p class="lead">Нефтяные разливы — одна из самых разрушительных экологических катастроф: они бьют и&nbsp;по экосистемам, и&nbsp;по людям. 15&nbsp;декабря 2024 года у&nbsp;Анапы начался масштабный разлив мазута, последствия которого ощутили и&nbsp;местные жители, и&nbsp;туристы.</p>
     <blockquote>
@@ -193,7 +211,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   </div>
 </section>
 
-<section class="sheet t1" id="chronicle" aria-labelledby="h-chron">
+<section class="sheet" id="chronicle" aria-labelledby="h-chron">
   <div class="wide">
     <h2 id="h-chron">Хроника катастрофы: море накрыло мазутом</h2>
     <p class="dek">15–18&nbsp;декабря 2024, Керченский пролив и&nbsp;побережье Анапы</p>
@@ -220,7 +238,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   <div class="fact" role="listitem"><b>600</b><span>волонтёров чистили берег первые три недели</span></div>
 </div>
 
-<section class="sheet t2" id="fauna" aria-labelledby="h-fauna">
+<section class="sheet" id="fauna" aria-labelledby="h-fauna">
   <div class="col">
     <h2 id="h-fauna">Море молчит, животные — нет</h2>
     <p class="dek">Последствия для фауны</p>
@@ -231,8 +249,8 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
     <div class="animal">
       <button class="flip" type="button" aria-label="Птицы: перевернуть карточку с цифрами">
         <span class="in">
-          <span class="face front"><span class="name">птицы</span><img src="img/sil-bird.png" width="153" height="227" alt=""></span>
-          <span class="face back"><span><b>≈8000</b><span>птиц собрали в&nbsp;первые дни</span></span><span><b>121</b><span>удалось стабилизировать в&nbsp;центрах</span></span></span>
+          <span class="face front"><span class="name">птицы</span><img src="img/sil-bird.png" width="153" height="227" alt=""><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>перевернуть</span></span>
+          <span class="face back"><span><b>≈8000</b><span>птиц собрали в&nbsp;первые дни</span></span><span><b>121</b><span>удалось стабилизировать в&nbsp;центрах</span></span><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>назад</span></span>
         </span>
       </button>
       <div class="txt">
@@ -254,8 +272,8 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
     <div class="animal r">
       <button class="flip" type="button" aria-label="Дельфины: перевернуть карточку с цифрами">
         <span class="in">
-          <span class="face front"><span class="name">дельфины</span><img src="img/sil-dolph.png" width="122" height="175" alt=""></span>
-          <span class="face back"><span><b>8</b><span>мёртвых особей нашли экологи</span></span><span><b>3</b><span>дельфина спасли</span></span><span><b>10+</b><span>выбросились на берег за неделю</span></span></span>
+          <span class="face front"><span class="name">дельфины</span><img src="img/sil-dolph.png" width="122" height="175" alt=""><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>перевернуть</span></span>
+          <span class="face back"><span><b>8</b><span>мёртвых особей нашли экологи</span></span><span><b>3</b><span>дельфина спасли</span></span><span><b>10+</b><span>выбросились на берег за неделю</span></span><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>назад</span></span>
         </span>
       </button>
       <div class="txt">
@@ -273,8 +291,8 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
     <div class="animal">
       <button class="flip" type="button" aria-label="Морские организмы: перевернуть карточку с цифрами">
         <span class="in">
-          <span class="face front"><span class="name">морские<br>организмы</span><img src="img/sil-sea.png" width="151" height="111" alt=""></span>
-          <span class="face back"><span><b>2085+&nbsp;т</b><span>замазученного грунта водолазы подняли со&nbsp;дна к&nbsp;сентябрю 2025</span></span><span><b>≈8&nbsp;мес.</b><span>и&nbsp;на дне снова живут моллюски, ракообразные и&nbsp;черви</span></span><small>РИА Новости; Ф.&nbsp;Сапожников, ИО&nbsp;РАН</small></span>
+          <span class="face front"><span class="name">морские<br>организмы</span><img src="img/sil-sea.png" width="151" height="111" alt=""><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>перевернуть</span></span>
+          <span class="face back"><span><b>2085+&nbsp;т</b><span>замазученного грунта водолазы подняли со&nbsp;дна к&nbsp;сентябрю 2025</span></span><span><b>≈8&nbsp;мес.</b><span>и&nbsp;на дне снова живут моллюски, ракообразные и&nbsp;черви</span></span><small>РИА Новости; Ф.&nbsp;Сапожников, ИО&nbsp;РАН</small><span class="turn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>назад</span></span>
         </span>
       </button>
       <div class="txt">
@@ -291,7 +309,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   </div>
 </section>
 
-<section class="sheet t3" id="people" aria-labelledby="h-people">
+<section class="sheet" id="people" aria-labelledby="h-people">
   <div class="col">
     <h2 id="h-people">Люди против нефти</h2>
     <p class="dek">Кто вынес мазут на себе</p>
@@ -326,7 +344,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   </div>
 </section>
 
-<section class="sheet t4" id="recovery" aria-labelledby="h-recov">
+<section class="sheet" id="recovery" aria-labelledby="h-recov">
   <div class="col">
     <h2 id="h-recov">Сколько море будет восстанавливаться</h2>
     <p class="dek">От полутора до десяти лет — смотря кого спросить</p>
@@ -382,14 +400,21 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 <script>
 (function(){
   // карточки: на телефоне переворачиваются по нажатию
-  document.querySelectorAll('.flip').forEach(function(b){b.addEventListener('click',function(){b.classList.toggle('on')})});
+  document.querySelectorAll('.flip').forEach(function(b){b.addEventListener('click',function(){b.classList.remove('peek');b.classList.toggle('on')});b.addEventListener('animationend',function(){b.classList.remove('peek')})});
   // переход к блоку из страницы сравнения
   addEventListener('message',function(e){var d=e.data||{};if(d.go){var t=document.querySelector(d.go);if(t)t.scrollIntoView()}});
   // фото раскрываются из щели, снимок радара «проявляется»; без JS и при reduced-motion всё видно сразу
   if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   document.documentElement.classList.add('js');
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('open');io.unobserve(e.target)}})},{rootMargin:'0px 0px -18% 0px'});
-  document.querySelectorAll('.ph,.radar').forEach(function(el){io.observe(el)});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+    if(e.target.classList.contains('flip')){if(!e.target.classList.contains('on'))e.target.classList.add('peek')}else e.target.classList.add('open');
+    io.unobserve(e.target)}})},{rootMargin:'0px 0px -25% 0px'});
+  document.querySelectorAll('.radar,.flip').forEach(function(el){io.observe(el)});
+  // фото: раскрытие привязано к пикселям прокрутки — начинается, когда верх фото входит снизу, заканчивается на 45% высоты экрана
+  var ph=[].slice.call(document.querySelectorAll('.ph')),tick=0;
+  function upd(){tick=0;var vh=innerHeight;ph.forEach(function(el){var t=el.getBoundingClientRect().top,p=(vh-t)/(vh*.55);el.style.setProperty('--p',p<0?0:p>1?1:p.toFixed(3))})}
+  addEventListener('scroll',function(){if(!tick){tick=1;requestAnimationFrame(upd)}},{passive:true});
+  addEventListener('resize',upd);upd();
 })();
 </script>
 </body>
