@@ -60,11 +60,12 @@ p{margin:0 0 1em}
 [data-pal="pink"] .hero h1{color:var(--acc)}
 .hero.gl h1{color:transparent!important}
 /* Natali's Spline figure replaces the built-in cross once it has loaded */
-.hero .spl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;opacity:0;pointer-events:none;transition:opacity .8s}
+/* her Spline scene from Tilda, with its own (now pink) title: same 1470x741 frame as on Tilda, scaled to the screen */
+.hero .spl{position:absolute;left:50%;top:50%;width:1470px;height:741px;transform:translate(-50%,-50%) scale(var(--k,1));display:block;z-index:1;opacity:0;pointer-events:none;transition:opacity .8s}
 .hero.spline .spl{pointer-events:auto}
 .hero.spline .spl{opacity:1}
 .hero.spline .hero3d{visibility:hidden}
-.hero.spline h1{color:var(--acc)!important}
+.hero.spline h1{opacity:0}
 .hero .cap{position:absolute;bottom:64px;width:min(360px,40vw);z-index:2;font:400 15px/1.6 var(--body);color:var(--dim)}
 .hero .cap b{display:block;color:var(--ink);margin-bottom:6px;font-weight:600}
 .hero .cap p{margin:0}
@@ -335,6 +336,7 @@ main,.foot{position:relative;z-index:1}
 <header class="hero" id="top">
   <canvas class="fig3d hero3d" data-fig="cross" data-text="УСПЕТЬ ВСЁ" aria-hidden="true"></canvas>
   <h1>Успеть всё</h1>
+  <spline-viewer class="spl" aria-hidden="true" url="uspet-hero.splinecode"></spline-viewer>
   <div class="cap l"><b>О проекте</b><p>Совмещение работы и учебы в университете — сложная задача. Многие студенты сталкиваются с нехваткой времени, перегрузками, стрессом и снижением успеваемости, пытаясь успевать и там, и там.<br>«Успеть всё» – для студентов, совмещающих учебу и работу.</p></div>
   <div class="cap r"><b>Кто авторы</b><p>исследование студенток 2 курса программы “Журналистика” СПбГУП</p><p>Макиенко Наталья, Дарья Чаус, Мария Дубинина, Ольга Разумова, Софья Веретенникова и Елизавета Савоськина</p></div>
   <div class="hstats"><span><b>203</b> студента в опросе</span><span><b>52%</b> работают</span><span><b>22,7%</b> успевают всё</span></div>
@@ -489,11 +491,13 @@ main,.foot{position:relative;z-index:1}
 
 <script src="wave.js"></script>
 <script src="fig3d.js"></script>
-<script src="scene.js"></script>
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 <script>
   // Natali's Spline figure, loaded the same way as on her published site; the built-in glass cross shows until it is ready
   (function(){var v=document.querySelector('.hero .spl');if(!v)return;
     v.addEventListener('load-complete',function(){v.parentElement.classList.add('spline')});
+    // as on Tilda: the frame scales with the screen width; on narrow screens it keeps a readable size
+    var fit=function(){var h=v.parentElement;v.style.setProperty('--k',Math.max(h.clientWidth/1470,h.clientHeight/741*.6))};fit();addEventListener('resize',fit);
     // if her online scene can't be reached, try the copy exported into scene.js
     setTimeout(function(){if(v.parentElement.classList.contains('spline')||!window.SPLINE_SCENE)return;
       try{var b=atob(window.SPLINE_SCENE),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
