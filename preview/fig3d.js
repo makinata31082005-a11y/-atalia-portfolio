@@ -4,36 +4,37 @@ var FIG_SHAPES={
   // her Spline figure: three rounded cylinders melted into a cross, seen at an angle
   cross:'mat3 QB(float th,float ya){return rz(.785)*rx(th)*ry(ya);}'+
     'float map(vec3 p){p=Q*p;float k=.36;return smin(smin(cyl(p,.40,1.45,.15),cyl(p.yxz,.40,1.45,.15),k),cyl(p.xzy,.5,1.5,.5),k);}',
-  // statistics: three soft columns of a bar chart on one base
-  bars:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
-    'float map(vec3 p){p=Q*p;float d=rbox(p-vec3(0.,-1.,0.),vec3(1.35,.12,.5),.12);'+
-    'd=smin(d,cyl(p-vec3(-.85,-.45,0.),.32,.6,.3),.18);d=smin(d,cyl(p-vec3(0.,.05,0.),.32,1.1,.3),.18);d=smin(d,cyl(p-vec3(.85,-.2,0.),.32,.85,.3),.18);return d;}',
-  // interviews: a speech bubble with a tail
-  bubble:'mat3 QB(float th,float ya){return rz(-.1)*rx(th)*ry(ya+.35);}'+
-    'float map(vec3 p){p=Q*p;float d=ell(p-vec3(0.,.25,0.),vec3(1.2,.78,.42));'+
-    'd=smin(d,cap(p,vec3(-.4,-.15,0.),vec3(-.85,-.95,0.),.17),.3);return d;}',
-  // teachers' opinion: two stools ("сидеть на двух стульях")
-  stools:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
-    'float stool(vec3 p,float h){float d=cyl(p-vec3(0.,h,0.),.55,.15,.14);'+
-    'for(int i=0;i<3;i++){float a=float(i)*2.094+.5;vec3 f=vec3(.48*cos(a),-1.,.48*sin(a));d=smin(d,cap(p,vec3(f.x*.6,h,f.z*.6),f,.12),.1);}return d;}'+
-    'float map(vec3 p){p=Q*p;return smin(stool(p-vec3(-.65,0.,0.),.25),stool(p-vec3(.65,0.,0.),-.15),.2);}',
-  // time management: hourglass
-  hourglass:'mat3 QB(float th,float ya){return rz(.35)*rx(th)*ry(ya);}'+
-    'float map(vec3 p){p=Q*p;float y=clamp(p.y,-1.,1.);float r=.16+.6*y*y;float d=(length(p.xz)-r)*.6;d=smax(d,abs(p.y)-1.05,.1);'+
-    'd=smin(d,cyl(p-vec3(0.,1.12,0.),.82,.12,.1),.12);d=smin(d,cyl(p+vec3(0.,1.12,0.),.82,.12,.1),.12);return d;}',
-  // calm: three balanced pebbles
-  pebbles:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
-    'float map(vec3 p){p=Q*p;float d=ell(p-vec3(0.,-.75,0.),vec3(1.05,.36,.8));'+
-    'd=smin(d,ell(p-vec3(.08,-.08,0.),vec3(.78,.3,.6)),.14);d=smin(d,ell(p-vec3(-.04,.5,0.),vec3(.5,.26,.42)),.12);'+
-    'd=smin(d,ell(p-vec3(.02,.93,0.),vec3(.26,.18,.24)),.1);return d;}',
-  // rights: a judge's gavel
-  gavel:'mat3 QB(float th,float ya){return rz(.5)*rx(th)*ry(ya);}'+
-    'float map(vec3 p){p=Q*p;float d=cyl((p-vec3(0.,.55,0.)).yxz,.38,.66,.16);'+
-    'd=smin(d,cap(p,vec3(0.,.55,0.),vec3(0.,-1.3,0.),.14),.14);return d;}',
-  // job search: a magnifying glass
-  lens:'mat3 QB(float th,float ya){return rz(-.6)*rx(th)*ry(ya);}'+
-    'float map(vec3 p){p=Q*p;vec3 q=p-vec3(0.,.4,0.);float d=tor(q.xzy,vec2(.7,.2));'+
-    'd=smin(d,cap(p,vec3(0.,-.42,0.),vec3(0.,-1.45,0.),.2),.16);return d;}'
+  // Block signs. Each one is built from the same pieces as the hero cross: rounded bars of
+  // radius ~.4 melted together with smin, seen at the same tilt, in the same glass.
+  // statistics: a percent sign
+  percent:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float d=bar(p,vec3(-.85,-1.25,0.),vec3(.85,1.25,0.),.3);'+
+    'd=smin(d,tor((p-vec3(-.78,.8,0.)).xzy,vec2(.42,.2)),.22);d=smin(d,tor((p-vec3(.78,-.8,0.)).xzy,vec2(.42,.2)),.22);return d;}',
+  // students' stories: Russian quotation mark «
+  quote:'mat3 QB(float th,float ya){return rx(th)*ry(ya+.25);}'+
+    'float chev(vec3 p){return smin(bar(p,vec3(.55,.55,0.),vec3(-.4,0.,0.),.26),bar(p,vec3(-.4,0.,0.),vec3(.55,-.55,0.),.26),.14);}'+
+    'float map(vec3 p){p=Q*p;return min(chev(p-vec3(-.6,0.,0.)),chev(p-vec3(.6,0.,0.)));}',
+  // teachers: "almost equal" sign, from "practice and study matter almost equally"
+  approx:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float wave(vec3 p,float o){float x=clamp(p.x,-1.25,1.25);float f=.24*sin(2.3*x+T*.6),df=.552*cos(2.3*x+T*.6);'+
+    'return length(vec3(p.x-x,(p.y-o-f)/sqrt(1.+df*df),p.z))-.28;}'+
+    'float map(vec3 p){p=Q*p;return min(wave(p,.45),wave(p,-.45));}',
+  // time management: a clock, its hands are a small cross
+  clock:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float d=tor(p.xzy,vec2(1.15,.26));float a=T*.15;'+
+    'float h=smin(bar(p,vec3(0.),vec3(.8*sin(a),.8*cos(a),0.),.17),bar(p,vec3(0.),vec3(.55*cos(a*.3+.6),-.55*sin(a*.3+.6),0.),.17),.1);'+
+    'return min(d,smin(h,length(p)-.24,.1));}',
+  // calm: pause, the two bars breathe slowly
+  pause:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float l=1.2+.08*sin(T*.8);'+
+    'return min(bar(p,vec3(-.45,-l,0.),vec3(-.45,l,0.),.36),bar(p,vec3(.45,-l,0.),vec3(.45,l,0.),.36));}',
+  // rights ("Качай права" = pump your rights): a dumbbell
+  dumbbell:'mat3 QB(float th,float ya){return rz(.35)*rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;float d=bar(p,vec3(-1.35,0.,0.),vec3(1.35,0.,0.),.17);vec3 q=vec3(abs(p.x),p.y,p.z);'+
+    'd=smin(d,cyl((q-vec3(.82,0.,0.)).yxz,.66,.16,.1),.08);d=smin(d,cyl((q-vec3(1.12,0.,0.)).yxz,.5,.12,.08),.08);return d;}',
+  // job search ("кто ищет, тот всегда найдёт"): a check mark
+  check:'mat3 QB(float th,float ya){return rx(th)*ry(ya);}'+
+    'float map(vec3 p){p=Q*p;return smin(bar(p,vec3(-1.,.15,0.),vec3(-.3,-.62,0.),.32),bar(p,vec3(-.3,-.62,0.),vec3(1.05,1.,0.),.32),.3);}'
 };
 function fig3d(c,o){
   var gl=c.getContext('webgl',{alpha:true,premultipliedAlpha:true,antialias:false});
@@ -52,6 +53,8 @@ function fig3d(c,o){
   'float tor(vec3 p,vec2 t){return length(vec2(length(p.xz)-t.x,p.y))-t.y;}',
   'float rbox(vec3 p,vec3 b,float r){vec3 q=abs(p)-b+r;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.)-r;}',
   'float ell(vec3 p,vec3 r){float k0=length(p/r),k1=length(p/(r*r));return k0*(k0-1.)/k1;}',
+  // rounded bar between two points, same profile as the cross arms
+  'float bar(vec3 p,vec3 a,vec3 b,float r){vec3 u=b-a;float l=length(u);u/=l;vec3 pa=p-a;float y=dot(pa,u);vec2 d=vec2(length(pa-u*y)-r+.12,abs(y-l*.5)-l*.5-r*.3+.12);return min(max(d.x,d.y),0.)+length(max(d,0.))-.12;}',
   FIG_SHAPES[o.shape||'cross'],
   'vec3 nor(vec3 p){vec2 e=vec2(.002,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}',
   'vec3 env(vec3 d){float y=d.y;vec3 c=vec3(.02)+.10*smoothstep(-.6,.9,y);',
@@ -65,7 +68,7 @@ function fig3d(c,o){
   ' vec3 ro=vec3(0.,0.,6.),rd=normalize(vec3(uv*G.w,-1.));float t=0.,d=1.;',
   ' vec3 bg=mix(BG,TC,tx(fu));',
   ' for(int i=0;i<96;i++){d=map(ro+rd*t);if(d<.001||t>10.)break;t+=d;}',
-  o.text?' if(t>10.){gl_FragColor=vec4(bg,1.);return;}':' if(t>10.){gl_FragColor=vec4(0.);return;}',  // without a title the canvas is see-through
+  o.text?(o.clear?' if(t>10.){float a=tx(fu);gl_FragColor=vec4(TC*a,a);return;}':' if(t>10.){gl_FragColor=vec4(bg,1.);return;}'):' if(t>10.){gl_FragColor=vec4(0.);return;}',  // without a title the canvas is see-through
   ' vec3 p=ro+rd*t,n=nor(p),r=reflect(rd,n);float f=pow(1.-max(dot(n,-rd),0.),2.5);',
   ' vec2 off=refract(rd,n,.72).xy*.09;float tr=tx(fu+off*vec2(R.y/R.x,1.));',
   ' vec3 base=mix(vec3(.035),vec3(.30,.012,.13),P);',
@@ -84,21 +87,29 @@ function fig3d(c,o){
   function drawText(w,h){
     // the title lives in a texture so the figure can bend it (as in her Spline scene)
     tc.width=w;tc.height=h;tctx.fillStyle='#000';tctx.fillRect(0,0,w,h);
-    if(o.text){var fz=h*(o.size||.245);tctx.font='700 '+fz+'px '+(o.font||'Oswald');
-      var tw0=tctx.measureText(o.text).width;if(tw0>w*.9){fz*=w*.9/tw0;tctx.font='700 '+fz+'px '+(o.font||'Oswald');}
-      tctx.fillStyle='#fff';tctx.textAlign='center';tctx.textBaseline='middle';tctx.fillText(o.text,w*.5,h*(h>w?.4:(o.ty||.475)));}
+    if(o.text){
+      // '|' splits a title into lines (used for narrow screens)
+      var L=((o.textM&&w<h*1.6)?o.textM:o.text).split('|'),fz=Math.min(h*(o.size||.245),h*.78/L.length),ff=fontNow();tctx.font='700 '+fz+'px '+ff;
+      var tw0=Math.max.apply(null,L.map(function(x){return tctx.measureText(x).width}));if(tw0>w*.9){fz*=w*.9/tw0;tctx.font='700 '+fz+'px '+ff;}
+      var cy=h*(h>w&&!o.textM?.4:(o.ty||.475));
+      tctx.fillStyle='#fff';tctx.textAlign='center';tctx.textBaseline='middle';
+      L.forEach(function(x,i){tctx.fillText(x,w*.5,cy+(i-(L.length-1)/2)*fz*.98)});}
     gl.bindTexture(gl.TEXTURE_2D,tex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,tc);
   }
   var area=(o.hover&&o.hover.getBoundingClientRect)?o.hover:c.parentElement,m=[0,0],sm=[0,0],pk=0,t0=performance.now(),tw=0,th=0;
-  var moved=false;
+  var moved=false,still=matchMedia('(prefers-reduced-motion: reduce)');
   window.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;moved=true;
     // 'viewport': the figure follows the cursor anywhere on the screen
     var r=o.hover==='viewport'?{left:0,top:0,width:innerWidth,height:innerHeight}:area.getBoundingClientRect();if(!r.width)return;
     m=[Math.max(-1,Math.min(1,(e.clientX-r.left)/r.width*2-1)),Math.max(-1,Math.min(1,(e.clientY-r.top)/r.height*2-1))]});
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){tw=0});
+  // the title font can be switched live: redraw when it changes or finishes loading
+  function fontNow(){return (typeof o.font==='function'?o.font():o.font)||'Oswald'}
+  var lastF=fontNow();if(document.fonts&&document.fonts.addEventListener)document.fonts.addEventListener('loadingdone',function(){tw=0});
   function hex(s){s=s.replace('#','');return [0,2,4].map(function(i){return parseInt(s.substr(i,2),16)/255})}
   (function frame(){
     if(!c.isConnected)return;
+    var fn=fontNow();if(fn!==lastF){lastF=fn;tw=0}
     var r=c.getBoundingClientRect();
     // draw only while on screen
     if(r.width>0&&r.bottom>0&&r.top<innerHeight&&c.offsetParent){
@@ -106,11 +117,11 @@ function fig3d(c,o){
       if(c.width!==w||c.height!==h){c.width=w;c.height=h;gl.viewport(0,0,w,h)}
       if(tw!==w||th!==h){drawText(w,h);tw=w;th=h}
       // no mouse (phone): slow sway instead of following the cursor
-      if(!moved){var ts=(performance.now()-t0)/1000;m=[Math.sin(ts*.45)*.45,Math.cos(ts*.33)*.25]}
+      if(!moved&&!still.matches){var ts=(performance.now()-t0)/1000;m=[Math.sin(ts*.45)*.45,Math.cos(ts*.33)*.25]}
       sm[0]+=(m[0]-sm[0])*.06;sm[1]+=(m[1]-sm[1])*.06;
       var st=o.state();pk+=(st.pink-pk)*.12;
       var tcol=hex(st.tc||'#ffffff'),bg=hex(o.bg||'#1c1c1c'),g=o.geo||[0,0,-.6,.47];
-      gl.uniform2f(U.R,w,h);gl.uniform1f(U.T,(performance.now()-t0)/1000);gl.uniform1f(U.P,pk);gl.uniform2f(U.M,sm[0],sm[1]);
+      gl.uniform2f(U.R,w,h);gl.uniform1f(U.T,still.matches?0:(performance.now()-t0)/1000);gl.uniform1f(U.P,pk);gl.uniform2f(U.M,sm[0],sm[1]);
       gl.uniform3f(U.TC,tcol[0],tcol[1],tcol[2]);gl.uniform3f(U.BG,bg[0],bg[1],bg[2]);gl.uniform1i(U.TX,0);gl.uniform4f(U.G,g[0],g[1]+(h>w&&o.text?.075:0),g[2],g[3]*Math.max(1,h/w*.9));
       gl.drawArrays(gl.TRIANGLES,0,3);
     }

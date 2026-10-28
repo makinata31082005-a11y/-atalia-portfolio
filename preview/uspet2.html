@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="ru" data-style="3d" data-pal="pink" data-align="left">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Успеть всё</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Unbounded:wght@400;500;600;700&display=swap">
+<style>
+/* Одна система для всех блоков: тёмный фон, Oswald в заголовках, Unbounded в акцентах, Manrope в тексте.
+   data-style: 3d (мои фигуры + стеклянные карточки) | mine (твои хромовые фигуры, булавки, серые карточки)
+   data-pal: mono | pink (розовый текст) | fig (розовые фигуры) */
+:root{
+  --bg:#1c1c1c; --ink:#f2f2f2; --dim:#a3a3a3; --line:rgba(255,255,255,.14);
+  --acc:#ffffff; --acc-ink:#141414;
+  --head:"Oswald","Arial Narrow",sans-serif; --wide:"Unbounded","Arial Black",sans-serif; --body:"Manrope",system-ui,sans-serif;
+  --card:rgba(16,16,16,.42); --card-b:rgba(255,255,255,.12); --blur:blur(40px) saturate(1.2);
+  --r:22px; --gut:40px; --ease:cubic-bezier(.23,1,.32,1);
+}
+[data-pal="pink"]{--acc:#ff3d9a;--acc-ink:#1c1c1c}
+[data-style="mine"]{--card:#262626;--card-b:#3c3c3c;--blur:none}
+*{box-sizing:border-box}
+html{background:var(--bg);color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+.acc{color:var(--acc)}
+p{margin:0 0 1em}
+[data-align="justify"] p,[data-align="justify"] li{text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+
+/* sections */
+.sec{position:relative;padding:130px 0 120px;overflow:hidden;scroll-margin-top:0}
+.in{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 var(--gut)}
+.sh{text-align:center;margin-bottom:64px}
+.sh h2{margin:0;text-wrap:balance;font:700 clamp(36px,5vw,64px)/1 var(--head);text-transform:uppercase;letter-spacing:.01em}
+.sh p{margin:14px 0 0;font:500 18px/1.4 var(--body);color:var(--dim)}
+.sh p::first-letter{text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--card-b);border-radius:var(--r);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
+.kick{font:600 14px var(--body);color:var(--acc)}
+
+/* only the hero figure stays; block figures will be designed later */
+.fig3d{position:absolute;pointer-events:none;z-index:0}
+/* her pins and clips, only in her variant */
+.pin{display:none;position:absolute;pointer-events:none;z-index:2}
+[data-style="mine"] .pin{display:block}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;justify-content:center;gap:40px;padding:24px 40px;font:500 14px var(--head);text-transform:uppercase;letter-spacing:.16em;transition:background .2s var(--ease)}
+.nav.solid{background:rgba(28,28,28,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.nav a{position:relative;padding-bottom:6px;text-decoration:none;color:transparent;background:linear-gradient(90deg,var(--acc) 46%,#9a9a9a 54%) 100% 0/250% 100% no-repeat;-webkit-background-clip:text;background-clip:text;transition:background-position .6s cubic-bezier(.65,0,.35,1)}
+.nav a::after{content:"";position:absolute;left:0;right:.16em;bottom:0;height:1.5px;background:var(--acc);transform:scaleX(0);transform-origin:0;transition:transform .6s cubic-bezier(.65,0,.35,1)}
+.nav a:hover,.nav a:focus-visible,.nav a.on{background-position:0 0}
+.nav a.on::after{transform:none}
+
+/* 01 hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;max-height:1000px;overflow:hidden}
+.hero .hero3d{inset:0;width:100%;height:100%}
+.hero h1{position:absolute;left:0;right:0;top:47.5%;transform:translateY(-50%);margin:0;text-align:center;font:700 clamp(80px,16vw,232px)/1 var(--head);text-transform:uppercase;color:#fff;z-index:1;pointer-events:none}
+[data-pal="pink"] .hero h1{color:var(--acc)}
+.hero.gl h1{color:transparent!important}
+/* Natali's Spline figure replaces the built-in cross once it has loaded */
+.hero .spl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;opacity:0;pointer-events:none;transition:opacity .8s}
+.hero.spline .spl{pointer-events:auto}
+.hero.spline .spl{opacity:1}
+.hero.spline .hero3d{visibility:hidden}
+.hero.spline h1{color:var(--acc)!important}
+.hero .cap{position:absolute;bottom:64px;width:min(360px,40vw);z-index:2;font:400 15px/1.6 var(--body);color:var(--dim)}
+.hero .cap b{display:block;color:var(--ink);margin-bottom:6px;font-weight:600}
+.hero .cap p{margin:0}
+.hero .l{left:40px}.hero .r{right:40px;text-align:right}
+.hstats{position:absolute;left:0;right:0;bottom:26px;z-index:2;display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
+.hstats span{display:flex;align-items:baseline;gap:10px;font:500 13px var(--head);text-transform:uppercase;letter-spacing:.1em;color:#9a9a9a}
+.hstats b{font:600 26px var(--wide);letter-spacing:-.02em;color:var(--acc)}
+
+/* 02 statistics */
+.stat .lead{font:500 22px/1.5 var(--body);max-width:640px;margin:0 0 48px}
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:20px;counter-reset:sc}
+.scol{display:contents}
+/* flip card: the question on the front, answers on the back; hover or the arrow turns it */
+.sc{position:relative;z-index:2;display:grid;perspective:1400px}
+.sc .flip{display:grid;min-height:210px}
+.sc{counter-increment:sc}
+.sc .face{grid-area:1/1;padding:28px 28px 76px;display:flex;flex-direction:column;justify-content:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;position:relative;transform:perspective(1400px) rotateY(0);transition:transform .7s var(--ease)}
+.sc .back{transform:perspective(1400px) rotateY(-180deg);justify-content:flex-start}
+.sc.open .front{transform:perspective(1400px) rotateY(180deg)}.sc.open .back{transform:perspective(1400px) rotateY(0)}
+@media (hover:hover){.sc:hover .front{transform:perspective(1400px) rotateY(180deg)}.sc:hover .back{transform:perspective(1400px) rotateY(0)}}
+.sc h3{margin:0;font:600 clamp(22px,2.1vw,30px)/1.12 var(--wide);text-transform:uppercase;letter-spacing:-.01em;text-align:left;text-wrap:balance}
+.sc .front{justify-content:space-between;padding:26px 30px 30px}
+.sc .front::before{content:"0" counter(sc);font:500 15px var(--head);letter-spacing:.14em;color:var(--acc)}
+.sc .front h3{padding-right:56px}
+.sc .back h3{font-size:13px;letter-spacing:.04em;margin-bottom:18px;text-align:left;color:var(--dim)}
+.sc .data{display:grid;gap:12px}
+.sc .row{display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center}
+.sc .row b{font:600 22px var(--wide);color:var(--acc);letter-spacing:-.03em}
+.sc .row span{font-size:14px;line-height:1.35}
+.sc .row i{grid-column:1/-1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.sc .row i::after{content:"";display:block;height:100%;width:var(--v);background:var(--acc);transform:scaleX(0);transform-origin:0;transition:transform .6s var(--ease) .3s}
+.sc.open .row i::after{transform:none}
+@media (hover:hover){.sc:hover .row i::after{transform:none}}
+.sc .row:nth-child(2) i::after{transition-delay:.37s}.sc .row:nth-child(3) i::after{transition-delay:.44s}.sc .row:nth-child(4) i::after{transition-delay:.51s}
+.sc .go{position:absolute;z-index:3;right:20px;bottom:18px;width:42px;height:42px;border-radius:50%;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;display:grid;place-items:center;transition:transform .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease)}
+.sc .go svg{width:20px;height:20px}
+.sc.open .go{transform:rotate(180deg);background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+@media (hover:hover){.sc:hover .go{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}}
+
+/* 03/04 people (students and teachers use one component) */
+.tabs{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px}
+.tab{display:flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border-radius:999px;border:1px solid var(--card-b);background:var(--card);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);cursor:pointer;text-align:left}
+.tab img{width:52px;height:52px;border-radius:50%;object-fit:cover;filter:grayscale(1)}
+.tab b{display:block;font:600 13px/1.3 var(--wide);text-transform:uppercase}
+.tab span{display:block;font-size:13px;color:var(--dim);line-height:1.3}
+.tab[aria-selected="true"]{border-color:var(--acc);background:rgba(255,255,255,.1)}
+.person{display:grid;grid-template-columns:300px minmax(0,1fr);gap:56px;align-items:start}
+.person[hidden]{display:none}
+.person .ph{position:sticky;top:100px}
+.person .ph img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r);filter:grayscale(1)}
+.person .ph b{display:block;margin-top:18px;font:600 20px/1.25 var(--wide);text-transform:uppercase}
+.person .ph span{display:block;color:var(--dim);font-size:15px;margin-top:4px}
+.qa{display:grid;gap:8px}
+.qi{background:rgba(18,18,18,.42);-webkit-backdrop-filter:blur(40px) saturate(1.2);backdrop-filter:blur(40px) saturate(1.2);border-radius:16px;padding:0 20px}
+.qi>button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 36px;gap:14px;align-items:center;width:100%;padding:20px 0;font:600 20px/1.35 var(--body)}
+.qi>button:focus-visible{outline:2px solid var(--acc)}
+.qi .pm{width:34px;height:34px;border:1px solid var(--dim);border-radius:50%;display:grid;place-items:center;font:400 20px/1 var(--body);transition:transform .2s var(--ease),background .2s var(--ease)}
+.qi.open .pm{transform:rotate(45deg);background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.qi .ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.qi.open .ans{grid-template-rows:1fr}
+.qi .ans>div{overflow:hidden;opacity:0;transition:opacity .2s var(--ease)}
+.qi.open .ans>div{opacity:1}
+.qi .ans .card{margin:0 0 20px;padding:22px 26px;border-radius:18px 18px 18px 4px;color:#dedede;font-size:16px;line-height:1.7;max-width:68ch}
+.qi .ans p:last-child{margin:0}
+/* portraits: small, duotone, with a pink ring, instead of big grey photos */
+[data-iv] .person .ph img,.byq .who img{filter:grayscale(1) contrast(1.15);border-radius:50%;outline:2px solid var(--acc);outline-offset:4px;object-fit:cover}
+[data-iv] .tabs{display:none}
+[data-iv] .person[hidden]{display:grid}
+/* 1 · side by side: both people at once, no switching */
+[data-iv="duo"] .ivw{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:start}
+[data-iv="duo"] .person{grid-template-columns:minmax(0,1fr);gap:22px}
+[data-iv="duo"] .person .ph{position:static;display:grid;grid-template-columns:88px minmax(0,1fr);gap:22px;align-items:center}
+[data-iv="duo"] .person .ph img{width:88px;height:88px;aspect-ratio:auto}
+[data-iv="duo"] .person .ph b{margin:0;font-size:18px}
+[data-iv="duo"] .qi>button{font-size:17px}
+/* 2 · dialogue: question bubbles on the right, answers on the left, one person after another */
+[data-iv="chat"] .ivw{display:grid;gap:88px}
+[data-iv="chat"] .person{grid-template-columns:200px minmax(0,1fr);gap:48px}
+[data-iv="chat"] .person .ph img{width:120px;height:120px;aspect-ratio:auto}
+[data-iv="chat"] .person .ph b{font-size:18px}
+[data-iv="chat"] .qa{gap:18px}
+[data-iv="chat"] .qi{background:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;display:grid;gap:12px}
+[data-iv="chat"] .qi>button{justify-self:end;max-width:78%;width:auto;grid-template-columns:auto;padding:14px 20px;border-radius:22px 22px 4px 22px;background:var(--acc);color:var(--acc-ink);font-size:17px;cursor:default}
+[data-iv="chat"] .qi .pm{display:none}
+[data-iv="chat"] .qi .ans{grid-template-rows:1fr}
+[data-iv="chat"] .qi .ans>div{opacity:1}
+[data-iv="chat"] .qi .ans .card{margin:0;max-width:86%}
+/* 3 · question by question: each question once, both answers next to each other */
+[data-iv="byq"] .person{display:none!important}
+.byq{display:grid;gap:56px}
+.byq .q{margin:0 0 22px;max-width:30ch;font:600 clamp(22px,2.2vw,30px)/1.2 var(--wide);text-transform:uppercase}
+.byq .q small{display:block;margin-bottom:10px;font:500 13px var(--head);letter-spacing:.14em;color:var(--acc)}
+.byq .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.byq .a{padding:22px 24px 24px;border-radius:18px;color:#dedede;font-size:16px;line-height:1.7}
+.byq .a p:last-child{margin-bottom:0}
+.byq .who{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:center;margin-bottom:16px}
+.byq .who img{width:52px;height:52px}
+.byq .who b{display:block;font:600 14px/1.3 var(--wide);text-transform:uppercase;color:var(--ink)}
+.byq .who span{display:block;font-size:13px;line-height:1.35;color:var(--dim)}
+.byq .own{margin:0 0 12px;font-size:14px;color:var(--dim)}
+
+/* 05 time */
+/* one row swiped sideways with the trackpad, as in her first version of the jobs block */
+.tgrid{display:flex;gap:22px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-left:0;scrollbar-width:none;margin-right:calc(50% - 50vw);padding:4px var(--gut) 8px 0;outline:none}
+.tgrid::-webkit-scrollbar{display:none}
+.tgrid:focus-visible{outline:2px solid var(--acc);outline-offset:6px}
+.tgrid .tc{flex:0 0 340px;scroll-snap-align:start}
+.tc{padding:30px 28px 32px;position:relative;z-index:1;min-height:240px}
+.tc h3{margin:0 0 14px;font:600 19px/1.3 var(--wide);text-transform:uppercase;color:var(--acc)}
+.tc p{margin:0;color:#d0d0d0;font-size:15.5px;line-height:1.6}
+
+/* 06 calm */
+.glabel{margin:0 0 22px;font:600 22px/1.3 var(--body)}
+.cgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-bottom:56px}
+.cgrid.five{grid-template-columns:repeat(6,minmax(0,1fr))}
+.cgrid.five>*{grid-column:span 2}
+.cgrid.five>*:nth-child(4){grid-column:2/span 2}
+.cc{padding:30px 26px;position:relative;display:flex;flex-direction:column;gap:12px;min-height:230px}
+.cc h3{margin:0;font:600 17px/1.25 var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc p{margin:0;font-size:16px;line-height:1.55}
+.cc em{font-style:normal;font:600 16px var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc .tool{margin-top:auto;padding-bottom:4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cc .clock{font:600 40px/1 var(--wide);letter-spacing:-.04em;font-variant-numeric:tabular-nums;flex-basis:100%}
+.btn{font:600 15px var(--body);border:1.5px solid var(--acc);color:var(--acc);background:transparent;border-radius:999px;min-height:44px;padding:10px 20px;cursor:pointer;transition:transform .12s var(--ease)}
+.btn:active,.tab:active{transform:scale(.97)}
+.tab{transition:transform .12s var(--ease)}
+.btn.main{background:var(--acc);color:var(--acc-ink)}
+.breath{position:relative;width:96px;height:96px;border-radius:50%;border:1.5px solid var(--acc);margin-right:auto}
+.breath i{position:absolute;inset:0;border-radius:50%;background:var(--acc);opacity:.85;transform:scale(.36);transition:transform 4s ease-in-out}
+.breath.inhale i{transform:scale(1)}
+.breath em{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:600 14px var(--body);color:var(--ink)}
+.cc textarea{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--card-b);border-radius:12px;color:var(--ink);font:15px var(--body);padding:10px 12px;resize:vertical;min-height:64px}
+/* her variant: light paper notes with her clips (as in her design) */
+[data-style="mine"] .calm .cc{background:#d9d9d9;color:#151515;border-color:#d9d9d9}
+[data-style="mine"] .calm .cc h3,[data-style="mine"] .calm .cc em{color:#b5001b}
+[data-style="mine"][data-pal="pink"] .calm .cc h3,[data-style="mine"][data-pal="pink"] .calm .cc em{color:#a8005a}
+[data-style="mine"] .calm .btn{border-color:#151515;color:#151515}
+[data-style="mine"] .calm .btn.main{background:#151515;color:#d9d9d9}
+[data-style="mine"] .calm .breath{border-color:#151515}[data-style="mine"] .calm .breath i{background:#151515}[data-style="mine"] .calm .breath em{color:#151515}
+[data-style="mine"] .calm textarea{background:#fff;color:#151515;border-color:#bbb}
+
+/* 07 rights */
+.rgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
+.rc{padding:30px 30px 28px;position:relative}
+.rc h3{margin:0 0 12px;font:600 21px/1.3 var(--wide);text-transform:uppercase}
+.rc>p{color:#d4d4d4;font-size:16px}
+.rc ul{margin:12px 0 0;padding-left:18px;display:grid;gap:7px;font-size:15.5px;color:#e0e0e0}
+.rc ul ul{margin-top:6px;gap:4px}
+.rc .sub{list-style:none;margin-left:-18px;margin-top:10px;color:var(--dim);font-size:15px;font-weight:600}
+.rc details{margin-top:16px}
+.rc summary{list-style:none;cursor:pointer;display:inline-block}
+.rc summary::-webkit-details-marker{display:none}
+.rc details[open] summary{background:var(--acc);color:var(--acc-ink)}
+.rc details[open] summary .t1,.rc details:not([open]) summary .t2{display:none}
+
+/* 08 job search */
+.jgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.jc{padding:30px 28px;position:relative;min-height:230px}
+.jc h3{margin:0 0 16px;font:600 16px/1.3 var(--wide);text-transform:uppercase}
+.jc .grp{font:600 15px var(--body);color:var(--acc);margin:0 0 8px}
+.jc ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.jc li{padding-left:18px;position:relative}
+.jc li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--acc)}
+
+.foot{background:#161616;padding:40px var(--gut) 48px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font:500 15px/1.6 var(--body);color:var(--dim)}
+.foot a{color:var(--ink)}
+
+@media (max-width:900px){
+  :root{--gut:20px}
+  body{font-size:16px}
+  .sec{padding:84px 0 80px}
+  .sh{margin-bottom:40px}.sh h2{font-size:clamp(30px,8.2vw,48px)}.sh p{font-size:16px}
+  .stat .lead{font-size:18px}.glabel{font-size:19px}
+  .nav{display:none}
+  .hero{max-height:none}
+  .hero .cap{left:20px;right:20px;width:auto;text-align:left;font-size:13px;line-height:1.5}
+  .hero .l{top:58%;bottom:auto}.hero .r{bottom:52px}
+  .hstats{top:64px;bottom:auto;left:20px;right:20px;gap:12px;justify-content:space-between;flex-wrap:nowrap}
+  .hstats span{flex-direction:column;gap:4px;font-size:11px;letter-spacing:.08em}
+  .hstats b{font-size:22px}
+  .hero h1{top:40%}
+  .sgrid{grid-template-columns:minmax(0,1fr)}
+  .person{grid-template-columns:minmax(0,1fr);gap:24px}
+  .person .ph{position:static;display:grid;grid-template-columns:110px 1fr;gap:16px;align-items:center}
+  .person .ph img{aspect-ratio:1}
+  .person .ph b{margin-top:0;font-size:16px}
+  .qi>button{grid-template-columns:minmax(0,1fr) 34px;font-size:17px}
+  .qi{padding:0 16px}
+  .qi .ans .card{margin-left:0}
+  [data-iv="duo"] .ivw,.byq .two{grid-template-columns:minmax(0,1fr)}
+  [data-iv="chat"] .person{grid-template-columns:minmax(0,1fr);gap:24px}
+  [data-iv="chat"] .person .ph{grid-template-columns:72px 1fr}
+  [data-iv="chat"] .person .ph img{width:72px;height:72px}
+  .tgrid,.cgrid,.cgrid.five,.rgrid,.jgrid{grid-template-columns:minmax(0,1fr)}
+  .cgrid.five>*,.cgrid.five>*:nth-child(4){grid-column:auto}
+  .tgrid .tc{flex-basis:78vw}
+}
+/* section entrance: only when JS runs and motion is allowed, so nothing stays hidden */
+.rv-on .rv{opacity:0;transform:translateY(20px);transition:opacity .5s var(--ease),transform .5s var(--ease);transition-delay:calc(var(--i,0) * 70ms)}
+.rv-on .rv.seen{opacity:1;transform:none}
+
+/* glow border that follows the cursor (GlowCard idea, plain CSS/JS): purple on the left of the screen, pink in the middle, white on the right */
+.glo{position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;z-index:4;
+  background:radial-gradient(200px 200px at var(--lx,-999px) var(--ly,-999px),rgb(var(--gc) / .09),transparent)}
+.glo::before,.glo::after,.glo i::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glo::before{background:radial-gradient(150px 150px at var(--lx,-999px) var(--ly,-999px),rgb(var(--gc)),transparent)}
+.glo::after{background:radial-gradient(90px 90px at var(--lx,-999px) var(--ly,-999px),rgb(255 255 255 / .9),transparent)}
+.glo i{position:absolute;inset:0;border-radius:inherit;filter:blur(12px)}
+.glo i::before{inset:-6px;padding:8px;background:radial-gradient(160px 160px at calc(var(--lx,-999px) + 6px) calc(var(--ly,-999px) + 6px),rgb(var(--gc)),transparent)}
+.tgrid{padding-top:16px;padding-bottom:20px;margin-top:-12px;margin-bottom:-12px}
+[data-style="mine"] .calm .glo{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+.wave{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,.foot{position:relative;z-index:1}
+
+/* visual layer: pictures made from her own numbers and quotes */
+.sc .dots{margin:0}
+.dgrid{display:grid;grid-template-rows:repeat(7,auto);grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:clamp(3px,.7vw,9px)}
+.dgrid i{display:block;aspect-ratio:1;border-radius:50%;border:1.5px solid rgba(255,255,255,.22)}
+.dgrid i.w{background:var(--acc);border-color:var(--acc)}
+.sc .dgrid{gap:3px}.sc .dgrid i{border-width:1px}
+.sc .dgrid i.w{background:transparent;border-color:rgba(255,255,255,.22);transition:background .3s var(--ease),border-color .3s var(--ease);transition-delay:calc(var(--d) * 5ms + .35s)}
+.sc.open .dgrid i.w{background:var(--acc);border-color:var(--acc)}
+@media (hover:hover){.sc:hover .dgrid i.w{background:var(--acc);border-color:var(--acc)}}
+.sc .dots figcaption{margin-top:16px;gap:28px}.sc .dots figcaption b{font-size:24px}
+.dots figcaption{display:flex;gap:40px;margin-top:22px;flex-wrap:wrap}
+.dots figcaption span,.nums span{display:flex;align-items:baseline;gap:10px;font:500 14px var(--head);text-transform:uppercase;letter-spacing:.1em;color:#9a9a9a}
+.dots figcaption b,.nums b{font:600 30px var(--wide);letter-spacing:-.02em;color:var(--acc)}
+.dots figcaption .no b{color:var(--ink)}
+.pq{margin:96px 0 0;padding:56px 0 0;border-top:1px solid var(--card-b)}
+.pq p{margin:0;max-width:22ch;font:700 clamp(36px,5.2vw,72px)/1.04 var(--head);text-transform:uppercase;text-wrap:balance}
+.pq em{font-style:normal;color:var(--acc)}
+.pq cite,.joke small{display:block;margin-top:22px;font:500 14px var(--head);font-style:normal;text-transform:uppercase;letter-spacing:.1em;color:#9a9a9a}
+.joke{margin:96px 0 0;padding:56px 0 0;border-top:1px solid var(--card-b)}
+.joke figcaption{font:700 clamp(30px,4vw,52px)/1.05 var(--head);text-transform:uppercase;margin:0 0 36px;max-width:22ch}
+.jt{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.jt .opt{padding:26px 26px 30px}
+.jt .opt h3{margin:0 0 22px;font:500 13px var(--head);letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a}
+.jt ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.jt li{display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:center;font:600 17px var(--wide);text-transform:uppercase}
+.jt li::before{content:"";box-sizing:border-box;width:22px;height:22px;border-radius:50%;background:var(--acc)}
+.jt li.bad{color:#7a7a7a}.jt li.bad::before{background:none;border:1.5px solid #5c5c5c}
+.jt .opt.last{border-color:var(--acc)}
+.jt .opt.last li.bad{color:var(--acc)}.jt .opt.last li.bad::before{border-color:var(--acc)}
+.nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;margin:0 0 56px;padding:0 0 40px;border-bottom:1px solid var(--card-b)}
+.nums b{font-size:26px;white-space:nowrap}
+.nums span{flex-direction:column;align-items:flex-start;gap:8px;line-height:1.35;letter-spacing:.08em}
+@media (max-width:900px){
+  .dots figcaption{gap:22px}.dots figcaption b,.nums b{font-size:24px}
+  .pq,.joke{margin-top:64px;padding-top:40px}
+  .jt{grid-template-columns:minmax(0,1fr)}
+  .nums{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+}
+
+.gh{position:relative}
+.gh .ghc{position:relative;display:block;width:calc(100% + 2*var(--gut));height:400px;margin:-110px calc(-1*var(--gut)) -136px;-webkit-mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 78%,transparent)}
+.gh p{position:relative;z-index:1}
+.gh.gl h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:900px){.gh .ghc{height:360px;margin:-70px calc(-1*var(--gut)) -90px}}
+</style>
+
+<nav class="nav" aria-label="Разделы">
+  <a href="#statistics">Статистика</a><a href="#history">Истории</a><a href="#opinion">Мнение</a><a href="#timemanagement">Тайм-менеджмент</a><a href="#recommendations">Советы</a><a href="#rights">Права</a><a href="#jobs">Вакансии</a>
+</nav>
+
+<!-- 01 · Первый экран: её фигура, повторённая кодом -->
+<header class="hero" id="top">
+  <canvas class="fig3d hero3d" data-fig="cross" data-text="УСПЕТЬ ВСЁ" aria-hidden="true"></canvas>
+  <h1>Успеть всё</h1>
+  <spline-viewer class="spl" aria-hidden="true" url="https://prod.spline.design/4RneWajmfmfr07YV/scene.splinecode"></spline-viewer>
+  <div class="cap l"><b>О проекте</b><p>Совмещение работы и учебы в университете — сложная задача. Многие студенты сталкиваются с нехваткой времени, перегрузками, стрессом и снижением успеваемости, пытаясь успевать и там, и там.<br>«Успеть всё» – для студентов, совмещающих учебу и работу.</p></div>
+  <div class="cap r"><b>Кто авторы</b><p>исследование студенток 2 курса программы “Журналистика” СПбГУП</p><p>Макиенко Наталья, Дарья Чаус, Мария Дубинина, Ольга Разумова, Софья Веретенникова и Елизавета Савоськина</p></div>
+  <div class="hstats"><span><b>203</b> студента в опросе</span><span><b>52%</b> работают</span><span><b>22,7%</b> успевают всё</span></div>
+</header>
+
+<main>
+<!-- 02 · Статистика -->
+<section class="sec stat" id="statistics">
+  <div class="in">
+    <header class="sh"><h2>Зачем им работа?</h2><p>статистика опроса</p></header>
+    <p class="lead">Мы провели опрос среди студентов с 1-4 курсов.<br>В опросе приняли участие 203 человека.</p>
+    <div class="sgrid">
+      <div class="scol">
+        <div class="sc"><div class="flip"><div class="face front card"><h3>Работающие студенты</h3><button class="go" type="button" aria-expanded="false" aria-label="Показать ответы"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div><div class="face back card"><h3 aria-hidden="true">Работающие студенты</h3><figure class="dots" aria-label="203 участника опроса: 52% работают, 48% не работают"><div class="dgrid" aria-hidden="true"><i class="w" style="--d:0"></i><i class="w" style="--d:1"></i><i class="w" style="--d:2"></i><i class="w" style="--d:3"></i><i class="w" style="--d:4"></i><i class="w" style="--d:5"></i><i class="w" style="--d:6"></i><i class="w" style="--d:7"></i><i class="w" style="--d:8"></i><i class="w" style="--d:9"></i><i class="w" style="--d:10"></i><i class="w" style="--d:11"></i><i class="w" style="--d:12"></i><i class="w" style="--d:13"></i><i class="w" style="--d:14"></i><i class="w" style="--d:15"></i><i class="w" style="--d:16"></i><i class="w" style="--d:17"></i><i class="w" style="--d:18"></i><i class="w" style="--d:19"></i><i class="w" style="--d:20"></i><i class="w" style="--d:21"></i><i class="w" style="--d:22"></i><i class="w" style="--d:23"></i><i class="w" style="--d:24"></i><i class="w" style="--d:25"></i><i class="w" style="--d:26"></i><i class="w" style="--d:27"></i><i class="w" style="--d:28"></i><i class="w" style="--d:29"></i><i class="w" style="--d:30"></i><i class="w" style="--d:31"></i><i class="w" style="--d:32"></i><i class="w" style="--d:33"></i><i class="w" style="--d:34"></i><i class="w" style="--d:35"></i><i class="w" style="--d:36"></i><i class="w" style="--d:37"></i><i class="w" style="--d:38"></i><i class="w" style="--d:39"></i><i class="w" style="--d:40"></i><i class="w" style="--d:41"></i><i class="w" style="--d:42"></i><i class="w" style="--d:43"></i><i class="w" style="--d:44"></i><i class="w" style="--d:45"></i><i class="w" style="--d:46"></i><i class="w" style="--d:47"></i><i class="w" style="--d:48"></i><i class="w" style="--d:49"></i><i class="w" style="--d:50"></i><i class="w" style="--d:51"></i><i class="w" style="--d:52"></i><i class="w" style="--d:53"></i><i class="w" style="--d:54"></i><i class="w" style="--d:55"></i><i class="w" style="--d:56"></i><i class="w" style="--d:57"></i><i class="w" style="--d:58"></i><i class="w" style="--d:59"></i><i class="w" style="--d:60"></i><i class="w" style="--d:61"></i><i class="w" style="--d:62"></i><i class="w" style="--d:63"></i><i class="w" style="--d:64"></i><i class="w" style="--d:65"></i><i class="w" style="--d:66"></i><i class="w" style="--d:67"></i><i class="w" style="--d:68"></i><i class="w" style="--d:69"></i><i class="w" style="--d:70"></i><i class="w" style="--d:71"></i><i class="w" style="--d:72"></i><i class="w" style="--d:73"></i><i class="w" style="--d:74"></i><i class="w" style="--d:75"></i><i class="w" style="--d:76"></i><i class="w" style="--d:77"></i><i class="w" style="--d:78"></i><i class="w" style="--d:79"></i><i class="w" style="--d:80"></i><i class="w" style="--d:81"></i><i class="w" style="--d:82"></i><i class="w" style="--d:83"></i><i class="w" style="--d:84"></i><i class="w" style="--d:85"></i><i class="w" style="--d:86"></i><i class="w" style="--d:87"></i><i class="w" style="--d:88"></i><i class="w" style="--d:89"></i><i class="w" style="--d:90"></i><i class="w" style="--d:91"></i><i class="w" style="--d:92"></i><i class="w" style="--d:93"></i><i class="w" style="--d:94"></i><i class="w" style="--d:95"></i><i class="w" style="--d:96"></i><i class="w" style="--d:97"></i><i class="w" style="--d:98"></i><i class="w" style="--d:99"></i><i class="w" style="--d:100"></i><i class="w" style="--d:101"></i><i class="w" style="--d:102"></i><i class="w" style="--d:103"></i><i class="w" style="--d:104"></i><i class="w" style="--d:105"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><figcaption><span><b>52%</b> работают</span><span class="no"><b>48%</b> не работают</span></figcaption></figure><button class="go" type="button" aria-expanded="true" aria-label="Скрыть ответы" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div></div></div>
+        <div class="sc"><div class="flip"><div class="face front card"><h3>Почему студенты идут работать</h3><button class="go" type="button" aria-expanded="false" aria-label="Показать ответы"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div><div class="face back card"><h3 aria-hidden="true">Почему студенты идут работать</h3><div class="data"><div class="row" style="--v:18.7%"><b>18,7%</b><span>финансовая необходимость</span><i></i></div><div class="row" style="--v:12%"><b>12%</b><span>получение опыта</span><i></i></div><div class="row" style="--v:12%"><b>12%</b><span>самореализация</span><i></i></div><div class="row" style="--v:9.3%"><b>9,3%</b><span>независимость от родителей</span><i></i></div></div><button class="go" type="button" aria-expanded="true" aria-label="Скрыть ответы" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div></div></div>
+      </div>
+      <div class="scol">
+        <div class="sc"><div class="flip"><div class="face front card"><h3>Влияние работы на успеваемость в учебе</h3><button class="go" type="button" aria-expanded="false" aria-label="Показать ответы"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div><div class="face back card"><h3 aria-hidden="true">Влияние работы на успеваемость в учебе</h3><div class="data"><div class="row" style="--v:22.7%"><b>22,7%</b><span>все успеваю</span><i></i></div><div class="row" style="--v:20%"><b>20%</b><span>больше времени уделяю учёбе</span><i></i></div><div class="row" style="--v:9.3%"><b>9,3%</b><span>больше времени уделяю работе</span><i></i></div></div><button class="go" type="button" aria-expanded="true" aria-label="Скрыть ответы" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div></div></div>
+        <div class="sc"><div class="flip"><div class="face front card"><h3>Часы работы в неделю</h3><button class="go" type="button" aria-expanded="false" aria-label="Показать ответы"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div><div class="face back card"><h3 aria-hidden="true">Часы работы в неделю</h3><div class="data"><div class="row" style="--v:13.3%"><b>13,3%</b><span>более 20 часов</span><i></i></div><div class="row" style="--v:9.3%"><b>9,3%</b><span>~ 20 часов</span><i></i></div><div class="row" style="--v:16%"><b>16%</b><span>~ 15 часов</span><i></i></div></div><button class="go" type="button" aria-expanded="true" aria-label="Скрыть ответы" tabindex="-1"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 10h14M12 5l5 5-5 5"/></svg></button></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · Истории выживания -->
+<section class="sec" id="history">
+  <div class="in">
+    <header class="sh"><h2>Истории выживания</h2><p>интервью со студентами</p></header>
+    <div class="tabs" role="tablist" aria-label="Студенты">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-pavel" id="t-pavel"><img src="img/pavel.webp" alt=""><span><b>Павел Шлёнский</b><span>студент 2 курса</span></span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-liza" id="t-liza"><img src="img/liza.webp" alt=""><span><b>Елизавета Савоськина</b><span>студентка 2 курса</span></span></button>
+    </div>
+    <div class="person" role="tabpanel" id="p-pavel" aria-labelledby="t-pavel">
+      <div class="ph"><img src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
+      <div class="qa">
+        <div class="qi open"><button type="button" aria-expanded="true"><span>Чем вы занимаетесь на работе? Что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я работал курьером в Яндекс Лавке с августа по ноябрь. Тогда нужна была быстрая работа, которую легко выполнять. Мне нужно было себя чем-то занять, плюс я достаточно спортивный был когда-то, поэтому такая работа подходила. Пришлось уволиться, потому что возникли проблемы со здоровьем работал на велике, колени начали болеть, работать я больше не смог.</p><p>Потом я стал работать специалистом по отбору абитуриентов в регионах. Работаю, как не трудно догадаться в приемной комиссии своего университета. В мои обязанности входит: прозвон абитуриентов и их родителей, информирование и продажа услуг университета. Ну и все, что способствует продаже: подготовка почтовых рассылок, техническая работа.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Деньги никогда не лишние. Плюс, конечно, опыт, тем более в продажах, очень ценный для меня. Да и просто новый статус в университете и некоторые преимущества, которые я вместе с этим получаю. И последнее: я устроился через подругу и она очень классно "продала" мне эту идею. Ну, и не соврала.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Какие сложности вы испытываете, совмещая работу и учебу?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Нехватка времени основная проблема совмещения работы и учёбы. Я работаю на полставки и должен отрабатывать 20 часов ва неделю. Это немного, тем более живу я в общежитии в университете, но это сложноватая ментально работа. Когда ты 5 часов в день разговариваешь по телефону, к концу дня сил ни на что не остается.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Как работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>На успеваемость в учёбе влияния я пока не заметил. Ни положительного, ни негативного. Но я думаю через пару месяцев, на первой сессии будет понятно.</p></div></div></div></div>
+      </div>
+    </div>
+    <div class="person" role="tabpanel" id="p-liza" aria-labelledby="t-liza" hidden>
+      <div class="ph"><img src="img/liza.webp" alt="Елизавета Савоськина"><div><b>Елизавета Савоськина</b><span>студентка 2 курса</span></div></div>
+      <div class="qa">
+        <div class="qi open"><button type="button" aria-expanded="true"><span>Какая у вас должность и что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>За свою студенческую жизнь я успела попробовать разные способы совмещения работы и учебы. Мой первый трудовой договор я заключила в 16 лет, а последнюю увольнительную я написала пару месяцев назад – подработки долгое время были частью моей повседневности.</p><p>На моем последнем месте работы в найме я была специалистом-сомелье по чаю и кофе, так же я выполняла обязанности кассира и бариста.</p><p>Я устроилась туда во время учебного года, о чем знал мой работодатель и отнесся вполне спокойно. “Главное, что как сотрудник вы нам подходите” – сказала управляющая галереи в день, когда мой испытательный срок подошел к концу.</p><p>Компания действительно искала людей, которые в первую очередь отвечали их корпоративным ценностям.</p><p>После этого меня официально трудоустроили и я стала полноценным сотрудником с “неполненным” графиком. Так как я работающий студент, график выстраивался в соответствии со свободным временем в моем учебном расписании, но есть одно но: работодателю не выгодно нанимать человека, который отрабатывает менее 80-ти часов в месяц, поэтому приходилось работать почти всё свободное от учебы время. Я вставала на учебу в шесть утра, а домой проходила около двенадцати ночи. Выходных от работы у меня было 2-3 дня в неделю. С таким темпом жизни я потеряла всё то время, которое раньше тратила на домашнее задание, хобби и банальный отдых. Не успела осознать, как я перестала  слушать на занятиях, стала питаться как попало и в последствии выгорела не только к работе, но и к учебе.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я совмещаю работу с учебой с 16 лет, и за это время мои цели менялись и пересматривались несколько раз – сначала это было просто желание заполнить гардероб брендовыми вещами, потом банальное желание сепарироваться от родителей. Но сейчас, пройдя этот путь я понимаю, что работа для меня – это возможность попробовать себя в определенной сфере, а также перспектива развития и обогащения не только своего кругозора, но и круга общения. Сейчас я не работаю в найме, и больше не планирую возвращаться к подработкам, так как поставила для себя цель  – развиваться как специалист. Поэтому приняла для себя решение развиваться на базе фриланса в своем темпе – так, чтобы не мешать учебе.</p><p>Я думаю, что работа на фрилансе самый оптимальный вариант для студентов.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Какие основные сложности вы испытываете, совмещая работу и учебу?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Если говорить о работе в найме –  это невозможность преуспеть как сотрудник, так как у тебя всегда есть ограничение в виде очной учебы. Вторая проблема, как я говорила ранее, связана с сильным недостатком времени, а иногда это даже несостыковка расписания. Бывало так, что работодатель на две недели вперед распишет график работы и поставит мне смены в соответствии с моим учебным расписанием – а расписание может резко измениться среди недели. Могли появится мероприятия на которые я хотела бы пойти – но я не могу, потому что мне нужно было на работу.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Как, по вашему мнению, работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Однозначно плохо. Из-за совмещения работы и учебы теряется фокус. Домашкой я стала заниматься прямо на занятиях, потерялась мотивация вникать в новые темы. И это всё опять же из-за недостатка времени. Все тем предметы, которые я раньше любила – начали казаться мне скучными, потому что возможности вникнуть в них не было. Действительно, не успеваешь заметить, как мысли об учебе и работе смешиваются в одну однородную кашу, и ты не можешь преуспеть уже нигде.</p></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Сидеть на двух стульях -->
+<section class="sec" id="opinion">
+  <div class="in">
+    <header class="sh"><h2>Сидеть на двух стульях</h2><p>мнение преподавателей</p></header>
+    <div class="tabs" role="tablist" aria-label="Преподаватели">
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-rybin" id="t-rybin"><img src="img/rybin.webp" alt=""><span><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-suh" id="t-suh"><img src="img/suhotina.webp" alt=""><span><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></span></button>
+    </div>
+    <div class="person" role="tabpanel" id="p-rybin" aria-labelledby="t-rybin">
+      <div class="ph"><img src="img/rybin.webp" alt="Рыбин Артем Алексеевич"><div><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></div></div>
+      <div class="qa">
+        <div class="qi open"><button type="button" aria-expanded="true"><span>Как вы относитесь к работающим студентам?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>К работающим студентам я отношусь замечательно, потому что ещё совсем недавно я сам был работающим студентом.</p><p>Есть такой анекдот. У студента есть только 3 опции: он хорошо учится, плохо работает и хорошо спит. Он плохо учится, хорошо работает и хорошо спит. Он хорошо учится, хорошо работает, но плохо спит или вообще не спит. Поэтому очень важно отслеживать этот тонкий момент, чтобы работа не мешала учёбе, потому что, если ты получаешь базовое академическое серьёзное образование, нужно сделать так, чтобы работа была важнейшим подспорьем для тебя, чтобы ты узнавал что-то новое именно на практике, чтобы ты соединял и теоретические, и практические знания, а не делал упор на чём-то одном. Всегда можно работать, но тогда ответь просто сам себе на вопрос. А нужно ли тебе тогда вообще получать высшее образование, если ты уже всю свою жизнь посвятил работе.</p><p>Работа в совокупности с высшим образованием – замечательно. Но всегда нужно выстраивать чёткий баланс между работой и учёбой, делать их помощниками друг друга, а не противниками, перевешивающими на ту или иную сторону.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Считаете ли вы, что работа влияет на учебный процесс?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Работа очень влияет на учебный процесс. Если студент подходит к этому делу, ответственно, то работа будет крайне положительно влиять на его обучение, он будет впитывать практические знания как губка и применять их.</p><p>Есть первый вариант, когда работа является твоим помощником в учёбе. А есть второй – когда человек полностью посвящает себя работе, думает, что он заработает сейчас шикарно денег, получит диплом для галочки и так далее.  , ни в коем случае нельзя так думать, потому что Теоретические основы, они крайне важны в 3 вопросе. В 3 вопросе, как раз на это более подробно отвечу. И вот они, понимаешь. Они работают, кто-то даже в ночные смены (с 10 вечера до 7 утра, естественно) Студенты приходят на пары еле живые. Про то, чтобы работать, я вообще молчу. Им бы главное сидеть и не спать. Это уже достижение, если они не спят на парах после такой смены. Поэтому крайне важно соблюдать баланс и лучше, конечно же, идти работать сразу же по специальности. Нужно поставить себя перед выбором. А что ты хочешь? Ты хочешь работать? А работать в этой сфере, и, может быть тогда имеет смысл получить какое-то образование по этой специальности? Или ты хочешь получить образование по той специальности, на которую ты учишься, и, собственно, и развиваться в этой специальности?</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Если студент работает по специальности, которую он получает, что важнее: практика и опыт (работа) или получение теории (учёба)?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Очень важно, чтобы все, что ты получаешь и на работе, и в университете, в твоё развитие шло комплексно. «Кому нужна эта там теория» - это грубейшая ошибка. Очень многие ребята считают, что теоретическое образование. Это все ненужная ерунда. Смотрите, базовое академическое образование нужно, чтобы бытовое мировоззрение, которое у нас с вами сформировалось в рамках обучения в школе, в рамках нашей повседневной жизни, переделать на научное мировоззрение. Это новый этап, ты просто становишься другим человеком, ты начинаешь по-другому мыслить.</p><p>Благодаря этому, ты можешь критически мыслить, ты умеешь критически рассуждать, ты умеешь разносторонне смотреть на одну и ту же проблему. Мы же для этого получаем высшее образование, чтобы в себе сформировать вот этот научный тип мышления, он совершенно отличается от бытового.</p><p>Когда ты получаешь образование базовое, академическое, ты становишься действительно другим человеком, потому что развиты твои когнитивные способности, когда ты получаешь базовое академическое образование. К сожалению, к великому сожалению, на практике так их развить не получится, потому что ты всегда сосредоточен на чем-то одном: ты работаешь. А в базовом академическом образовании ты нацелен на то, чтобы трансформировать своё сознание, трансформировать своё мировоззрение, трансформировать свой подход к работе с источниками, с литературой и так далее.</p><p>У меня есть огромное количество ребят, которые действительно стали профессионалами своего дела. Но они ушли из университета и не стали получать образование. При этом огромный пласт их деятельности просто ушёл. И когда им нужно углубиться в научную деятельность, они обращаются ко мне, потому что сами это они упустили.</p></div></div></div></div>
+      </div>
+    </div>
+    <div class="person" role="tabpanel" id="p-suh" aria-labelledby="t-suh" hidden>
+      <div class="ph"><img src="img/suhotina.webp" alt="Сухотина Ирина Анатольевна"><div><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></div></div>
+      <div class="qa">
+        <div class="qi open"><button type="button" aria-expanded="true"><span>Как вы относитесь к работающим студентам?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>К работающим студентам я отношусь с уважением. Работа влияет на учебный процесс</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Считаете ли вы, что работа влияет на учебный процесс?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Иногда работа мешает учёбе. А иногда помогает. Мешает, когда студент не высыпается, когда у него становится меньше времени на занятия. А помогает, если он умеет свой режим дня подстроить под работу, как-то сконцентрироваться</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Если студент работает по специальности, которую он получает, что важнее: практика и опыт (работа) или получение теории (учёба)?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>И практика, и учёба важны, наверное, почти одинаково. Потому что Практика без теории мертва и наоборот.</p></div></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Управляй временем -->
+<section class="sec" id="timemanagement">
+  <div class="in">
+    <header class="sh"><h2>Управляй временем</h2><p>техники тайм-менеджмента</p></header>
+    <div class="tgrid" style="position:relative" tabindex="0" role="region" aria-label="Техники тайм-менеджмента, листаются вбок">
+      <article class="tc card"><h3>Оптимизируй время с помощью "фильтрового" подхода</h3><p>Не пытайся учить все подряд. Используй принцип фильтрации: выделяй ключевые темы, которые точно понадобятся на экзаменах или в работе, и глубоко погружайся только в них.</p></article>
+      <article class="tc card"><h3>Учебные “капсулы”</h3><p>Создавай капсулы знаний — небольшие блоки информации (5–10 минут), которые легко повторять в транспорте, на обеде или перед сном. Используй заметки на телефоне, голосовые записи или флеш-карточки.</p></article>
+      <article class="tc card"><h3>Правило “одного касания”</h3><p>Как только получаешь учебный материал (лекцию, задание) — не откладывай его изучение. Потрать хотя бы 5 минут сразу, чтобы понять суть. Это облегчит дальнейшее запоминание.</p></article>
+      <article class="tc card"><h3>Учись у будущего себя</h3><p>Представь, что ты уже закончил учебу и даешь советы самому себе. Чему бы ты посоветовал уделить больше внимания? Такой мысленный эксперимент поможет расставить приоритеты.</p></article>
+      <article class="tc card"><h3>“Ментальная разминка” перед учебой</h3><p>Перед тем как садиться за учебу, делай небольшую разминку для мозга:</p><p>Пересказывай что-то своими словами, Отвечай на вопросы по пройденному материалу,</p></article>
+      <article class="tc card"><h3>Используй “мозговые якоря”</h3><p>Привязывай сложные темы к конкретным местам, ситуациям или привычным предметам. Например, если запоминаешь формулу — ассоциируй её с постером на стене.</p></article>
+      <article class="tc card"><h3>Связывай учебу с реальной жизнью</h3><p>Если теория кажется скучной, привязывай ее к своей работе или повседневной жизни. Например, если изучаешь финансы — попробуй анализировать свой личный бюджет.</p></article>
+      <article class="tc card"><h3>Системное обучение</h3><p>Маленькими шагами к большой цели. Если кажется, что учебы слишком много, разбей ее на микрозадачи. Записывай самые мелкие шаги, например: открыть лекцию. Такая дробность снижает стресс.</p></article>
+      <article class="tc card"><h3>Метод “учитель сам себе”</h3><p>После изучения темы объясни её самому себе, но так, будто рассказываешь ребенку. Чем проще твое объяснение — тем лучше ты понял материал.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · Спокойствие, только спокойствие -->
+<section class="sec calm" id="recommendations">
+  <div class="in">
+    <header class="sh"><h2>Спокойствие, только спокойствие</h2></header>
+    <div class="glabel">Как не выгореть?</div>
+    <div class="cgrid">
+      <article class="cc card" data-timer="1500"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Техника помодоро</h3><p>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</p><div class="tool"><span class="clock">25:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><p><em>Планируйте</em> отдых так же, как и работу</p><p><em>Учитесь</em> говорить нет лишним обязанностям</p></article>
+      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Разграничивайте работу и учебу</h3><p>например, не делайте рабочие задачи в перерывах между парами</p></article>
+    </div>
+    <div class="glabel">Техники для снижения стресса</div>
+    <div class="cgrid five">
+      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Метод 4-7-8</h3><p>дыхательная техника для быстрого расслабления</p><div class="tool" style="padding-bottom:26px"><div class="breath"><i></i><em aria-live="polite"></em></div><button class="btn main" data-breath type="button">Дышать</button></div></article>
+      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Прогрессивная мышечная релаксация</h3><p>напряжение и расслабление мышц поочередно</p></article>
+      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Журнал эмоций</h3><p>фиксируйте мысли и чувства, чтобы разгрузить голову</p><textarea aria-label="Что я сейчас чувствую" placeholder="Что я сейчас чувствую…"></textarea></article>
+      <article class="cc card" data-timer="300"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Медитации</h3><p>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</p><div class="tool"><span class="clock">05:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+      <article class="cc card" data-timer="600"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Йога</h3><p>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</p><div class="tool"><span class="clock">10:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · Качай права -->
+<section class="sec" id="rights">
+  <div class="in">
+    <header class="sh"><h2>Качай права</h2><p>права работающих студентов</p></header>
+    <div class="rgrid">
+      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Права в сфере образования</h3><p>Студенты-работники могут воспользоваться следующими академическими правами:</p>
+        <ul><li>Гибкий график обучения (если предусмотрено вузом).</li><li>Перевод на индивидуальный учебный план.</li><li>Выбор формы обучения (очная, заочная, очно-заочная).</li><li>Возможность дистанционного обучения (если вуз предоставляет такую возможность).</li><li>Академический отпуск (по уважительной причине, включая работу).</li><li>Перенос сессии или сдачи экзаменов (по договорённости с преподавателями).</li><li>Скидки и льготы (если вуз предоставляет их работающим студентам).</li></ul></article>
+      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Трудовые права работающих студентов</h3><p>По ТК РФ работающие студенты имеют те же права, что и другие работники, плюс дополнительные гарантии:</p>
+        <details><summary class="btn"><span class="t1">Все гарантии</span><span class="t2">Свернуть</span></summary><ul><li class="sub">А) Общие трудовые права:</li><li>Заключение трудового договора (срочного или бессрочного).</li><li>Оплачиваемый отпуск (28 дней в год).</li><li>Больничные и декретные выплаты (при наличии страхового стажа).</li><li>Защита от необоснованного увольнения.</li><li class="sub">Б) Специальные гарантии для студентов:</li><li>1. Учебный отпуск (ст. 173–176 ТК РФ):<ul><li>Оплачиваемый – для студентов-заочников и очно заочников:</li><li>Сессия (до 40 дней в году для промежуточной аттестации).</li><li>Госэкзамены и защита диплома (до 4 месяцев).</li><li>Неоплачиваемый – для студентов очной формы (по согласованию с работодателем).</li><li>Компенсация проезда (1 раз в год – для заочников, если это прописано в коллективном договоре).</li></ul></li><li>2. Сокращённый рабочий день (ст. 93 ТК РФ):<ul><li>По соглашению с работодателем можно установить неполный рабочий день (например, 4–6 часов).</li><li>Оплата пропорциональна отработанному времени.</li></ul></li><li>3. Запрет на сверхурочную работу и ночные смены (для несовершеннолетних студентов).</li><li>4. Дополнительные выходные (для студентов, обучающихся без отрыва от производства, если это предусмотрено коллективным договором).</li><li>5. Возможность дистанционной работы (если профессия позволяет).</li></ul></details></article>
+      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Налоговые льготы</h3><ul><li>Налоговый вычет за обучение (до 15 600 руб. в год по НДФЛ, ст. 219 НК РФ).</li><li>Освобождение от НДФЛ на стипендию (если студент получает её параллельно с зарплатой).</li></ul></article>
+      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Социальные гарантии</h3><ul><li>Сохранение места работы на время учебного отпуска.</li><li>Право на пересмотр графика работы в период сессии.</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · Кто ищет, тот всегда найдет -->
+<section class="sec" id="jobs">
+  <div class="in">
+    <header class="sh"><h2>Кто ищет, тот всегда найдет</h2><p>список сайтов по поиску работы</p></header>
+    <div class="jgrid">
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Крупные сайты по поиску работы:</h3><ul><li>HeadHunter (hh.ru)</li><li>Rabota.ru</li><li>SuperJob</li><li>Зарплата.ру</li></ul></article>
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты с подработкой и фрилансом</h3><ul><li>Avito Работа</li><li>YouDo</li><li>Kwork</li></ul></article>
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты для стажировок и карьеры</h3><ul><li>Career.ru</li><li>Профи.ру</li></ul></article>
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">ВКонтакте</p><ul><li>"Работа для студентов | [Твой город]"</li><li>"Подработка и вакансии | [Твой город]"</li></ul></article>
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">Telegram-каналы</p><ul><li>"Фриланс | Удалёнка | Подработка"</li><li>"Стажировки и карьера"</li><li>"Работа для студентов"</li></ul></article>
+      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Доски объявлений</h3><ul><li>Юла (Youla)</li><li>Авито Услуги</li></ul></article>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><span>«Успеть всё» · исследование студенток 2 курса программы “Журналистика” СПбГУП</span><a href="#top">Наверх ↑</a></footer>
+
+<script src="wave.js"></script>
+<script src="fig3d.js"></script>
+<script src="scene.js"></script>
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+<script>
+  // Natali's Spline figure, loaded the same way as on her published site; the built-in glass cross shows until it is ready
+  (function(){var v=document.querySelector('.hero .spl');if(!v)return;
+    v.addEventListener('load-complete',function(){v.parentElement.classList.add('spline')});
+    // if her online scene can't be reached, try the copy exported into scene.js
+    setTimeout(function(){if(v.parentElement.classList.contains('spline')||!window.SPLINE_SCENE)return;
+      try{var b=atob(window.SPLINE_SCENE),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+        v.setAttribute('url',URL.createObjectURL(new Blob([u],{type:'application/octet-stream'})))}catch(e){}},7000)})();
+</script>
+<script>
+(function(){
+  var $=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var root=document.documentElement;
+  // variant switches: from the URL (?style=mine&pal=fig&align=justify) or from the preview page
+  var q=new URLSearchParams(location.search);
+  ['style','pal','align'].forEach(function(k){if(q.get(k))root.dataset[k]=q.get(k)});
+  root.dataset.iv=/^(duo|chat|byq)$/.test(q.get('iv'))?q.get('iv'):'duo';
+  window.addEventListener('message',function(e){var d=e.data||{};if(d.go){var t=document.querySelector(d.go);if(t)t.scrollIntoView()}['style','pal','align'].forEach(function(k){if(d[k])root.dataset[k]=d[k]})});
+
+  // 3D figures: one material, colour follows the palette
+  $('canvas[data-fig]').forEach(function(c){
+    var ok=false;
+    var g0=c.dataset.geo?c.dataset.geo.split(',').map(Number):null,gg=g0&&g0.slice();
+    if(gg&&c.classList.contains('ghc')){var fitg=function(){gg[0]=g0[0]*Math.min(1,c.clientWidth/c.clientHeight/3.7)};fitg();addEventListener('resize',fitg)}
+    try{ok=fig3d(c,{shape:c.dataset.fig,text:c.dataset.text,textM:c.dataset.textM,clear:c.classList.contains('ghc')||c.classList.contains('hero3d'),size:c.dataset.size?+c.dataset.size:undefined,font:function(){return getComputedStyle(root).getPropertyValue('--head')},
+      geo:gg||[0,.025,-.6,.7],hover:'viewport',
+      state:function(){var p=root.dataset.pal;return {pink:p==='fig'?1:0,tc:p==='pink'?'#ff3d9a':'#ffffff'}}})}catch(e){console.error(e)}
+    if(ok&&(c.classList.contains('hero3d')||c.classList.contains('ghc')))c.parentElement.classList.add('gl');
+  });
+
+  // nav: solid after the first screen, highlights the current block
+  var nav=document.querySelector('.nav'),links=$('.nav a');
+  function onScroll(){nav.classList.toggle('solid',scrollY>innerHeight*.6);
+    var cur='';$('main .sec').forEach(function(s){if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
+    links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur)})}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  // statistics cards
+  // each face has its own arrow so it turns with the card; only the visible one is focusable
+  $('.sc .go').forEach(function(b){b.addEventListener('click',function(){
+    var c=b.closest('.sc'),open=!c.classList.contains('open');c.classList.toggle('open',open);
+    $('.go',c).forEach(function(g,i){g.setAttribute('aria-expanded',String(open));g.tabIndex=(i===1)===open?0:-1});
+    var f=$('.go',c)[open?1:0];if(f&&document.activeElement===b)f.focus();
+  })});
+
+  // interview layouts: the people of a section are shown together instead of behind tabs
+  $('.tabs').forEach(function(tabs){var sec=tabs.parentElement,ps=$('.person',sec);if(ps.length<2)return;
+    var w=document.createElement('div');w.className='ivw';ps[0].before(w);ps.forEach(function(p){p.hidden=false;w.appendChild(p)});
+    if(root.dataset.iv==='chat')$('.qi',w).forEach(function(it){it.classList.add('open');var b=$('button',it)[0];b.setAttribute('aria-expanded','true');b.disabled=true});
+    if(root.dataset.iv!=='byq')return;
+    // question by question: answers are moved (not copied) under one heading; a differently worded question stays above its answer
+    var who=ps.map(function(p){var ph=$('.ph',p)[0];return {img:$('img',ph)[0].getAttribute('src'),name:$('b',ph)[0].textContent,role:$('.ph span',p)[0].textContent,qs:$('.qi',p)}});
+    var box=document.createElement('div');box.className='byq';w.after(box);
+    var n=Math.max.apply(null,who.map(function(x){return x.qs.length}));
+    for(var i=0;i<n;i++){var blk=document.createElement('div'),head=null,two=document.createElement('div');two.className='two';
+      who.forEach(function(x){var it=x.qs[i];if(!it)return;var qt=$('button>span',it)[0].textContent,card=$('.ans .card',it)[0];
+        if(!head){head=document.createElement('h3');head.className='q';head.innerHTML='<small>Вопрос '+(i+1)+'</small>';head.appendChild(document.createTextNode(qt));blk.appendChild(head)}
+        var a=document.createElement('div');a.className='a card';
+        a.innerHTML='<div class="who"><img alt="" src="'+x.img+'"><div><b></b><span></span></div></div>';
+        $('b',a)[0].textContent=x.name;$('.who span',a)[0].textContent=x.role;
+        if(qt!==head.lastChild.textContent){var own=document.createElement('p');own.className='own';own.textContent=qt;a.appendChild(own)}
+        while(card.firstChild)a.appendChild(card.firstChild);two.appendChild(a)});
+      blk.appendChild(two);box.appendChild(blk)}
+  });
+
+  // people tabs
+  $('[role="tablist"]').forEach(function(list){var tabs=$('[role="tab"]',list);
+    tabs.forEach(function(t){t.addEventListener('click',function(){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',String(on));document.getElementById(x.getAttribute('aria-controls')).hidden=!on})})})});
+  // tabs: arrow keys move between people, like the WAI-ARIA tabs pattern
+  $('[role="tablist"]').forEach(function(list){var tabs=$('[role="tab"]',list);
+    function sync(){tabs.forEach(function(x){x.tabIndex=x.getAttribute('aria-selected')==='true'?0:-1;var pn=document.getElementById(x.getAttribute('aria-controls'));pn.setAttribute('role','tabpanel');pn.setAttribute('aria-labelledby',x.id)})}
+    sync();tabs.forEach(function(t){t.addEventListener('click',sync)});
+    list.addEventListener('keydown',function(e){var i=tabs.indexOf(document.activeElement);if(i<0)return;
+      var k={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];if(e.key==='Home')k=-i;if(e.key==='End')k=tabs.length-1-i;if(k===undefined)return;
+      e.preventDefault();var n=tabs[(i+k+tabs.length)%tabs.length];n.focus();n.click()})});
+  // questions
+  $('.qi>button').forEach(function(b){b.addEventListener('click',function(){var it=b.parentElement,open=!it.classList.contains('open');it.classList.toggle('open',open);b.setAttribute('aria-expanded',String(open))})});
+
+  // timers
+  $('[data-timer]').forEach(function(card){
+    var total=+card.dataset.timer,left=total,id=null,clock=card.querySelector('.clock'),go=card.querySelector('[data-t="go"]');
+    var draw=function(){clock.textContent=String(Math.floor(left/60)).padStart(2,'0')+':'+String(left%60).padStart(2,'0')};
+    go.addEventListener('click',function(){if(id){clearInterval(id);id=null;go.textContent='Старт';return}
+      go.textContent='Пауза';id=setInterval(function(){left=Math.max(0,left-1);draw();if(!left){clearInterval(id);id=null;go.textContent='Старт'}},1000)});
+    card.querySelector('[data-t="reset"]').addEventListener('click',function(){clearInterval(id);id=null;left=total;go.textContent='Старт';draw()});
+  });
+  // 4-7-8 breathing
+  $('[data-breath]').forEach(function(btn){
+    var ring=btn.parentElement.querySelector('.breath'),lab=ring.querySelector('em'),dot=ring.querySelector('i'),timer=null;
+    var steps=[['вдох',4,1],['задержка',7,1],['выдох',8,0]];
+    function run(i,n){var s=steps[i];lab.textContent=s[0]+' '+s[1];dot.style.transitionDuration=s[1]+'s';ring.classList.toggle('inhale',!!s[2]);
+      timer=setTimeout(function(){var k=(i+1)%3;if(!k)n--;if(n>0)run(k,n);else stop()},s[1]*1000)}
+    function stop(){clearTimeout(timer);timer=null;ring.classList.remove('inhale');lab.textContent='';btn.textContent='Дышать'}
+    btn.addEventListener('click',function(){if(timer){stop();return}btn.textContent='Стоп';run(0,4)});
+  });
+
+  // section entrance: heading, then text, then cards (70ms apart), once
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver' in window){
+    root.classList.add('rv-on');
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('seen');io.unobserve(e.target)}})},{rootMargin:'0px 0px -10% 0px'});
+    $('main .sec').forEach(function(sec){
+      var items=$('.sh, .lead, .tabs, .glabel',sec).concat($('.sgrid .sc, .person .ph, .person .qi, .tc, .cc, .rc, .jc',sec));
+      var per=new Map();
+      items.forEach(function(el){var p=el.parentElement,i=per.get(p)||0;per.set(p,i+1);el.style.setProperty('--i',Math.min(i,5));el.classList.add('rv');io.observe(el)});
+    });
+  }
+})();
+</script>
+<script>
+// glow borders: each card gets the cursor in its own coordinates, so it also works inside the sideways row
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('.sc .face, .tc, .cc, .rc, .jc'));
+  cards.forEach(function(c){var g=document.createElement('span');g.className='glo';g.setAttribute('aria-hidden','true');g.appendChild(document.createElement('i'));c.appendChild(g)});
+  // purple -> pink -> white across the screen width (the demo's yellow end is white here)
+  var stops=[[150,90,255],[255,61,154],[255,255,255]];
+  var x=-1e4,y=-1e4,raf=0,root=document.documentElement;
+  function paint(){raf=0;
+    var t=Math.max(0,Math.min(1,x/innerWidth))*2,i=t<1?0:1,f=t-i,a=stops[i],b=stops[i+1];
+    root.style.setProperty('--gc',a.map(function(v,k){return Math.round(v+(b[k]-v)*f)}).join(' '));
+    cards.forEach(function(c){var r=c.getBoundingClientRect();
+      if(x<r.left-260||x>r.right+260||y<r.top-260||y>r.bottom+260){if(c.style.getPropertyValue('--lx')!=='-999px'){c.style.setProperty('--lx','-999px');c.style.setProperty('--ly','-999px')}return}
+      c.style.setProperty('--lx',(x-r.left)+'px');c.style.setProperty('--ly',(y-r.top)+'px')})}
+  function ask(){if(!raf)raf=requestAnimationFrame(paint)}
+  addEventListener('pointermove',function(e){x=e.clientX;y=e.clientY;ask()},{passive:true});
+  addEventListener('pointerdown',function(e){x=e.clientX;y=e.clientY;ask()},{passive:true});
+  document.documentElement.addEventListener('pointerleave',function(){x=y=-1e4;ask()});
+  addEventListener('scroll',ask,{passive:true,capture:true});
+})();
+</script>
