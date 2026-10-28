@@ -60,8 +60,8 @@ p{margin:0 0 1em}
 [data-pal="pink"] .hero h1{color:var(--acc)}
 .hero.gl h1{color:transparent!important}
 /* Natali's Spline figure replaces the built-in cross once it has loaded */
-/* her Spline scene from Tilda, with its own (now pink) title: same 1470x741 frame as on Tilda, scaled to the screen */
-.hero .spl{position:absolute;left:50%;top:50%;width:1470px;height:741px;transform:translate(-50%,-50%) scale(var(--k,1));display:block;z-index:1;opacity:0;pointer-events:none;transition:opacity .8s}
+/* her Spline scene from Tilda, with its own (now pink) title; script zooms it to the size it had on her Tilda page */
+.hero .spl{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;opacity:0;pointer-events:none;transition:opacity .8s}
 .hero.spline .spl{pointer-events:auto}
 .hero.spline .spl{opacity:1}
 .hero.spline .hero3d{visibility:hidden}
@@ -495,9 +495,9 @@ main,.foot{position:relative;z-index:1}
 <script>
   // Natali's Spline figure, loaded the same way as on her published site; the built-in glass cross shows until it is ready
   (function(){var v=document.querySelector('.hero .spl');if(!v)return;
-    v.addEventListener('load-complete',function(){v.parentElement.classList.add('spline')});
-    // as on Tilda: the frame scales with the screen width; on narrow screens it keeps a readable size
-    var fit=function(){var h=v.parentElement;v.style.setProperty('--k',Math.max(h.clientWidth/1470,h.clientHeight/741*.6))};fit();addEventListener('resize',fit);
+    // the title in her scene is ~415px wide at zoom 1; on her Tilda page it spanned ~57% of the screen width
+    var z0=0,fit=function(){var c=v._spline&&v._spline._camera;if(!c)return;if(!z0)z0=c.zoom;v._spline.setZoom(z0*v.parentElement.clientWidth*.57/415)};
+    v.addEventListener('load-complete',function(){fit();v.parentElement.classList.add('spline')});addEventListener('resize',fit);
     // if her online scene can't be reached, try the copy exported into scene.js
     setTimeout(function(){if(v.parentElement.classList.contains('spline')||!window.SPLINE_SCENE)return;
       try{var b=atob(window.SPLINE_SCENE),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
