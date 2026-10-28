@@ -51,11 +51,13 @@ aside .doc{display:inline-block;margin-top:14px;color:var(--accent);font-size:14
 <div class="wrap">
   <div class="kicker">Предпросмотр правок · оригинал на GitHub не изменён</div>
   <h1>Seaside. Black Sea: было и стало</h1>
-  <p class="lede">«Было» — твой лонгрид с GitHub, снятый целиком. «Стало» — новая версия после третьего круга правок: в рамке работает живая страница, её можно прокручивать, наводить на карточки, нажимать. Справа блоки: нажми, и рамка перейдёт к нужному месту.</p>
+  <p class="lede">«Было» — твой лонгрид с GitHub, снятый целиком. «Стало» — новая версия после всех правок; кнопки «Восстановление» и «Финал» показывают варианты этих блоков по одному: в рамке работает живая страница, её можно прокручивать, наводить на карточки, нажимать. Справа блоки: нажми, и рамка перейдёт к нужному месту.</p>
 
   <div class="bar">
     <div class="grp"><span class="lbl">Версия</span><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div></div>
     <div class="grp"><span class="lbl">Экран</span><div class="seg" role="group" aria-label="Экран"><button aria-pressed="true" data-dev="laptop">Ноутбук</button><button aria-pressed="false" data-dev="phone">Телефон</button></div></div>
+    <div class="grp"><span class="lbl">Восстановление</span><div class="seg" role="group" aria-label="Варианты блока о восстановлении"><button aria-pressed="false" data-k="r1">1</button><button aria-pressed="false" data-k="r2">2</button><button aria-pressed="false" data-k="r3">3</button></div></div>
+    <div class="grp"><span class="lbl">Финал</span><div class="seg" role="group" aria-label="Варианты финала"><button aria-pressed="false" data-k="f1">1</button><button aria-pressed="false" data-k="f2">2</button><button aria-pressed="false" data-k="f3">3</button><button aria-pressed="false" data-k="f4">4</button></div></div>
     <a class="open" href="longread.html" target="_blank" rel="noopener">Открыть новую версию отдельно ↗</a>
   </div>
 
@@ -77,30 +79,33 @@ aside .doc{display:inline-block;margin-top:14px;color:var(--accent);font-size:14
   var $=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
   var S={src:'longread.html',before:'img/before-d.jpg',beforeM:'img/before-m.jpg',title:'Seaside: 9 блоков',
     hint:'«Было» снято с твоей версии с GitHub. На телефоне там нет мобильной вёрстки, поэтому видно кусок десктопа.',
-    blocks:[['#top','Первый экран','человек трёт лицо, волны ходят, как в оригинале; время чтения сбоку'],['#intro','Нефтяные разливы','цитата Михеевой, мешки из оригинала крупнее и качаются на волнах'],['#chronicle','Хроника катастрофы','снимок радара на месте, полоса сканирования ходит всё время'],['#facts','Главные цифры','5000 т, 90 км², 8000, 600'],['#fauna','Море молчит, животные — нет','карточки покачиваются 3 раза, потом раз в 10 секунд; фото открываются вместе с прокруткой'],['#people','Люди против нефти','фото раскрываются при прокрутке вниз и закрываются вверх'],['#recovery','Сколько море будет восстанавливаться','цитаты экспертов, сравнение 2007 и 2024'],['#final','Финал','машинописный вывод без рук'],['#footer','Подвал','логотип, автор, фото, источники, наверх']]};
-  var state={v:'after',dev:'laptop'},loaded={};
+    blocks:[['#top','Первый экран','человек трёт лицо, волны ходят, название по центру белого поля'],['#intro','Нефтяные разливы','цитата Михеевой, груда мешков падает, нижние опрокидываются набок'],['#chronicle','Хроника катастрофы','снимок радара на месте, полоса сканирования ходит всё время'],['#facts','Главные цифры','5000 т, 90 км², 8000, 600'],['#fauna','Море молчит, животные — нет','карточки покачиваются 3 раза, потом раз в 10 секунд; фото открываются вместе с прокруткой'],['#people','Люди против нефти','фото раскрываются при прокрутке вниз и закрываются вверх'],['#recovery','Сколько море будет восстанавливаться','цитаты экспертов, сравнение 2007 и 2024'],['#final','Финал','машинописный вывод без рук'],['#footer','Подвал','логотип, автор, фото, источники, наверх']]};
+  var state={v:'after',dev:'laptop',k:''};
+  var K={r1:'шкала сроков 0–10 лет, отрезки заполняются при прокрутке',r2:'разрез моря: мазут со дна поднимается к поверхности',r3:'оптимисты и пессимисты в два столбика',f1:'фраза темнеет слово за словом',f2:'8000 точек, при прокрутке гаснут все, кроме 121',f3:'вода поднимается и накрывает человечка с первого экрана',f4:'блок «как помочь»'};
   function fit(){$('.device').forEach(function(d){var w=d.clientWidth;$('.vp',d).forEach(function(v){v.style.transform='scale('+(w/v.offsetWidth)+')'})})}
   function frame(){return document.querySelector('#'+state.dev+' iframe')}
   function render(){
-    $('[data-v]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===state.v))});
+    $('[data-v]').forEach(function(b){b.setAttribute('aria-pressed',String(!state.k&&b.dataset.v===state.v))});
+    $('[data-k]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.k===state.k))});
     $('[data-dev]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dev===state.dev))});
     document.getElementById('laptop').hidden=state.dev!=='laptop';document.getElementById('phone').hidden=state.dev!=='phone';
     ['laptop','phone'].forEach(function(id){var box=document.getElementById(id);
-      box.querySelector('.after').hidden=state.v!=='after';box.querySelector('.before').hidden=state.v!=='before';
+      var after=state.k||state.v==='after';box.querySelector('.after').hidden=!after;box.querySelector('.before').hidden=after;
       var img=box.querySelector('.before img'),want=id==='phone'?S.beforeM:S.before;if(img.getAttribute('src')!==want)img.src=want;
-      var f=box.querySelector('iframe'),on=!box.hidden&&state.v==='after';
-      if(on&&!loaded[id]){f.src=S.src;loaded[id]=1}
+      var f=box.querySelector('iframe'),want2=state.k?'variants.html#'+state.k:S.src;
+      if(!box.hidden&&after&&f.getAttribute('src')!==want2)f.setAttribute('src',want2);
     });
-    document.getElementById('hint').textContent=S.hint;
+    document.getElementById('hint').textContent=state.k?'Вариант '+(state.k[0]==='r'?'«Сколько море будет восстанавливаться» ':'финала ')+state.k[1]+': '+K[state.k]+'. В рамке только этот блок, прокрути его.':S.hint;
     document.getElementById('bt').textContent=S.title;
     document.getElementById('bl').innerHTML=S.blocks.map(function(b){return '<li><button type="button" data-go="'+b[0]+'"><b>'+b[1]+'</b><span>'+b[2]+'</span></button></li>'}).join('');
     fit();
   }
   function send(m){var f=frame();if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*')}
   document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
-    if(b.dataset.v){state.v=b.dataset.v;render()}
+    if(b.dataset.k){state.k=b.dataset.k;render()}
+    else if(b.dataset.v){state.v=b.dataset.v;state.k='';render()}
     else if(b.dataset.dev){state.dev=b.dataset.dev;render()}
-    else if(b.dataset.go){if(state.v!=='after'){state.v='after';render();setTimeout(function(){send({go:b.dataset.go})},900)}else send({go:b.dataset.go})}
+    else if(b.dataset.go){if(state.v!=='after'||state.k){state.v='after';state.k='';render();setTimeout(function(){send({go:b.dataset.go})},900)}else send({go:b.dataset.go})}
   });
   addEventListener('resize',fit);if(window.ResizeObserver)new ResizeObserver(fit).observe(document.body);
   render();

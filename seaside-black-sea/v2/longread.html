@@ -57,8 +57,8 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 @keyframes wx{to{transform:translateX(var(--x))}}
 @keyframes hand1{to{transform:rotate(-5deg)}}
 @keyframes hand2{to{transform:translateX(-10.8%) rotate(-3deg)}}
-.readtime{position:absolute;z-index:1;left:4vw;top:clamp(40px,11vh,130px);margin:0;font:700 14px/1.4 var(--head);color:var(--soft);writing-mode:vertical-rl;transform:rotate(180deg)}
-.hero .head{position:absolute;z-index:1;right:4vw;top:clamp(40px,11vh,130px);width:min(640px,48vw);text-align:center}
+/* блок с названием по центру белого поля справа, как в оригинале: центр на 71,6% ширины, по высоте между верхом и линией моря */
+.hero .head{position:absolute;z-index:1;left:71.6%;top:0;bottom:17vw;width:min(640px,48vw);transform:translateX(-50%);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .logo{width:min(380px,72%);margin:0 auto 34px}
 .hero h1{font:700 clamp(15px,1.5vw,22px)/1.55 var(--head);margin:0}
 .hero .meta{font-size:14px;color:var(--soft);margin:14px 0 0;text-align:center}
@@ -72,8 +72,15 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 .bags{position:absolute;left:0;right:0;bottom:0;aspect-ratio:1200/413;pointer-events:none}
 .bags>div{position:absolute;inset:0;transform:scale(1.45)}
 .bags .bl{transform-origin:0 100%}.bags .br{transform-origin:100% 100%}
-.bag{position:absolute;height:auto;animation:bob var(--d,5s) ease-in-out var(--dl,0s) infinite;transform-origin:50% 90%}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-16px) rotate(var(--r,3deg))}}
+/* груда мешков падает сверху, а два нижних мешка опрокидываются из стоячего положения набок; повторяется при каждом возвращении к блоку */
+.bag{position:absolute;height:auto;transform-origin:50% 95%}
+.js .bag{opacity:0}
+.js .intro.fall .bag{opacity:1;animation:drop .9s cubic-bezier(.5,0,.75,0) var(--dl,0s) both,land .45s ease-out calc(var(--dl,0s) + .9s)}
+.js .intro.fall .bag.tip{animation:stand .25s linear var(--dl,0s) both,tip 1.1s cubic-bezier(.55,0,.6,1) calc(var(--dl,0s) + .25s) both}
+@keyframes drop{from{transform:translateY(-150%) rotate(var(--r,-10deg))}to{transform:translateY(0) rotate(0)}}
+@keyframes land{0%{transform:scale(1.04,.94)}45%{transform:translateY(-5%) scale(.98,1.02)}100%{transform:none}}
+@keyframes stand{from{opacity:0;transform:rotate(var(--t))}to{opacity:1;transform:rotate(var(--t))}}
+@keyframes tip{0%{transform:rotate(var(--t))}70%{transform:rotate(calc(var(--t) * -.06))}85%{transform:rotate(calc(var(--t) * .03))}100%{transform:rotate(0)}}
 
 /* листы бумаги на чёрной воде: прямоугольник со скруглением */
 .sheet{position:relative;background:var(--p1);margin:0 16px;border-radius:32px;padding:clamp(64px,8vw,112px) 0 clamp(72px,9vw,128px)}
@@ -163,8 +170,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
   .intro .lead{font-size:20px}
   .hero .head{left:0;right:0;width:auto;top:clamp(28px,6svh,56px);padding:0 var(--gut)}
   .stage{height:56%;width:auto;left:50%;transform:translateX(-23%)}
-  .readtime{writing-mode:horizontal-tb;transform:none;top:12px;left:var(--gut);font-size:12px}
-  .hero .head{top:clamp(40px,7svh,64px)}
+    .hero .head{top:clamp(40px,7svh,64px);bottom:auto;transform:none;display:block}
   .logo{width:230px;margin-bottom:22px}
   .hero h1{font-size:15px}
   .sheet{margin:0 8px;border-radius:22px}
@@ -181,7 +187,7 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .js .ph::before,.js .ph::after,.js .radar::before,.radar::after,.js .radar::after{display:none}
-  .bag,.stage img{animation:none}
+  .bag,.stage img{animation:none!important;opacity:1!important}
   .flip.peek .in{animation:none}
   .flip .in{transition:none}
   .flip:hover .in,.flip:focus-visible .in,.flip.on .in{transform:none}
@@ -208,21 +214,20 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
     <img class="hand1" src="img/h-hand1.webp" width="403" height="482" alt="">
     <img class="hand2" src="img/h-hand2.webp" width="139" height="457" alt="">
   </div>
-  <p class="readtime">5&nbsp;минут чтения</p>
 </header>
 
 <main id="text">
 <section class="intro" id="intro" aria-label="Вступление">
   <div class="bags" aria-hidden="true">
     <div class="bl">
-    <img class="bag" src="img/ob1.png" alt="" style="left:-11.42%;top:26.39%;width:24.42%;--d:5s;--dl:-1s;--r:-3deg">
-    <img class="bag" src="img/ob3.png" alt="" style="left:-.83%;top:54%;width:19.17%;--d:6s;--dl:-3s">
-    <img class="bag" src="img/ob2.png" alt="" style="left:-10.75%;top:48.18%;width:25.75%;--d:5.5s;--dl:-2s;--r:2deg">
+    <img class="bag" src="img/ob1.png" alt="" style="left:-11.42%;top:26.39%;width:24.42%;--dl:.15s;--r:-12deg">
+    <img class="bag" src="img/ob3.png" alt="" style="left:-.83%;top:54%;width:19.17%;--dl:.35s;--r:8deg">
+    <img class="bag tip" src="img/ob2.png" alt="" style="left:-10.75%;top:48.18%;width:25.75%;--dl:1.2s;--t:-80deg;transform-origin:75% 95%">
     </div><div class="br">
-    <img class="bag" src="img/ob4.png" alt="" style="left:83.75%;top:30.02%;width:22.75%;--d:5.5s;--dl:-2s;--r:-2deg">
-    <img class="bag" src="img/ob5.png" alt="" style="left:81.67%;top:46.25%;width:16.58%;--d:4.5s;--dl:-4s;--r:3deg">
-    <img class="bag" src="img/ob6.png" alt="" style="left:79.67%;top:66.59%;width:13.75%;--d:6s;--dl:-1s">
-    <img class="bag" src="img/ob7.png" alt="" style="left:84.92%;top:55.21%;width:25.67%;--d:5s;--dl:-3.5s;--r:-3deg">
+    <img class="bag" src="img/ob4.png" alt="" style="left:83.75%;top:30.02%;width:22.75%;--dl:0s;--r:10deg">
+    <img class="bag" src="img/ob5.png" alt="" style="left:81.67%;top:46.25%;width:16.58%;--dl:.25s;--r:-8deg">
+    <img class="bag" src="img/ob6.png" alt="" style="left:79.67%;top:66.59%;width:13.75%;--dl:.45s;--r:6deg">
+    <img class="bag tip" src="img/ob7.png" alt="" style="left:84.92%;top:55.21%;width:25.67%;--dl:1.05s;--t:80deg;transform-origin:25% 95%">
     </div>
   </div>
   <div class="col">
@@ -434,6 +439,9 @@ figcaption{font-size:13px;line-height:1.4;color:var(--cap);margin-top:8px}
     if(e.target.classList.contains('flip')){if(!e.target.classList.contains('on'))e.target.classList.add('peek','peek3')}else e.target.classList.add('open');
     io.unobserve(e.target)}})},{rootMargin:'0px 0px -25% 0px'});
   document.querySelectorAll('.radar,.flip').forEach(function(el){io.observe(el)});
+  // мешки падают, когда вступление на треть в кадре, и «собираются обратно», когда блок ушёл с экрана
+  var intro=document.querySelector('.intro');
+  new IntersectionObserver(function(es){es.forEach(function(e){if(e.intersectionRatio>=.3)intro.classList.add('fall');else if(!e.isIntersecting)intro.classList.remove('fall')})},{threshold:[0,.3]}).observe(intro);
   // фото: раскрытие привязано к пикселям прокрутки — начинается, когда верх фото входит снизу, заканчивается на 45% высоты экрана
   var ph=[].slice.call(document.querySelectorAll('.ph')),tick=0;
   function upd(){tick=0;var vh=innerHeight;ph.forEach(function(el){var t=el.getBoundingClientRect().top,p=(vh-t)/(vh*.55);el.style.setProperty('--p',p<0?0:p>1?1:p.toFixed(3))})}

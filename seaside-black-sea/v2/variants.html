@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Seaside: варианты блоков</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;700&display=swap">
+<style>
+/* Варианты двух блоков. Каждый показывается отдельно по #r1…#f4, стиль тот же, что в лонгриде. */
+@font-face{font-family:"Seaside Mono";src:url(fonts/FreeMono.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Seaside Mono";src:url(fonts/FreeMonoBold.woff2) format("woff2");font-weight:700;font-display:swap}
+:root{--sea:#050505;--on-sea:#ecece8;--on-sea-soft:#a8a8a2;--ink:#0a0a0a;--soft:#45474a;--cap:#616366;--p1:#f6f6f4;
+  --head:"Seaside Mono","Courier New",Courier,monospace;--body:"Manrope","Helvetica Neue",Arial,sans-serif;--col:680px;--wide:1120px;--gut:32px}
+*{box-sizing:border-box}
+html{background:var(--sea);color-scheme:light}
+body{margin:0;background:var(--sea);color:var(--ink);font:18px/1.65 var(--body);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+p{margin:0 0 1.05em;text-align:justify;hyphens:auto;-webkit-hyphens:auto}
+.col{max-width:calc(var(--col) + 2*var(--gut));margin:0 auto;padding:0 var(--gut)}
+.wide{max-width:calc(var(--wide) + 2*var(--gut));margin:0 auto;padding:0 var(--gut)}
+h2{font:700 clamp(26px,2.8vw,40px)/1.15 var(--head);letter-spacing:-.02em;margin:0 0 .35em;text-align:center;text-wrap:balance}
+.dek{font:700 16px/1.45 var(--head);color:var(--soft);margin:0 auto 2.6em;text-align:center;hyphens:manual}
+blockquote{margin:1.6em 0;padding:0 0 0 24px;border-left:3px solid currentColor;font-size:22px;line-height:1.5}
+blockquote p{margin:0;text-align:left;hyphens:manual}
+blockquote footer{font-size:14px;color:var(--soft);margin-top:.6em}
+.sheet{background:var(--p1);margin:0 16px;border-radius:32px;padding:clamp(64px,8vw,112px) 0 clamp(72px,9vw,128px)}
+.v{display:none}.v.on{display:block}
+/* подсказка над блоком: что за вариант и что делать */
+.cue{color:var(--on-sea-soft);font:700 20px/1.5 var(--head);text-align:center;padding:36vh 20px 18vh}
+.cue b{display:block;color:var(--on-sea);font-size:clamp(22px,2.4vw,30px);margin-bottom:8px}
+.tail{height:70vh}
+
+/* r1 шкала: отрезки от 0 до 10 лет заполняются при прокрутке */
+.scale{margin:2.4em 0 2.6em}
+.row{display:grid;grid-template-columns:220px 1fr;gap:6px 24px;align-items:center;margin-bottom:22px}
+.row .who{font-size:14px;line-height:1.35;color:var(--soft)}
+.row .who b{display:block;font:700 16px/1.25 var(--head);color:var(--ink)}
+.track{position:relative;height:34px;background:#e3e3df;border-radius:4px}
+.fill{position:absolute;left:0;top:0;bottom:0;width:calc(var(--max) * 10%);border-radius:4px;background:linear-gradient(90deg,var(--ink) 0 calc(var(--min) / var(--max) * 100%),transparent 0),repeating-linear-gradient(-45deg,var(--ink) 0 4px,#7b7b77 4px 8px);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+.val{position:absolute;top:50%;left:calc(var(--max) * 10% * var(--p,0));transform:translate(10px,-50%);font:700 16px var(--head);white-space:nowrap;opacity:var(--p,0)}
+.axis{display:grid;grid-template-columns:220px 1fr;gap:24px;margin-top:4px}
+.ticks{display:flex;justify-content:space-between;font:400 13px var(--head);color:var(--cap);border-top:1px solid #bdbdb8;padding-top:6px}
+.legend{font-size:13px;color:var(--cap);margin-top:14px}
+.legend i{display:inline-block;width:22px;height:10px;vertical-align:0;margin:0 6px 0 14px;background:repeating-linear-gradient(-45deg,var(--ink) 0 4px,#7b7b77 4px 8px)}
+.legend i.s{background:var(--ink);margin-left:0}
+
+/* r2 разрез моря: мазут со дна поднимается к поверхности */
+.cut{margin:2.2em 0;border-radius:16px;overflow:hidden;background:#dcdcd8;position:relative}
+.cut svg{display:block;width:100%;height:auto}
+.cut .lab{position:absolute;left:20px;top:16px;font:700 15px var(--head);transition:opacity .3s}
+.cut .lab2{opacity:0}
+.cut.late .lab1{opacity:0}.cut.late .lab2{opacity:1}
+
+/* r3 два столбика: оптимисты и пессимисты */
+.duel{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:2.2em 0}
+.duel>div{border:1px solid var(--ink);border-radius:16px;padding:24px 24px 26px}
+.duel>div+div{background:var(--ink);color:var(--p1)}
+.duel h4{font:700 14px var(--head);margin:0 0 6px;opacity:.7}
+.duel .big{font:700 clamp(40px,5vw,60px)/1 var(--head);letter-spacing:-.03em;margin:0 0 16px}
+.duel blockquote{font-size:17px;margin:0 0 14px;padding-left:16px}
+.duel blockquote footer{color:inherit;opacity:.7}
+.duel .note{font-size:15px;line-height:1.45;margin:0;text-align:left}
+
+/* f1 фраза темнеет слово за словом */
+.f1{background:var(--p1);padding:clamp(80px,10vw,150px) 0}
+.f1 .statement{font:700 clamp(26px,3vw,42px)/1.4 var(--head);text-align:left;hyphens:manual;margin:0 0 1.2em}
+.f1 .statement span{color:#d2d2cd;transition:color .25s}
+.f1 .statement span.on{color:var(--ink)}
+
+/* f2 поле из 8000 точек */
+.f2{color:var(--on-sea);padding:clamp(72px,9vw,130px) 0}
+.f2 canvas{display:block;width:100%;margin:28px 0 14px}
+.f2 .count{display:flex;justify-content:space-between;gap:16px;font:700 clamp(18px,2vw,24px)/1.3 var(--head)}
+.f2 .count span{color:var(--on-sea-soft);font:400 14px/1.4 var(--body);display:block}
+.statement-d{font:700 clamp(22px,2.4vw,30px)/1.5 var(--head);text-align:left;hyphens:manual}
+
+/* f3 вода поднимается и накрывает человечка */
+.f3{position:relative;height:260vh}
+.f3 .pin{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--p1)}
+.stage{position:absolute;left:0;bottom:0;width:100%;aspect-ratio:1200/650}
+.stage img{position:absolute;max-width:none;height:auto}
+.stage .bg{left:0;top:17.38%;width:100%}
+.w1{left:-13.33%;top:89.85%;width:126.67%;animation:wx 4s ease-in-out infinite alternate;--x:-2.63%}
+.w2{left:-13.33%;top:77.85%;width:137.5%;animation:wx 4s ease-in-out infinite alternate;--x:2.42%}
+.w3{left:-1.58%;top:71.38%;width:125%;animation:wx 4s ease-in-out infinite alternate;--x:-2.67%}
+.hand1{left:8.42%;top:36.15%;width:17.42%;animation:hand1 2.5s ease-in-out infinite alternate}
+.hand2{left:26.33%;top:36%;width:6.17%;animation:hand2 2.5s ease-in-out infinite alternate}
+@keyframes wx{to{transform:translateX(var(--x))}}
+@keyframes hand1{to{transform:rotate(-5deg)}}
+@keyframes hand2{to{transform:translateX(-10.8%) rotate(-3deg)}}
+.flood{position:absolute;left:-5%;right:-5%;bottom:0;height:110%;background:var(--sea);transform:translateY(calc(100% - var(--p,0) * 100%))}
+.flood img{position:absolute;left:0;top:-30px;width:120%;max-width:none;animation:wx 4s ease-in-out infinite alternate;--x:-4%}
+.f3 .end{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 var(--gut);opacity:calc((var(--p,0) - .85) * 7)}
+.f3 .end p{max-width:760px;color:var(--on-sea);font:700 clamp(22px,2.6vw,34px)/1.5 var(--head);text-align:center;hyphens:manual;margin:0}
+
+/* f4 как помочь */
+.f4{color:var(--on-sea);padding:clamp(72px,9vw,130px) 0}
+.f4 h2{color:var(--on-sea)}.f4 .dek{color:var(--on-sea-soft)}
+.help{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.help>div{border:1px solid #3a3a37;border-radius:16px;padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px}
+.help h3{font:700 20px/1.2 var(--head);margin:0}
+.help p{font-size:15px;line-height:1.5;margin:0;text-align:left;color:#cfcfca}
+.help a{color:var(--on-sea);font:700 15px var(--head);margin-top:auto;text-underline-offset:.2em}
+.help .ph{font:400 13px/1.4 var(--body);color:#8d8d88;margin-top:auto}
+.todo{margin-top:30px;border-top:1px solid #3a3a37;padding-top:22px}
+.todo h3{font:700 18px var(--head);margin:0 0 10px}
+.todo ol{margin:0;padding-left:1.2em;color:#cfcfca;font-size:16px;line-height:1.55}
+
+@media (max-width:900px){
+  :root{--gut:20px}body{font-size:17px}blockquote{font-size:19px;padding-left:18px}
+  .sheet{margin:0 8px;border-radius:22px}
+  .row,.axis{grid-template-columns:1fr}.axis>span{display:none}
+  .duel,.help{grid-template-columns:1fr}
+  .stage{height:56%;width:auto;left:50%;transform:translateX(-23%)}
+}
+@media (max-width:560px){p{text-align:left}}
+@media (prefers-reduced-motion:reduce){.stage img,.flood img{animation:none}}
+</style>
+</head>
+<body>
+
+<!-- ВОССТАНОВЛЕНИЕ · вариант 1: шкала -->
+<div class="v" id="r1">
+  <p class="cue"><b>«Сколько море будет восстанавливаться» · вариант 1</b>шкала сроков, отрезки заполняются при прокрутке ↓</p>
+  <section class="sheet">
+    <div class="col">
+      <h2>Сколько море будет восстанавливаться</h2>
+      <p class="dek">От полутора до десяти лет — смотря кого спросить</p>
+      <p>Эксперты расходятся во мнениях о&nbsp;сроках. Вот как выглядят их оценки на одной шкале.</p>
+      <div class="scale" data-scroll>
+        <div class="row" style="--min:1.5;--max:2"><div class="who"><b>Алексей Петров</b>Институт биологии южных морей, при активной очистке</div><div class="track"><div class="fill"></div><span class="val">1,5–2 года</span></div></div>
+        <div class="row" style="--min:2;--max:2"><div class="who"><b>Разлив 2007 года</b>Керченский пролив, так было на&nbsp;деле</div><div class="track"><div class="fill"></div><span class="val">≈2 года</span></div></div>
+        <div class="row" style="--min:5;--max:10"><div class="who"><b>Асхат Каюмов</b>эколог, с&nbsp;учётом ухудшения среды</div><div class="track"><div class="fill"></div><span class="val">5–10 лет</span></div></div>
+        <div class="axis"><span></span><div class="ticks"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10 лет</span></div></div>
+        <p class="legend"><i class="s"></i>точно займёт <i></i>разброс оценки</p>
+      </div>
+      <p>После разлива в&nbsp;Керченском проливе в&nbsp;2007 году в&nbsp;море попало около 2000&nbsp;тонн мазута, и&nbsp;флора с&nbsp;фауной восстанавливались около двух лет. Разлив у&nbsp;Анапы затронул в&nbsp;1,5&nbsp;раза бо́льшую территорию, поэтому оптимистичный срок под вопросом.</p>
+    </div>
+  </section>
+  <div class="tail"></div>
+</div>
+
+<!-- ВОССТАНОВЛЕНИЕ · вариант 2: разрез моря -->
+<div class="v" id="r2">
+  <p class="cue"><b>«Сколько море будет восстанавливаться» · вариант 2</b>разрез моря, мазут поднимается со дна при прокрутке ↓</p>
+  <section class="sheet">
+    <div class="col">
+      <h2>Сколько море будет восстанавливаться</h2>
+      <p class="dek">От полутора до десяти лет — смотря кого спросить</p>
+      <p>Отдельная тревога — вторичное загрязнение.</p>
+      <blockquote><p>Мазут, осевший на дне, может начать всплывать летом 2025 года, когда вода прогреется.</p><footer>Асхат Каюмов, эколог</footer></blockquote>
+      <div class="cut" data-scroll aria-label="Схема: мазут лежит на дне и с прогревом воды поднимается к поверхности" role="img">
+        <span class="lab lab1">декабрь 2024 · мазут оседает на&nbsp;дно</span>
+        <span class="lab lab2">лето 2025 · вода прогрелась, мазут всплывает</span>
+        <svg viewBox="0 0 680 400" aria-hidden="true">
+          <path d="M0 60 Q 42 50 85 60 T 170 60 T 255 60 T 340 60 T 425 60 T 510 60 T 595 60 T 680 60 V400 H0Z" fill="#b9b9b4"/>
+          <rect class="film" x="0" y="54" width="680" height="10" fill="#050505" opacity="0"/>
+          <path d="M0 340 C 90 320 160 352 250 336 S 420 318 500 338 S 620 330 680 326 V400 H0Z" fill="#45474a"/>
+          <g class="blobs" fill="#050505"></g>
+        </svg>
+      </div>
+      <p>В отличие от лёгких нефтепродуктов, мазут почти не разлагается: он оседает в&nbsp;донных отложениях и&nbsp;при определённых условиях поднимается на поверхность, особенно на мелководье. Это делает его экологической миной замедленного действия: побережье может загрязниться снова спустя месяцы после того, как его визуально очистили.</p>
+    </div>
+  </section>
+  <div class="tail"></div>
+</div>
+
+<!-- ВОССТАНОВЛЕНИЕ · вариант 3: два столбика -->
+<div class="v" id="r3">
+  <p class="cue"><b>«Сколько море будет восстанавливаться» · вариант 3</b>оценки экспертов в&nbsp;два столбика ↓</p>
+  <section class="sheet">
+    <div class="col">
+      <h2>Сколько море будет восстанавливаться</h2>
+      <p class="dek">От полутора до десяти лет — смотря кого спросить</p>
+      <p>Эксперты расходятся во мнениях о&nbsp;сроках.</p>
+    </div>
+    <div class="wide" style="max-width:calc(900px + 2*var(--gut))">
+      <div class="duel">
+        <div>
+          <h4>оптимисты</h4>
+          <p class="big">1,5–2 года</p>
+          <blockquote><p>При активной очистке экосистема может стабилизироваться за 1,5–2&nbsp;года.</p><footer>Алексей Петров, Институт биологии южных морей</footer></blockquote>
+          <p class="note">Опора: после разлива 2007 года в&nbsp;Керченском проливе (≈2000&nbsp;т мазута) море восстановилось примерно за два года.</p>
+        </div>
+        <div>
+          <h4>пессимисты</h4>
+          <p class="big">5–10 лет</p>
+          <blockquote><p>Срок может быть заметно больше, учитывая, насколько ухудшилось качество среды.</p><footer>Асхат Каюмов, эколог</footer></blockquote>
+          <p class="note">Довод: у&nbsp;Анапы мазута до&nbsp;5000&nbsp;т и&nbsp;площадь в&nbsp;1,5 раза больше, а&nbsp;осевший на дне мазут может всплыть снова.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="tail"></div>
+</div>
+
+<!-- ФИНАЛ · вариант 1: фраза темнеет -->
+<div class="v" id="f1">
+  <p class="cue"><b>Финал · вариант 1</b>фраза темнеет слово за&nbsp;словом при прокрутке ↓</p>
+  <section class="f1">
+    <div class="col">
+      <p class="statement" data-scroll>Чёрное море стало ещё чернее не&nbsp;только от&nbsp;мазута, но&nbsp;и&nbsp;от&nbsp;боли тысяч погибших существ.</p>
+      <p>Разлив у&nbsp;берегов Анапы в&nbsp;декабре 2024 года оказался не просто экологическим инцидентом, а&nbsp;полномасштабной катастрофой. Он обнажил уязвимость и&nbsp;природы, и&nbsp;социальной инфраструктуры.</p>
+      <p>Восстановление Чёрного моря займёт годы. Но главное: без структурных изменений в&nbsp;экологической безопасности такие катастрофы будут повторяться.</p>
+    </div>
+  </section>
+  <div class="tail" style="background:var(--p1)"></div>
+</div>
+
+<!-- ФИНАЛ · вариант 2: 8000 точек -->
+<div class="v" id="f2">
+  <p class="cue"><b>Финал · вариант 2</b>8000 точек, по одной на птицу; при прокрутке гаснут все, кроме 121 ↓</p>
+  <section class="f2">
+    <div class="col">
+      <p class="statement-d">Чёрное море стало ещё чернее не&nbsp;только от&nbsp;мазута, но&nbsp;и&nbsp;от&nbsp;боли тысяч погибших существ.</p>
+      <canvas data-scroll aria-label="8000 точек: каждая — пострадавшая птица. Остаются гореть 121 — столько удалось стабилизировать" role="img"></canvas>
+      <div class="count"><div><b class="n">8000</b><span>птиц собрали в&nbsp;первые дни</span></div><div style="text-align:right"><b>121</b><span>удалось стабилизировать</span></div></div>
+    </div>
+  </section>
+  <div class="tail"></div>
+</div>
+
+<!-- ФИНАЛ · вариант 3: вода накрывает человечка -->
+<div class="v" id="f3">
+  <p class="cue"><b>Финал · вариант 3</b>возвращение первого экрана: при прокрутке вода поднимается ↓</p>
+  <section class="f3">
+    <div class="pin">
+      <div class="stage" aria-hidden="true">
+        <img class="bg" src="img/h-bg.webp" width="1680" height="752" alt="">
+        <img class="w1" src="img/h-w1.webp" width="1520" height="55" alt="">
+        <img class="w2" src="img/h-w2.webp" width="1650" height="86" alt="">
+        <img class="w3" src="img/h-w3.webp" width="1500" height="77" alt="">
+        <img class="hand1" src="img/h-hand1.webp" width="403" height="482" alt="">
+        <img class="hand2" src="img/h-hand2.webp" width="139" height="457" alt="">
+      </div>
+      <div class="flood" data-scroll><img src="img/h-w2.webp" width="1650" height="86" alt=""></div>
+      <div class="end"><p>Чёрное море стало ещё чернее не&nbsp;только от&nbsp;мазута, но&nbsp;и&nbsp;от&nbsp;боли тысяч погибших существ.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ФИНАЛ · вариант 4: как помочь -->
+<div class="v" id="f4">
+  <p class="cue"><b>Финал · вариант 4</b>блок «как помочь» после вывода ↓</p>
+  <section class="f4">
+    <div class="wide">
+      <h2>Что можно сделать</h2>
+      <p class="dek">Если вы на побережье или хотите помочь издалека</p>
+      <div class="help">
+        <div><h3>«Дельфа»</h3><p>Научно-экологический центр спасения дельфинов, Анапа. Если видите живого дельфина на&nbsp;берегу, звоните на горячую линию: 8&nbsp;938&nbsp;888-15-95.</p><a href="https://t.me/delfacenter" target="_blank" rel="noopener">t.me/delfacenter ↗</a></div>
+        <div><h3>Пункт спасения птиц</h3><p>Витязево. Сюда везут птиц в&nbsp;мазуте: отмывают, выхаживают, выпускают. Нужны волонтёры и&nbsp;средства для отмывки.</p><span class="ph">ссылку на&nbsp;пункт добавить</span></div>
+        <div><h3>Штаб #МЫВМЕСТЕ</h3><p>Собирает волонтёров на очистку берега и&nbsp;помощь в&nbsp;реабилитационных центрах.</p><span class="ph">ссылку на&nbsp;штаб добавить</span></div>
+      </div>
+      <div class="todo">
+        <h3>Если нашли птицу в&nbsp;мазуте</h3>
+        <ol>
+          <li>Не отмывайте и&nbsp;не кормите её сами.</li>
+          <li>Наденьте перчатки, накройте птицу тканью и&nbsp;посадите в&nbsp;коробку с&nbsp;отверстиями.</li>
+          <li>Сообщите в&nbsp;ближайший пункт спасения и&nbsp;отвезите птицу туда.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+  <div class="tail"></div>
+</div>
+
+<script>
+(function(){
+  var cur;
+  function show(){var id=(location.hash||'#r1').slice(1),el=document.getElementById(id)||document.getElementById('r1');
+    if(cur)cur.classList.remove('on');cur=el;el.classList.add('on');scrollTo(0,0);if(el.id==='f2')dots();upd()}
+  addEventListener('hashchange',show);
+  addEventListener('message',function(e){var d=e.data||{};if(d.go)scrollTo(0,0)});
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // прогресс блока: 0 — верх блока у нижнего края экрана, 1 — блок поднялся на 60% экрана
+  function prog(el,span){var r=el.getBoundingClientRect(),vh=innerHeight,p=(vh-r.top)/(vh*(span||.6));return reduce?1:Math.max(0,Math.min(1,p))}
+
+  // r2: капли мазута
+  var blobs=document.querySelector('.blobs'),B=[];
+  for(var i=0;i<26;i++){var x=20+i*25+(i%3)*6,rx=6+(i*7%9),e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+    e.setAttribute('cx',x);e.setAttribute('rx',rx);e.setAttribute('ry',rx*.7);blobs.appendChild(e);B.push({e:e,y0:338-(i%4)*4,s:.55+((i*37)%45)/100})}
+  // f1: слова
+  var st=document.querySelector('.f1 .statement');st.innerHTML=st.innerHTML.split(' ').map(function(w){return '<span>'+w+'</span>'}).join(' ');
+  var words=[].slice.call(st.children);
+  // f2: точки
+  var cv=document.querySelector('.f2 canvas'),order,N=8000,KEEP=121;
+  function dots(){var w=cv.clientWidth,cols=w<500?80:125,rows=Math.ceil(N/cols),gap=w/cols,dpr=devicePixelRatio||1;
+    cv.width=w*dpr;cv.height=rows*gap*dpr;cv.style.height=rows*gap+'px';cv.dataset.cols=cols;cv.dataset.gap=gap;
+    if(!order){order=[];for(var i=0;i<N;i++)order.push(i);for(i=N-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=order[i];order[i]=order[j];order[j]=t}}
+    cv._last=-1}
+  function drawDots(p){var lost=Math.round(p*(N-KEEP));if(lost===cv._last)return;cv._last=lost;
+    var c=cv.getContext('2d'),dpr=devicePixelRatio||1,cols=+cv.dataset.cols,gap=+cv.dataset.gap,r=Math.max(.9,gap*.28);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,cv.width,cv.height);
+    var dead={};for(var k=0;k<lost;k++)dead[order[k]]=1;
+    for(var i=0;i<N;i++){var x=(i%cols+.5)*gap,y=(Math.floor(i/cols)+.5)*gap;c.fillStyle=dead[i]?'#262624':'#ecece8';c.beginPath();c.arc(x,y,r,0,7);c.fill()}
+    document.querySelector('.f2 .n').textContent=N-lost}
+
+  function upd(){if(!cur)return;var id=cur.id,el=cur.querySelector('[data-scroll]');if(!el)return;
+    if(id==='r1'){var p=prog(el,.7);[].forEach.call(el.querySelectorAll('.row'),function(r,i){var q=Math.max(0,Math.min(1,p*3-i));r.style.setProperty('--p',q.toFixed(3))})}
+    else if(id==='r2'){var p2=prog(el,.9);cur.querySelector('.cut').classList.toggle('late',p2>.5);
+      B.forEach(function(b){var q=Math.min(1,p2/b.s),y=b.y0-q*(b.y0-64);b.e.setAttribute('cy',y.toFixed(1));b.e.setAttribute('opacity',q>.98?0:1)});
+      document.querySelector('.film').setAttribute('opacity',Math.max(0,(p2-.6)/.4).toFixed(2))}
+    else if(id==='f1'){var r3=el.getBoundingClientRect(),p3=reduce?1:Math.max(0,Math.min(1,(innerHeight*.8-r3.top)/(innerHeight*.5)));words.forEach(function(w,i){w.classList.toggle('on',p3*words.length>i)})}
+    else if(id==='f2'){drawDots(prog(el,1.1))}
+    else if(id==='f3'){var s=cur.querySelector('.f3'),r=s.getBoundingClientRect(),p4=reduce?1:Math.max(0,Math.min(1,-r.top/(s.offsetHeight-innerHeight)));
+      s.querySelector('.pin').style.setProperty('--p',p4.toFixed(3));s.querySelector('.flood').style.setProperty('--p',Math.min(1,p4/.85).toFixed(3))}
+  }
+  var tick=0;addEventListener('scroll',function(){if(!tick){tick=1;requestAnimationFrame(function(){tick=0;upd()})}},{passive:true});
+  addEventListener('resize',function(){if(cur&&cur.id==='f2')dots();upd()});
+  show();
+})();
+</script>
+</body>
+</html>
