@@ -5,15 +5,15 @@
 <meta name="robots" content="noindex">
 <title>Успеть всё</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Onest:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Unbounded:wght@400;500;600;700&display=swap">
 <style>
-/* Одна система для всех блоков: тёмный фон, Oswald в заголовках и цифрах, Onest в тексте.
+/* Одна система для всех блоков: тёмный фон, Oswald в заголовках, Unbounded в акцентах, Manrope в тексте.
    data-style: 3d (мои фигуры + стеклянные карточки) | mine (твои хромовые фигуры, булавки, серые карточки)
    data-pal: mono | pink (розовый текст) | fig (розовые фигуры) */
 :root{
   --bg:#1c1c1c; --ink:#f2f2f2; --dim:#a3a3a3; --line:rgba(255,255,255,.14);
   --acc:#ffffff; --acc-ink:#141414;
-  --head:"Oswald","Arial Narrow",sans-serif; --wide:"Oswald","Arial Narrow",sans-serif; --body:"Onest",system-ui,sans-serif;
+  --head:"Oswald","Arial Narrow",sans-serif; --wide:"Unbounded","Arial Black",sans-serif; --body:"Manrope",system-ui,sans-serif;
   --card:rgba(16,16,16,.42); --card-b:rgba(255,255,255,.12); --blur:blur(40px) saturate(1.2);
   --r:22px; --gut:40px; --ease:cubic-bezier(.23,1,.32,1);
 }
@@ -76,7 +76,7 @@ p{margin:0 0 1em}
 .hero .l{left:40px}.hero .r{right:40px;text-align:right}
 .hstats{position:absolute;left:0;right:0;bottom:28px;z-index:2;display:flex;justify-content:center;gap:36px;flex-wrap:wrap}
 .hstats span{display:flex;align-items:baseline;gap:8px;font:500 12px var(--head);text-transform:uppercase;letter-spacing:.1em;color:#9a9a9a}
-.hstats b{font:600 19px var(--wide);letter-spacing:.01em;color:var(--acc)}
+.hstats b{font:600 18px var(--wide);letter-spacing:-.02em;color:var(--acc)}
 
 /* 02 statistics */
 .stat .lead{font:400 18px/1.5 var(--body);max-width:860px;margin:0 auto 28px;color:var(--dim)}
@@ -90,14 +90,14 @@ p{margin:0 0 1em}
 .sc .back{transform:perspective(1400px) rotateY(-180deg);justify-content:flex-start}
 .sc.open .front{transform:perspective(1400px) rotateY(180deg)}.sc.open .back{transform:perspective(1400px) rotateY(0)}
 @media (hover:hover){.sc:hover .front{transform:perspective(1400px) rotateY(180deg)}.sc:hover .back{transform:perspective(1400px) rotateY(0)}}
-.sc h3{margin:0;font:600 clamp(24px,2.3vw,32px)/1.1 var(--wide);text-transform:uppercase;letter-spacing:.01em;text-align:left;text-wrap:balance}
+.sc h3{margin:0;font:600 clamp(22px,2.1vw,30px)/1.12 var(--wide);text-transform:uppercase;letter-spacing:-.01em;text-align:left;text-wrap:balance}
 .sc .front{justify-content:space-between;padding:22px 26px 24px}
 .sc .front::before{content:"0" counter(sc);font:500 15px var(--head);letter-spacing:.14em;color:var(--acc)}
 .sc .front h3{padding-right:56px}
-.sc .back h3{font-size:14px;letter-spacing:.08em;margin-bottom:12px;text-align:left;color:var(--dim)}
+.sc .back h3{font-size:13px;letter-spacing:.04em;margin-bottom:18px;text-align:left;color:var(--dim)}
 .sc .data{display:grid;gap:8px}
 .sc .row{display:grid;grid-template-columns:72px 1fr;gap:6px 12px;align-items:center}
-.sc .row b{font:600 24px/1.1 var(--wide);color:var(--acc);letter-spacing:0}
+.sc .row b{font:600 22px var(--wide);color:var(--acc);letter-spacing:-.03em}
 .sc .row span{font-size:14px;line-height:1.35}
 .sc .row i{grid-column:1/-1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
 .sc .row i::after{content:"";display:block;height:100%;width:var(--v);background:var(--acc);transform:scaleX(0);transform-origin:0;transition:transform .6s var(--ease) .3s}
@@ -113,7 +113,7 @@ p{margin:0 0 1em}
 .tabs{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px}
 .tab{display:flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border-radius:999px;border:1px solid var(--card-b);background:var(--card);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);cursor:pointer;text-align:left}
 .tab img{width:52px;height:52px;border-radius:50%;object-fit:cover;filter:grayscale(1)}
-.tab b{display:block;font:600 16px/1.2 var(--wide);text-transform:uppercase;letter-spacing:.02em}
+.tab b{display:block;font:600 13px/1.3 var(--wide);text-transform:uppercase}
 .tab span{display:block;font-size:13px;color:var(--dim);line-height:1.3}
 .tab[aria-selected="true"]{border-color:var(--acc);background:rgba(255,255,255,.1)}
 .person{display:grid;grid-template-columns:300px minmax(0,1fr);gap:56px;align-items:start}
@@ -143,7 +143,7 @@ p{margin:0 0 1em}
 [data-iv="idx"] .person{grid-template-columns:200px minmax(0,1fr);gap:48px}
 [data-iv="idx"] .person .ph{position:static}
 [data-iv="idx"] .person .ph img{width:100%;aspect-ratio:4/5;border-radius:14px;outline:none}
-[data-iv="idx"] .person .ph b{font-size:22px;letter-spacing:.02em}
+[data-iv="idx"] .person .ph b{font-size:18px}
 [data-iv="idx"] .qa{grid-template-columns:minmax(0,320px) minmax(0,1fr);grid-template-rows:repeat(6,auto) 1fr;column-gap:40px;row-gap:0;counter-reset:q}
 [data-iv="idx"] .qi{display:contents}
 [data-iv="idx"] .qi>button{grid-column:1;counter-increment:q;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:baseline;padding:16px 0;border-top:1px solid var(--line);font:500 16px/1.4 var(--body);color:var(--dim);transition:color .3s var(--ease)}
@@ -198,28 +198,30 @@ p{margin:0 0 1em}
 .tgrid:focus-visible{outline:2px solid var(--acc);outline-offset:6px}
 .tgrid .tc{flex:0 0 340px;scroll-snap-align:start}
 .tc{padding:30px 28px 32px;position:relative;z-index:1;min-height:240px}
-.tc h3{margin:0 0 14px;font:600 23px/1.15 var(--wide);text-transform:uppercase;color:var(--acc)}
+.tc h3{margin:0 0 14px;font:600 19px/1.3 var(--wide);text-transform:uppercase;color:var(--acc)}
 .tc p{margin:0;color:#d0d0d0;font-size:15.5px;line-height:1.6}
 
 /* 06 calm */
-.glabel{margin:0 0 14px;font:500 15px/1.3 var(--head);text-transform:uppercase;letter-spacing:.12em;color:var(--dim)}
-.cgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:32px}
-.cgrid.five{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:0}
-.cc{padding:22px 20px;position:relative;display:flex;flex-direction:column;gap:8px}
-.cc h3{margin:0;font:600 20px/1.15 var(--wide);text-transform:uppercase;color:var(--acc)}
-.cc p{margin:0;font-size:15px;line-height:1.5}
-.cc em{font-style:normal;font:600 19px var(--wide);text-transform:uppercase;color:var(--acc)}
-.cc .tool{margin-top:auto;padding-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.cc .clock{font:600 36px/1 var(--wide);letter-spacing:-.04em;font-variant-numeric:tabular-nums;flex-basis:100%}
-.btn{font:600 14px var(--body);border:1.5px solid var(--acc);color:var(--acc);background:transparent;border-radius:999px;min-height:40px;padding:8px 16px;cursor:pointer;transition:transform .12s var(--ease)}
+.glabel{margin:0 0 22px;font:600 22px/1.3 var(--body)}
+.cgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-bottom:56px}
+.cgrid.five{grid-template-columns:repeat(6,minmax(0,1fr))}
+.cgrid.five>*{grid-column:span 2}
+.cgrid.five>*:nth-child(4){grid-column:2/span 2}
+.cc{padding:30px 26px;position:relative;display:flex;flex-direction:column;gap:12px;min-height:230px}
+.cc h3{margin:0;font:600 17px/1.25 var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc p{margin:0;font-size:16px;line-height:1.55}
+.cc em{font-style:normal;font:600 16px var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc .tool{margin-top:auto;padding-bottom:4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.cc .clock{font:600 40px/1 var(--wide);letter-spacing:-.04em;font-variant-numeric:tabular-nums;flex-basis:100%}
+.btn{font:600 15px var(--body);border:1.5px solid var(--acc);color:var(--acc);background:transparent;border-radius:999px;min-height:44px;padding:10px 20px;cursor:pointer;transition:transform .12s var(--ease)}
 .btn:active,.tab:active{transform:scale(.97)}
 .tab{transition:transform .12s var(--ease)}
 .btn.main{background:var(--acc);color:var(--acc-ink)}
-.breath{position:relative;width:64px;height:64px;border-radius:50%;border:1.5px solid var(--acc);margin-right:auto}
+.breath{position:relative;width:96px;height:96px;border-radius:50%;border:1.5px solid var(--acc);margin-right:auto}
 .breath i{position:absolute;inset:0;border-radius:50%;background:var(--acc);opacity:.85;transform:scale(.36);transition:transform 4s ease-in-out}
 .breath.inhale i{transform:scale(1)}
 .breath em{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:600 14px var(--body);color:var(--ink)}
-.cc textarea{width:100%;margin-top:auto;background:rgba(0,0,0,.25);border:1px solid var(--card-b);border-radius:12px;color:var(--ink);font:14px var(--body);padding:10px 12px;resize:vertical;min-height:56px}
+.cc textarea{width:100%;background:rgba(0,0,0,.25);border:1px solid var(--card-b);border-radius:12px;color:var(--ink);font:15px var(--body);padding:10px 12px;resize:vertical;min-height:64px}
 /* her variant: light paper notes with her clips (as in her design) */
 [data-style="mine"] .calm .cc{background:#d9d9d9;color:#151515;border-color:#d9d9d9}
 [data-style="mine"] .calm .cc h3,[data-style="mine"] .calm .cc em{color:#b5001b}
@@ -233,7 +235,7 @@ p{margin:0 0 1em}
 .rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
 .rstack{display:grid;gap:18px}
 .rc{padding:24px 24px 22px;position:relative}
-.rc h3{margin:0 0 10px;font:600 23px/1.15 var(--wide);text-transform:uppercase}
+.rc h3{margin:0 0 12px;font:600 21px/1.3 var(--wide);text-transform:uppercase}
 .rc>p{color:#d4d4d4;font-size:15px;line-height:1.5}
 .rc ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14.5px;line-height:1.45;color:#e0e0e0}
 .rc ul ul{margin-top:6px;gap:4px}
@@ -247,7 +249,7 @@ p{margin:0 0 1em}
 /* 08 job search */
 .jgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .jc{padding:24px 24px 26px;position:relative;transition:transform .5s var(--ease),opacity .5s var(--ease),border-color .5s var(--ease),box-shadow .5s var(--ease)}
-.jc h3{margin:0 0 14px;font:600 21px/1.15 var(--wide);text-transform:uppercase}
+.jc h3{margin:0 0 16px;font:600 16px/1.3 var(--wide);text-transform:uppercase}
 .jc .grp{font:600 15px var(--body);color:var(--acc);margin:0 0 8px}
 .jc ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .jc li{padding-left:18px;position:relative}
@@ -315,7 +317,6 @@ p{margin:0 0 1em}
   .fit{padding:84px 0 28px}.fit .sh{margin-bottom:28px}
   .sh h2{font-size:clamp(36px,6.4vh,56px)}
   .sc .flip{min-height:150px}.sc .face{padding-bottom:58px}
-  .cgrid{margin-bottom:22px}.cc{padding:18px 18px}.cc .clock{font-size:30px}
   .jc{padding:20px 22px 22px}.jc ul{gap:5px}.seek{margin-bottom:22px;padding:11px 20px}
   [data-iv="idx"] .qi .ans .card{max-height:46vh}
 }
@@ -362,7 +363,7 @@ main,.foot{position:relative;z-index:1}
 .jt .opt{padding:26px 26px 30px}
 .jt .opt h3{margin:0 0 22px;font:500 13px var(--head);letter-spacing:.12em;text-transform:uppercase;color:#9a9a9a}
 .jt ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
-.jt li{display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:center;font:600 20px var(--wide);text-transform:uppercase}
+.jt li{display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:center;font:600 17px var(--wide);text-transform:uppercase}
 .jt li::before{content:"";box-sizing:border-box;width:22px;height:22px;border-radius:50%;background:var(--acc)}
 .jt li.bad{color:#7a7a7a}.jt li.bad::before{background:none;border:1.5px solid #5c5c5c}
 .jt .opt.last{border-color:var(--acc)}
@@ -421,10 +422,18 @@ main,.foot{position:relative;z-index:1}
   <div class="in">
     <header class="sh"><h2>Истории выживания</h2><p>интервью со студентами</p></header>
     <div class="tabs" role="tablist" aria-label="Студенты">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="p-pavel" id="t-pavel"><img src="img/pavel.webp" alt=""><span><b>Павел Шлёнский</b><span>студент 2 курса</span></span></button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="p-liza" id="t-liza"><img src="img/liza.webp" alt=""><span><b>Елизавета Савоськина</b><span>студентка 2 курса</span></span></button>
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-liza" id="t-liza"><img src="img/liza.webp" alt=""><span><b>Елизавета Савоськина</b><span>студентка 2 курса</span></span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-pavel" id="t-pavel"><img src="img/pavel.webp" alt=""><span><b>Павел Шлёнский</b><span>студент 2 курса</span></span></button>
     </div>
-    <div class="person" role="tabpanel" id="p-pavel" aria-labelledby="t-pavel">
+    <div class="person" role="tabpanel" id="p-liza" aria-labelledby="t-liza">
+      <div class="ph"><img src="img/liza.webp" alt="Елизавета Савоськина"><div><b>Елизавета Савоськина</b><span>студентка 2 курса</span></div></div>
+      <div class="qa">
+        <div class="qi open"><button type="button" aria-expanded="true"><span>Какая у вас должность и что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>За свою студенческую жизнь я успела попробовать разные способы совмещения работы и учебы. Мой первый трудовой договор я заключила в 16 лет, а последнюю увольнительную я написала пару месяцев назад – подработки долгое время были частью моей повседневности.</p><p>На моем последнем месте работы в найме я была специалистом-сомелье по чаю и кофе, так же я выполняла обязанности кассира и бариста.</p><p>Я устроилась туда во время учебного года, о чем знал мой работодатель и отнесся вполне спокойно. “Главное, что как сотрудник вы нам подходите” – сказала управляющая галереи в день, когда мой испытательный срок подошел к концу.</p><p>Компания действительно искала людей, которые в первую очередь отвечали их корпоративным ценностям.</p><p>После этого меня официально трудоустроили и я стала полноценным сотрудником с “неполненным” графиком. Так как я работающий студент, график выстраивался в соответствии со свободным временем в моем учебном расписании, но есть одно но: работодателю не выгодно нанимать человека, который отрабатывает менее 80-ти часов в месяц, поэтому приходилось работать почти всё свободное от учебы время. Я вставала на учебу в шесть утра, а домой проходила около двенадцати ночи. Выходных от работы у меня было 2-3 дня в неделю. С таким темпом жизни я потеряла всё то время, которое раньше тратила на домашнее задание, хобби и банальный отдых. Не успела осознать, как я перестала  слушать на занятиях, стала питаться как попало и в последствии выгорела не только к работе, но и к учебе.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я совмещаю работу с учебой с 16 лет, и за это время мои цели менялись и пересматривались несколько раз – сначала это было просто желание заполнить гардероб брендовыми вещами, потом банальное желание сепарироваться от родителей. Но сейчас, пройдя этот путь я понимаю, что работа для меня – это возможность попробовать себя в определенной сфере, а также перспектива развития и обогащения не только своего кругозора, но и круга общения. Сейчас я не работаю в найме, и больше не планирую возвращаться к подработкам, так как поставила для себя цель  – развиваться как специалист. Поэтому приняла для себя решение развиваться на базе фриланса в своем темпе – так, чтобы не мешать учебе.</p><p>Я думаю, что работа на фрилансе самый оптимальный вариант для студентов.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Какие основные сложности вы испытываете, совмещая работу и учебу?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Если говорить о работе в найме –  это невозможность преуспеть как сотрудник, так как у тебя всегда есть ограничение в виде очной учебы. Вторая проблема, как я говорила ранее, связана с сильным недостатком времени, а иногда это даже несостыковка расписания. Бывало так, что работодатель на две недели вперед распишет график работы и поставит мне смены в соответствии с моим учебным расписанием – а расписание может резко измениться среди недели. Могли появится мероприятия на которые я хотела бы пойти – но я не могу, потому что мне нужно было на работу.</p></div></div></div></div>
+        <div class="qi"><button type="button" aria-expanded="false"><span>Как, по вашему мнению, работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Однозначно плохо. Из-за совмещения работы и учебы теряется фокус. Домашкой я стала заниматься прямо на занятиях, потерялась мотивация вникать в новые темы. И это всё опять же из-за недостатка времени. Все тем предметы, которые я раньше любила – начали казаться мне скучными, потому что возможности вникнуть в них не было. Действительно, не успеваешь заметить, как мысли об учебе и работе смешиваются в одну однородную кашу, и ты не можешь преуспеть уже нигде.</p></div></div></div></div>
+      </div>
+    <div class="person" role="tabpanel" id="p-pavel" aria-labelledby="t-pavel" hidden>
       <div class="ph"><img src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
       <div class="qa">
         <div class="qi open"><button type="button" aria-expanded="true"><span>Чем вы занимаетесь на работе? Что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я работал курьером в Яндекс Лавке с августа по ноябрь. Тогда нужна была быстрая работа, которую легко выполнять. Мне нужно было себя чем-то занять, плюс я достаточно спортивный был когда-то, поэтому такая работа подходила. Пришлось уволиться, потому что возникли проблемы со здоровьем работал на велике, колени начали болеть, работать я больше не смог.</p><p>Потом я стал работать специалистом по отбору абитуриентов в регионах. Работаю, как не трудно догадаться в приемной комиссии своего университета. В мои обязанности входит: прозвон абитуриентов и их родителей, информирование и продажа услуг университета. Ну и все, что способствует продаже: подготовка почтовых рассылок, техническая работа.</p></div></div></div></div>
@@ -433,14 +442,6 @@ main,.foot{position:relative;z-index:1}
         <div class="qi"><button type="button" aria-expanded="false"><span>Как работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>На успеваемость в учёбе влияния я пока не заметил. Ни положительного, ни негативного. Но я думаю через пару месяцев, на первой сессии будет понятно.</p></div></div></div></div>
       </div>
     </div>
-    <div class="person" role="tabpanel" id="p-liza" aria-labelledby="t-liza" hidden>
-      <div class="ph"><img src="img/liza.webp" alt="Елизавета Савоськина"><div><b>Елизавета Савоськина</b><span>студентка 2 курса</span></div></div>
-      <div class="qa">
-        <div class="qi open"><button type="button" aria-expanded="true"><span>Какая у вас должность и что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>За свою студенческую жизнь я успела попробовать разные способы совмещения работы и учебы. Мой первый трудовой договор я заключила в 16 лет, а последнюю увольнительную я написала пару месяцев назад – подработки долгое время были частью моей повседневности.</p><p>На моем последнем месте работы в найме я была специалистом-сомелье по чаю и кофе, так же я выполняла обязанности кассира и бариста.</p><p>Я устроилась туда во время учебного года, о чем знал мой работодатель и отнесся вполне спокойно. “Главное, что как сотрудник вы нам подходите” – сказала управляющая галереи в день, когда мой испытательный срок подошел к концу.</p><p>Компания действительно искала людей, которые в первую очередь отвечали их корпоративным ценностям.</p><p>После этого меня официально трудоустроили и я стала полноценным сотрудником с “неполненным” графиком. Так как я работающий студент, график выстраивался в соответствии со свободным временем в моем учебном расписании, но есть одно но: работодателю не выгодно нанимать человека, который отрабатывает менее 80-ти часов в месяц, поэтому приходилось работать почти всё свободное от учебы время. Я вставала на учебу в шесть утра, а домой проходила около двенадцати ночи. Выходных от работы у меня было 2-3 дня в неделю. С таким темпом жизни я потеряла всё то время, которое раньше тратила на домашнее задание, хобби и банальный отдых. Не успела осознать, как я перестала  слушать на занятиях, стала питаться как попало и в последствии выгорела не только к работе, но и к учебе.</p></div></div></div></div>
-        <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я совмещаю работу с учебой с 16 лет, и за это время мои цели менялись и пересматривались несколько раз – сначала это было просто желание заполнить гардероб брендовыми вещами, потом банальное желание сепарироваться от родителей. Но сейчас, пройдя этот путь я понимаю, что работа для меня – это возможность попробовать себя в определенной сфере, а также перспектива развития и обогащения не только своего кругозора, но и круга общения. Сейчас я не работаю в найме, и больше не планирую возвращаться к подработкам, так как поставила для себя цель  – развиваться как специалист. Поэтому приняла для себя решение развиваться на базе фриланса в своем темпе – так, чтобы не мешать учебе.</p><p>Я думаю, что работа на фрилансе самый оптимальный вариант для студентов.</p></div></div></div></div>
-        <div class="qi"><button type="button" aria-expanded="false"><span>Какие основные сложности вы испытываете, совмещая работу и учебу?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Если говорить о работе в найме –  это невозможность преуспеть как сотрудник, так как у тебя всегда есть ограничение в виде очной учебы. Вторая проблема, как я говорила ранее, связана с сильным недостатком времени, а иногда это даже несостыковка расписания. Бывало так, что работодатель на две недели вперед распишет график работы и поставит мне смены в соответствии с моим учебным расписанием – а расписание может резко измениться среди недели. Могли появится мероприятия на которые я хотела бы пойти – но я не могу, потому что мне нужно было на работу.</p></div></div></div></div>
-        <div class="qi"><button type="button" aria-expanded="false"><span>Как, по вашему мнению, работа влияет на вашу успеваемость в учебе?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Однозначно плохо. Из-за совмещения работы и учебы теряется фокус. Домашкой я стала заниматься прямо на занятиях, потерялась мотивация вникать в новые темы. И это всё опять же из-за недостатка времени. Все тем предметы, которые я раньше любила – начали казаться мне скучными, потому что возможности вникнуть в них не было. Действительно, не успеваешь заметить, как мысли об учебе и работе смешиваются в одну однородную кашу, и ты не можешь преуспеть уже нигде.</p></div></div></div></div>
-      </div>
     </div>
   </div>
 </section>
@@ -491,7 +492,7 @@ main,.foot{position:relative;z-index:1}
 </section>
 
 <!-- 06 · Спокойствие, только спокойствие -->
-<section class="sec calm fit" id="recommendations">
+<section class="sec calm" id="recommendations">
   <div class="in">
     <header class="sh"><h2>Спокойствие, только спокойствие</h2></header>
     <div class="glabel">Как не выгореть?</div>
