@@ -336,7 +336,7 @@ main,.foot{position:relative;z-index:1}
 <header class="hero" id="top">
   <canvas class="fig3d hero3d" data-fig="cross" data-text="УСПЕТЬ ВСЁ" aria-hidden="true"></canvas>
   <h1>Успеть всё</h1>
-  <spline-viewer class="spl" aria-hidden="true" url="uspet-hero.splinecode"></spline-viewer>
+  <spline-viewer class="spl" aria-hidden="true" background="rgba(0,0,0,0)" url="uspet-hero.splinecode"></spline-viewer>
   <div class="cap l"><b>О проекте</b><p>Совмещение работы и учебы в университете — сложная задача. Многие студенты сталкиваются с нехваткой времени, перегрузками, стрессом и снижением успеваемости, пытаясь успевать и там, и там.<br>«Успеть всё» – для студентов, совмещающих учебу и работу.</p></div>
   <div class="cap r"><b>Кто авторы</b><p>исследование студенток 2 курса программы “Журналистика” СПбГУП</p><p>Макиенко Наталья, Дарья Чаус, Мария Дубинина, Ольга Разумова, Софья Веретенникова и Елизавета Савоськина</p></div>
   <div class="hstats"><span><b>203</b> студента в опросе</span><span><b>52%</b> работают</span><span><b>22,7%</b> успевают всё</span></div>
@@ -497,7 +497,9 @@ main,.foot{position:relative;z-index:1}
   (function(){var v=document.querySelector('.hero .spl');if(!v)return;
     // the title in her scene is ~415px wide at zoom 1; on her Tilda page it spanned ~57% of the screen width
     var z0=0,fit=function(){var c=v._spline&&v._spline._camera;if(!c)return;if(!z0)z0=c.zoom;v._spline.setZoom(z0*v.parentElement.clientWidth*.57/415)};
-    v.addEventListener('load-complete',function(){fit();v.parentElement.classList.add('spline')});addEventListener('resize',fit);
+    v.addEventListener('load-complete',function(){fit();
+      // no dragging or panning of the camera: a stray trackpad gesture used to push the title out of view
+      var o=v._spline._controls&&v._spline._controls.orbitControls;if(o){o.enablePan=false;o.enableRotate=false;o.enableZoom=false}v.parentElement.classList.add('spline')});addEventListener('resize',fit);
     // if her online scene can't be reached, try the copy exported into scene.js
     setTimeout(function(){if(v.parentElement.classList.contains('spline')||!window.SPLINE_SCENE)return;
       try{var b=atob(window.SPLINE_SCENE),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
