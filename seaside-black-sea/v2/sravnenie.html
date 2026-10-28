@@ -1,0 +1,108 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Black Sea: было и стало</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Review sheet: the whole redesigned site runs inside a laptop or phone frame. */
+:root{--bg:#eef0f2;--panel:#fff;--ink:#15171a;--muted:#5d636b;--line:#d5d9de;--accent:#2f5bd3;
+  --ui:"Golos Text",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121417;--panel:#1b1e22;--ink:#e9ecef;--muted:#9aa1a9;--line:#2c3137;--accent:#8aa8ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121417;--panel:#1b1e22;--ink:#e9ecef;--muted:#9aa1a9;--line:#2c3137;--accent:#8aa8ff;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--ui);padding:28px max(16px,env(safe-area-inset-right,0px)) 64px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1280px;margin:0 auto}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:600 clamp(26px,4vw,40px)/1.1 var(--ui);margin:10px 0 8px;text-wrap:balance}
+.lede{max-width:72ch;color:var(--muted);margin:0}
+.bar{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;margin:18px 0 0;position:sticky;top:0;z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line)}
+.grp{display:flex;align-items:center;gap:8px}
+.lbl{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--panel);gap:2px}
+.seg button{font:500 14px/1 var(--ui);border:0;background:transparent;color:var(--ink);padding:9px 13px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:1px solid var(--line)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px;margin-top:22px;align-items:start}
+.stage{min-width:0}
+.laptop{background:#0d0e10;border-radius:14px;padding:10px 10px 14px}
+.phone{background:#0d0e10;border-radius:40px;padding:10px;width:min(100%,360px);margin:0 auto}
+.device{position:relative;overflow:hidden;border-radius:4px;background:#000}
+.laptop .device{aspect-ratio:16/10}
+.phone .device{aspect-ratio:390/844;border-radius:30px}
+.vp{position:absolute;left:0;top:0;transform-origin:0 0;border:0;background:#000}
+.laptop .vp{width:1440px;height:900px}.phone .vp{width:390px;height:844px}
+div.vp{overflow-y:auto;overflow-x:hidden}
+div.vp img{display:block;width:100%}
+.open{margin-left:auto;font-size:14px;color:var(--accent)}
+.hint{font:12px/1.45 var(--mono);color:var(--muted);margin-top:10px}
+aside.blocks{position:sticky;top:76px}
+aside h2{font:600 15px var(--ui);margin:0 0 4px}
+aside .s{font-size:13px;color:var(--muted);margin:0 0 12px}
+aside ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+aside li button{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+aside li button:hover{border-color:var(--accent)}
+aside li b{display:block;font:600 14px/1.3 var(--ui)}
+aside li span{display:block;font-size:13px;line-height:1.4;color:var(--muted);margin-top:2px}
+aside .doc{display:inline-block;margin-top:14px;color:var(--accent);font-size:14px}
+@media (max-width:980px){.main{grid-template-columns:minmax(0,1fr)}aside.blocks{position:static}}
+</style>
+
+<div class="wrap">
+  <div class="kicker">Предпросмотр правок · оригинал на GitHub не изменён</div>
+  <h1>Seaside. Black Sea: было и стало</h1>
+  <p class="lede">«Было» — твой лонгрид с GitHub, снятый целиком. «Стало» — новая версия после правок 28 октября: в рамке работает живая страница, её можно прокручивать, наводить на карточки, нажимать. Справа блоки: нажми, и рамка перейдёт к нужному месту.</p>
+
+  <div class="bar">
+    <div class="grp"><span class="lbl">Версия</span><div class="seg" role="group" aria-label="Версия"><button aria-pressed="false" data-v="before">Было</button><button aria-pressed="true" data-v="after">Стало</button></div></div>
+    <div class="grp"><span class="lbl">Экран</span><div class="seg" role="group" aria-label="Экран"><button aria-pressed="true" data-dev="laptop">Ноутбук</button><button aria-pressed="false" data-dev="phone">Телефон</button></div></div>
+    <a class="open" href="index.html" target="_blank" rel="noopener">Открыть новую версию отдельно ↗</a>
+  </div>
+
+  <div class="main">
+    <div class="stage">
+      <div class="laptop" id="laptop"><div class="device"><iframe class="vp after" title="Новая версия сайта"></iframe><div class="vp before" hidden><img alt="Сайт сейчас, весь по высоте"></div></div></div>
+      <div class="phone" id="phone" hidden><div class="device"><iframe class="vp after" title="Новая версия сайта на телефоне"></iframe><div class="vp before" hidden><img alt="Сайт сейчас на телефоне"></div></div></div>
+      <p class="hint" id="hint"></p>
+    </div>
+    <aside class="blocks" aria-label="Блоки">
+      <h2 id="bt"></h2><p class="s">Нажми на блок, чтобы перейти к нему в рамке.</p>
+      <ol id="bl"></ol>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var S={src:'index.html',before:'img/before-d.jpg',beforeM:'img/before-m.jpg',title:'Seaside: 9 блоков',
+    hint:'«Было» снято с твоей версии с GitHub. На телефоне там нет мобильной вёрстки, поэтому видно кусок десктопа.',
+    blocks:[['#top','Первый экран','логотип, заголовок машинописью, дата'],['#intro','Нефтяные разливы','вступление, цитата Михеевой с подписью, большие мешки'],['#chronicle','Хроника катастрофы','лист со скруглением, подзаголовок с датами, снимок радара проявляется'],['#facts','Главные цифры','5000 т, 90 км², 8000, 600'],['#fauna','Море молчит, животные — нет','карточки переворачиваются при наведении, подписи к фото как в оригинале'],['#people','Люди против нефти','фото между абзацами раскрываются из щели, цитата Петрова'],['#recovery','Сколько море будет восстанавливаться','цитаты экспертов, сравнение 2007 и 2024'],['#final','Финал','машинописный вывод без рук'],['#footer','Подвал','логотип, автор, фото, источники, наверх']]};
+  var state={v:'after',dev:'laptop'},loaded={};
+  function fit(){$('.device').forEach(function(d){var w=d.clientWidth;$('.vp',d).forEach(function(v){v.style.transform='scale('+(w/v.offsetWidth)+')'})})}
+  function frame(){return document.querySelector('#'+state.dev+' iframe')}
+  function render(){
+    $('[data-v]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.v===state.v))});
+    $('[data-dev]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.dev===state.dev))});
+    document.getElementById('laptop').hidden=state.dev!=='laptop';document.getElementById('phone').hidden=state.dev!=='phone';
+    ['laptop','phone'].forEach(function(id){var box=document.getElementById(id);
+      box.querySelector('.after').hidden=state.v!=='after';box.querySelector('.before').hidden=state.v!=='before';
+      var img=box.querySelector('.before img'),want=id==='phone'?S.beforeM:S.before;if(img.getAttribute('src')!==want)img.src=want;
+      var f=box.querySelector('iframe'),on=!box.hidden&&state.v==='after';
+      if(on&&!loaded[id]){f.src=S.src;loaded[id]=1}
+    });
+    document.getElementById('hint').textContent=S.hint;
+    document.getElementById('bt').textContent=S.title;
+    document.getElementById('bl').innerHTML=S.blocks.map(function(b){return '<li><button type="button" data-go="'+b[0]+'"><b>'+b[1]+'</b><span>'+b[2]+'</span></button></li>'}).join('');
+    fit();
+  }
+  function send(m){var f=frame();if(f&&f.contentWindow)f.contentWindow.postMessage(m,'*')}
+  document.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    if(b.dataset.v){state.v=b.dataset.v;render()}
+    else if(b.dataset.dev){state.dev=b.dataset.dev;render()}
+    else if(b.dataset.go){if(state.v!=='after'){state.v='after';render();setTimeout(function(){send({go:b.dataset.go})},900)}else send({go:b.dataset.go})}
+  });
+  addEventListener('resize',fit);if(window.ResizeObserver)new ResizeObserver(fit).observe(document.body);
+  render();
+})();
+</script>
