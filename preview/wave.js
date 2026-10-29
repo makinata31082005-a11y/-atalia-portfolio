@@ -85,7 +85,7 @@
     t=t*t*(3-2*t);return a.map(function(x,j){return x+(b[j]-x)*t})}
   // where the bundle starts: the middle of the hero figure, in page px
   function start(){var f=document.querySelector('.hero3d');if(!f)return[innerWidth/2,innerHeight/2];
-    var r=f.getBoundingClientRect();return[r.left+r.width/2,r.top+scrollY+r.height/2]}
+    var r=f.getBoundingClientRect();var d=window.figShift?window.figShift():[0,0];return[r.left+r.width/2+d[0],r.top+scrollY+r.height/2+d[1]]}
 
   var last=performance.now(),s=0,time=0,head=-1;
   (function frame(){

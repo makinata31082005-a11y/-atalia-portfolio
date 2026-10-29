@@ -564,8 +564,23 @@ main,.foot{position:relative;z-index:1}
   // Natali's Spline figure, loaded the same way as on her published site; the built-in glass cross shows until it is ready
   (function(){var v=document.querySelector('.hero .spl');if(!v)return;
     // the title in her scene is ~415px wide at zoom 1; on her Tilda page it spanned ~57% of the screen width
+
+    // where the figure is now: the cursor drags her figure away from the middle, and the fibres must leave from there.
+    // Screen shift (CSS px) of the meshes that have moved since load, from the scene's own camera; [0,0] if anything is missing.
+    var m0=null;
+    function meshes(){var a=v._spline,l=[];try{a._scene.traverse(function(o){if(o.isMesh&&o.matrixWorld)l.push(o)})}catch(e){}return l}
+    function ndc(c,p){var V=c.matrixWorldInverse.elements,P=c.projectionMatrix.elements,x=p[0],y=p[1],z=p[2];
+      var vx=V[0]*x+V[4]*y+V[8]*z+V[12],vy=V[1]*x+V[5]*y+V[9]*z+V[13],vz=V[2]*x+V[6]*y+V[10]*z+V[14];
+      var w=P[3]*vx+P[7]*vy+P[11]*vz+P[15];return [(P[0]*vx+P[4]*vy+P[8]*vz+P[12])/w,(P[1]*vx+P[5]*vy+P[9]*vz+P[13])/w]}
+    window.figShift=function(){try{var a=v._spline,c=a&&a._camera;if(!c||!m0)return [0,0];
+      var s=[0,0],e=[0,0],n=0;m0.forEach(function(r){var q=r.o.matrixWorld.elements;
+        if(Math.abs(q[12]-r.p[0])+Math.abs(q[13]-r.p[1])+Math.abs(q[14]-r.p[2])<1e-3)return;
+        var a0=ndc(c,r.p),a1=ndc(c,[q[12],q[13],q[14]]);s[0]+=a0[0];s[1]+=a0[1];e[0]+=a1[0];e[1]+=a1[1];n++});
+      if(!n)return [0,0];var dx=(e[0]-s[0])/n*v.clientWidth/2,dy=-(e[1]-s[1])/n*v.clientHeight/2;
+      return isFinite(dx+dy)?[dx,dy]:[0,0]}catch(x){return [0,0]}};
     var z0=0,fit=function(){var c=v._spline&&v._spline._camera;if(!c)return;if(!z0)z0=c.zoom;v._spline.setZoom(z0*v.parentElement.clientWidth*.57/415)};
     v.addEventListener('load-complete',function(){fit();
+    m0=meshes().map(function(o){var q=o.matrixWorld.elements;return {o:o,p:[q[12],q[13],q[14]]}});
       // no dragging or panning of the camera: a stray trackpad gesture used to push the title out of view
       var o=v._spline._controls&&v._spline._controls.orbitControls;if(o){o.enablePan=false;o.enableRotate=false;o.enableZoom=false}v.parentElement.classList.add('spline')});addEventListener('resize',fit);
     new IntersectionObserver(function(es){var a=v._spline;if(a)es[0].isIntersecting?a.play&&a.play():a.stop&&a.stop()}).observe(v);
