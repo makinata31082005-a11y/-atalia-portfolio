@@ -89,8 +89,8 @@
 
   var last=performance.now(),s=0,time=0,head=-1;
   (function frame(){
-    // shortcut: draws at most 1.25 px per CSS px; the glow hides the rest
-    var k=Math.min(devicePixelRatio||1,1.25),w=Math.max(8,Math.round(innerWidth*k)),h=Math.max(8,Math.round(innerHeight*k));
+    // shortcut: draws at most 1 px per CSS px; the glow hides the rest
+    var k=Math.min(devicePixelRatio||1,1),w=Math.max(8,Math.round(innerWidth*k)),h=Math.max(8,Math.round(innerHeight*k));
     if(c.width!==w||c.height!==h){c.width=w;c.height=h}
     if(W!==w||H!==h)size(w,h);
     // the first screen belongs to the cross, so the flight starts as it scrolls away

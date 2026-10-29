@@ -14,7 +14,7 @@
   --bg:#1c1c1c; --ink:#f2f2f2; --dim:#a3a3a3; --line:rgba(255,255,255,.14);
   --acc:#ffffff; --acc-ink:#141414;
   --head:"Oswald","Arial Narrow",sans-serif; --wide:"Unbounded","Arial Black",sans-serif; --body:"Manrope",system-ui,sans-serif;
-  --card:rgba(16,16,16,.42); --card-b:rgba(255,255,255,.12); --blur:blur(40px) saturate(1.2);
+  --card:rgba(16,16,16,.55); --card-b:rgba(255,255,255,.12); --blur:blur(12px);
   --r:22px; --gut:40px; --ease:cubic-bezier(.23,1,.32,1);
 }
 [data-pal="pink"]{--acc:#ff7eb9;--acc-ink:#1c1c1c}
@@ -33,13 +33,13 @@ p{margin:0 0 1em}
 .sec{position:relative;padding:130px 0 120px;overflow:hidden;scroll-margin-top:0}
 .in{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 var(--gut)}
 .sh{text-align:center;margin-bottom:64px}
-.sh h2{margin:0;text-wrap:balance;font:700 clamp(36px,5vw,64px)/1 var(--head);text-transform:uppercase;letter-spacing:.01em}
+.sh h2{margin:0;text-wrap:balance;font:700 clamp(34px,6.4vh,60px)/1 var(--head);text-transform:uppercase;letter-spacing:.01em}
 .sh p{margin:14px 0 0;font:500 18px/1.4 var(--body);color:var(--dim)}
 .sh p::first-letter{text-transform:uppercase}
 .fit{--pad:max(44px,8.5vh);min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:var(--pad) 0}
 .fit .in{width:100%}
+.stat.fit{--pad:max(72px,13vh)}
 .fit .sh{margin-bottom:clamp(20px,4.2vh,40px)}
-.fit .sh h2{font-size:clamp(34px,6.4vh,60px)}
 .fit .sh p{margin-top:clamp(6px,1.2vh,12px)}
 .card{background:var(--card);border:1px solid var(--card-b);border-radius:var(--r);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
 .kick{font:600 14px var(--body);color:var(--acc)}
@@ -84,25 +84,26 @@ p{margin:0 0 1em}
 
 /* 02 statistics */
 .stat .lead{font:400 18px/1.5 var(--body);max-width:860px;margin:0 auto 28px;color:var(--dim)}
-.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:clamp(16px,3.4vh,32px) 56px;counter-reset:sc}
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:clamp(20px,4.4vh,44px) clamp(56px,9vw,140px);counter-reset:sc}
 .scol{display:contents}
 /* flip card: the question on the front, answers on the back; hover or the arrow turns it */
 .sc{position:relative;z-index:2;display:grid;perspective:1400px}
-.sc .flip{display:grid;min-height:clamp(120px,20.5vh,230px)}
+.sc .flip,.sc .face{pointer-events:none}.sc .go{pointer-events:auto}
+.sc .flip{display:grid;min-height:clamp(112px,16vh,190px)}
 .sc{counter-increment:sc}
-.sc .face{grid-area:1/1;padding:22px 24px 64px;display:flex;flex-direction:column;justify-content:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;position:relative;transform:perspective(1400px) rotateY(0);transition:transform .7s var(--ease)}
+.sc .face{grid-area:1/1;padding:20px 24px 56px;display:flex;flex-direction:column;justify-content:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;position:relative;transform:perspective(1400px) rotateY(0);transition:transform .7s var(--ease)}
 .sc .back{transform:perspective(1400px) rotateY(-180deg);justify-content:flex-start}
 .sc.open .front{transform:perspective(1400px) rotateY(180deg)}.sc.open .back{transform:perspective(1400px) rotateY(0)}
 @media (hover:hover){.sc:hover .front{transform:perspective(1400px) rotateY(180deg)}.sc:hover .back{transform:perspective(1400px) rotateY(0)}}
-.sc h3{margin:0;font:600 clamp(22px,2.1vw,30px)/1.12 var(--wide);text-transform:uppercase;letter-spacing:-.01em;text-align:left;text-wrap:balance}
+.sc h3{margin:0;font:600 19px/1.25 var(--wide);text-transform:uppercase;letter-spacing:-.01em;text-align:left;text-wrap:balance}
 .sc .front{justify-content:space-between;padding:22px 26px 24px}
 .sc .front::before{content:"0" counter(sc);font:500 15px var(--head);letter-spacing:.14em;color:var(--acc)}
 .sc .front h3{padding-right:56px}
-.sc .back h3{font-size:13px;letter-spacing:.04em;margin-bottom:18px;text-align:left;color:var(--dim)}
-.sc .data{display:grid;gap:8px}
-.sc .row{display:grid;grid-template-columns:72px 1fr;gap:6px 12px;align-items:center}
-.sc .row b{font:600 22px var(--wide);color:var(--acc);letter-spacing:-.03em}
-.sc .row span{font-size:14px;line-height:1.35}
+.sc .back h3{font-size:14px;letter-spacing:.04em;margin-bottom:10px;text-align:left;color:var(--dim)}
+.sc .data{display:grid;gap:4px}
+.sc .row{display:grid;grid-template-columns:72px 1fr;gap:3px 12px;align-items:center}
+.sc .row b{font:600 19px var(--wide);color:var(--acc);letter-spacing:-.03em}
+.sc .row span{font-size:15px;line-height:1.3}
 .sc .row i{grid-column:1/-1;height:3px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
 .sc .row i::after{content:"";display:block;height:100%;width:var(--v);background:var(--acc);transform:scaleX(0);transform-origin:0;transition:transform .6s var(--ease) .3s}
 .sc.open .row i::after{transform:none}
@@ -127,7 +128,7 @@ p{margin:0 0 1em}
 .person .ph b{display:block;margin-top:18px;font:600 20px/1.25 var(--wide);text-transform:uppercase}
 .person .ph span{display:block;color:var(--dim);font-size:15px;margin-top:4px}
 .qa{display:grid;gap:8px}
-.qi{background:rgba(18,18,18,.42);-webkit-backdrop-filter:blur(40px) saturate(1.2);backdrop-filter:blur(40px) saturate(1.2);border-radius:16px;padding:0 20px}
+.qi{background:rgba(18,18,18,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:16px;padding:0 20px}
 .qi>button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 36px;gap:14px;align-items:center;width:100%;padding:20px 0;font:600 20px/1.35 var(--body)}
 .qi>button:focus-visible{outline:2px solid var(--acc)}
 .qi .pm{width:34px;height:34px;border:1px solid var(--dim);border-radius:50%;display:grid;place-items:center;font:400 20px/1 var(--body);transition:transform .2s var(--ease),background .2s var(--ease)}
@@ -136,7 +137,7 @@ p{margin:0 0 1em}
 .qi.open .ans{grid-template-rows:1fr}
 .qi .ans>div{overflow:hidden;opacity:0;transition:opacity .2s var(--ease)}
 .qi.open .ans>div{opacity:1}
-.qi .ans .card{margin:0 0 20px;padding:22px 26px;border-radius:18px 18px 18px 4px;color:#dedede;font-size:16px;line-height:1.7;max-width:68ch}
+.qi .ans .card{margin:0 0 20px;padding:22px 26px;border-radius:18px 18px 18px 4px;color:#dedede;font-size:16px;line-height:1.6;max-width:68ch}
 .qi .ans p:last-child{margin:0}
 /* portraits: small, duotone, with a pink ring, instead of big grey photos */
 [data-iv] .person .ph img,.byq .who img{filter:grayscale(1) contrast(1.15);border-radius:50%;outline:2px solid var(--acc);outline-offset:4px;object-fit:cover}
@@ -151,7 +152,7 @@ p{margin:0 0 1em}
 [data-iv="idx"] .qa{grid-template-columns:minmax(0,320px) minmax(0,1fr);grid-template-rows:repeat(6,auto) 1fr;column-gap:40px;row-gap:0;counter-reset:q}
 [data-iv="idx"] .qi{display:contents}
 [data-iv="idx"] .qi>button{grid-column:1;counter-increment:q;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:baseline;padding:16px 0;border-top:1px solid var(--line);font:500 16px/1.4 var(--body);color:var(--dim);transition:color .3s var(--ease)}
-[data-iv="idx"] .qi>button{padding:16px 20px;background:rgba(18,18,18,.5);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px)}
+[data-iv="idx"] .qi>button{padding:16px 20px;background:rgba(18,18,18,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 [data-iv="idx"] .qi:first-child>button{border-top:0;border-radius:16px 16px 0 0}
 [data-iv="idx"] .qi:last-child>button{border-radius:0 0 16px 16px}
 [data-iv="idx"] .qi>button::before{content:counter(q,decimal-leading-zero);font:500 14px var(--head);letter-spacing:.12em}
@@ -161,7 +162,7 @@ p{margin:0 0 1em}
 [data-iv="idx"] .qi .ans{grid-column:2;grid-row:1/-1;display:block;opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .35s var(--ease),transform .5s var(--ease),visibility 0s .35s}
 [data-iv="idx"] .qi.open .ans{opacity:1;visibility:visible;transform:none;transition:opacity .45s var(--ease) .08s,transform .6s var(--ease) .08s}
 [data-iv="idx"] .qi .ans>div{opacity:1;overflow:visible}
-[data-iv="idx"] .qi .ans .card{margin:0;max-width:none;max-height:max(300px,calc(100svh - 2*var(--pad) - 330px));overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:26px 30px;border-radius:var(--r);font-size:16.5px;line-height:1.65}
+[data-iv="idx"] .qi .ans .card{margin:0;max-width:none;max-height:max(300px,calc(100svh - 2*var(--pad) - 330px));overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;padding:26px 30px;border-radius:var(--r);font-size:16px;line-height:1.6}
 /* 1 · side by side: both people at once, no switching */
 [data-iv="duo"] .ivw{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;align-items:start}
 [data-iv="duo"] .person{grid-template-columns:minmax(0,1fr);gap:22px}
@@ -202,8 +203,8 @@ p{margin:0 0 1em}
 .tgrid:focus-visible{outline:2px solid var(--acc);outline-offset:6px}
 .tgrid .tc{flex:0 0 340px;scroll-snap-align:start}
 .tc{padding:30px 28px 32px;position:relative;z-index:1;min-height:clamp(220px,34vh,320px)}
-.tc h3{margin:0 0 14px;font:600 19px/1.3 var(--wide);text-transform:uppercase;color:var(--acc)}
-.tc p{margin:0;color:#d0d0d0;font-size:15.5px;line-height:1.6}
+.tc h3{margin:0 0 14px;font:600 19px/1.25 var(--wide);text-transform:uppercase;color:var(--acc)}
+.tc p{margin:0;color:#d0d0d0;font-size:16px;line-height:1.55}
 
 /* 06 calm */
 .glabel{margin:0 0 22px;font:600 22px/1.3 var(--body)}
@@ -212,9 +213,9 @@ p{margin:0 0 1em}
 .cgrid.five>*{grid-column:span 2}
 .cgrid.five>*:nth-child(4){grid-column:2/span 2}
 .cc{padding:30px 26px;position:relative;display:flex;flex-direction:column;gap:12px;min-height:230px}
-.cc h3{margin:0;font:600 17px/1.25 var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc h3{margin:0;font:600 19px/1.25 var(--wide);text-transform:uppercase;color:var(--acc)}
 .cc p{margin:0;font-size:16px;line-height:1.55}
-.cc em{font-style:normal;font:600 16px var(--wide);text-transform:uppercase;color:var(--acc)}
+.cc em{font-style:normal;font:600 19px var(--wide);text-transform:uppercase;color:var(--acc)}
 .cc .tool{margin-top:auto;padding-bottom:4px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .cc .clock{font:600 40px/1 var(--wide);letter-spacing:-.04em;font-variant-numeric:tabular-nums;flex-basis:100%}
 .btn{font:600 15px var(--body);border:1.5px solid var(--acc);color:var(--acc);background:transparent;border-radius:999px;min-height:44px;padding:10px 20px;cursor:pointer;transition:transform .12s var(--ease)}
@@ -239,11 +240,11 @@ p{margin:0 0 1em}
 .rgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
 .rstack{display:grid;gap:18px}
 .rc{padding:24px 24px 22px;position:relative}
-.rc h3{margin:0 0 12px;font:600 21px/1.3 var(--wide);text-transform:uppercase}
-.rc>p{color:#d4d4d4;font-size:15px;line-height:1.5}
-.rc ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14.5px;line-height:1.45;color:#e0e0e0}
+.rc h3{margin:0 0 12px;font:600 19px/1.25 var(--wide);text-transform:uppercase}
+.rc>p{color:#d4d4d4;font-size:16px;line-height:1.55}
+.rc ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:16px;line-height:1.55;color:#e0e0e0}
 .rc ul ul{margin-top:6px;gap:4px}
-.rc .sub{list-style:none;margin-left:-18px;margin-top:10px;color:var(--dim);font-size:15px;font-weight:600}
+.rc .sub{list-style:none;margin-left:-18px;margin-top:10px;color:var(--dim);font-size:16px;font-weight:600}
 .rc details{margin-top:16px}
 .rc summary{list-style:none;cursor:pointer;display:inline-block}
 .rc summary::-webkit-details-marker{display:none}
@@ -253,10 +254,10 @@ p{margin:0 0 1em}
 /* 08 job search */
 .jgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .jc{padding:20px 24px 22px;position:relative;transition:transform .5s var(--ease),opacity .5s var(--ease),border-color .5s var(--ease),box-shadow .5s var(--ease)}
-.jc h3{margin:0 0 12px;font:600 16px/1.25 var(--wide);text-transform:uppercase}
-.jc .grp{font:600 15px var(--body);color:var(--acc);margin:0 0 8px}
+.jc h3{margin:0 0 12px;font:600 19px/1.25 var(--wide);text-transform:uppercase}
+.jc .grp{font:600 16px var(--body);color:var(--acc);margin:0 0 8px}
 .jc ul{list-style:none;margin:0;padding:0;display:grid;gap:5px}
-.jc li{padding-left:18px;position:relative}
+.jc li{padding-left:18px;position:relative;font-size:16px;line-height:1.55}
 .jc li::before{content:"";position:absolute;left:0;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--acc)}
 .seek{display:flex;align-items:center;gap:14px;max-width:560px;margin:0 auto clamp(16px,3vh,28px);padding:14px 22px;border:1px solid var(--card-b);border-radius:999px;background:var(--card);font:400 17px var(--body);color:var(--ink)}
 .seek svg{flex:none;width:20px;height:20px;color:var(--acc)}
@@ -424,11 +425,11 @@ main,.foot{position:relative;z-index:1}
   <div class="in">
     <header class="sh"><h2>Истории выживания</h2><p>интервью со студентами</p></header>
     <div class="tabs" role="tablist" aria-label="Студенты">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="p-liza" id="t-liza"><img src="img/liza.webp" alt=""><span><b>Елизавета Савоськина</b><span>студентка 2 курса</span></span></button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="p-pavel" id="t-pavel"><img src="img/pavel.webp" alt=""><span><b>Павел Шлёнский</b><span>студент 2 курса</span></span></button>
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-liza" id="t-liza"><img loading="lazy" decoding="async" src="img/liza.webp" alt=""><span><b>Елизавета Савоськина</b><span>студентка 2 курса</span></span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-pavel" id="t-pavel"><img loading="lazy" decoding="async" src="img/pavel.webp" alt=""><span><b>Павел Шлёнский</b><span>студент 2 курса</span></span></button>
     </div>
     <div class="person" role="tabpanel" id="p-liza" aria-labelledby="t-liza">
-      <div class="ph"><img src="img/liza.webp" alt="Елизавета Савоськина"><div><b>Елизавета Савоськина</b><span>студентка 2 курса</span></div></div>
+      <div class="ph"><img loading="lazy" decoding="async" src="img/liza.webp" alt="Елизавета Савоськина"><div><b>Елизавета Савоськина</b><span>студентка 2 курса</span></div></div>
       <div class="qa">
         <div class="qi open"><button type="button" aria-expanded="true"><span>Какая у вас должность и что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>За свою студенческую жизнь я успела попробовать разные способы совмещения работы и учебы. Мой первый трудовой договор я заключила в 16 лет, а последнюю увольнительную я написала пару месяцев назад – подработки долгое время были частью моей повседневности.</p><p>На моем последнем месте работы в найме я была специалистом-сомелье по чаю и кофе, так же я выполняла обязанности кассира и бариста.</p><p>Я устроилась туда во время учебного года, о чем знал мой работодатель и отнесся вполне спокойно. “Главное, что как сотрудник вы нам подходите” – сказала управляющая галереи в день, когда мой испытательный срок подошел к концу.</p><p>Компания действительно искала людей, которые в первую очередь отвечали их корпоративным ценностям.</p><p>После этого меня официально трудоустроили и я стала полноценным сотрудником с “неполненным” графиком. Так как я работающий студент, график выстраивался в соответствии со свободным временем в моем учебном расписании, но есть одно но: работодателю не выгодно нанимать человека, который отрабатывает менее 80-ти часов в месяц, поэтому приходилось работать почти всё свободное от учебы время. Я вставала на учебу в шесть утра, а домой проходила около двенадцати ночи. Выходных от работы у меня было 2-3 дня в неделю. С таким темпом жизни я потеряла всё то время, которое раньше тратила на домашнее задание, хобби и банальный отдых. Не успела осознать, как я перестала  слушать на занятиях, стала питаться как попало и в последствии выгорела не только к работе, но и к учебе.</p></div></div></div></div>
         <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я совмещаю работу с учебой с 16 лет, и за это время мои цели менялись и пересматривались несколько раз – сначала это было просто желание заполнить гардероб брендовыми вещами, потом банальное желание сепарироваться от родителей. Но сейчас, пройдя этот путь я понимаю, что работа для меня – это возможность попробовать себя в определенной сфере, а также перспектива развития и обогащения не только своего кругозора, но и круга общения. Сейчас я не работаю в найме, и больше не планирую возвращаться к подработкам, так как поставила для себя цель  – развиваться как специалист. Поэтому приняла для себя решение развиваться на базе фриланса в своем темпе – так, чтобы не мешать учебе.</p><p>Я думаю, что работа на фрилансе самый оптимальный вариант для студентов.</p></div></div></div></div>
@@ -437,7 +438,7 @@ main,.foot{position:relative;z-index:1}
       </div>
     </div>
     <div class="person" role="tabpanel" id="p-pavel" aria-labelledby="t-pavel" hidden>
-      <div class="ph"><img src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
+      <div class="ph"><img loading="lazy" decoding="async" src="img/pavel.webp" alt="Павел Шлёнский"><div><b>Павел Шлёнский</b><span>студент 2 курса, специалист по отбору абитуриентов в регионах</span></div></div>
       <div class="qa">
         <div class="qi open"><button type="button" aria-expanded="true"><span>Чем вы занимаетесь на работе? Что входит в ваши обязанности?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Я работал курьером в Яндекс Лавке с августа по ноябрь. Тогда нужна была быстрая работа, которую легко выполнять. Мне нужно было себя чем-то занять, плюс я достаточно спортивный был когда-то, поэтому такая работа подходила. Пришлось уволиться, потому что возникли проблемы со здоровьем работал на велике, колени начали болеть, работать я больше не смог.</p><p>Потом я стал работать специалистом по отбору абитуриентов в регионах. Работаю, как не трудно догадаться в приемной комиссии своего университета. В мои обязанности входит: прозвон абитуриентов и их родителей, информирование и продажа услуг университета. Ну и все, что способствует продаже: подготовка почтовых рассылок, техническая работа.</p></div></div></div></div>
         <div class="qi"><button type="button" aria-expanded="false"><span>Что побудило вас начать работать во время учебы?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Деньги никогда не лишние. Плюс, конечно, опыт, тем более в продажах, очень ценный для меня. Да и просто новый статус в университете и некоторые преимущества, которые я вместе с этим получаю. И последнее: я устроился через подругу и она очень классно "продала" мне эту идею. Ну, и не соврала.</p></div></div></div></div>
@@ -453,11 +454,11 @@ main,.foot{position:relative;z-index:1}
   <div class="in">
     <header class="sh"><h2>Сидеть на двух стульях</h2><p>мнение преподавателей</p></header>
     <div class="tabs" role="tablist" aria-label="Преподаватели">
-      <button class="tab" role="tab" aria-selected="true" aria-controls="p-rybin" id="t-rybin"><img src="img/rybin.webp" alt=""><span><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></span></button>
-      <button class="tab" role="tab" aria-selected="false" aria-controls="p-suh" id="t-suh"><img src="img/suhotina.webp" alt=""><span><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></span></button>
+      <button class="tab" role="tab" aria-selected="true" aria-controls="p-rybin" id="t-rybin"><img loading="lazy" decoding="async" src="img/rybin.webp" alt=""><span><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></span></button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="p-suh" id="t-suh"><img loading="lazy" decoding="async" src="img/suhotina.webp" alt=""><span><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></span></button>
     </div>
     <div class="person" role="tabpanel" id="p-rybin" aria-labelledby="t-rybin">
-      <div class="ph"><img src="img/rybin.webp" alt="Рыбин Артем Алексеевич"><div><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></div></div>
+      <div class="ph"><img loading="lazy" decoding="async" src="img/rybin.webp" alt="Рыбин Артем Алексеевич"><div><b>Рыбин Артем Алексеевич</b><span>преподаватель СПбГУП</span></div></div>
       <div class="qa">
         <div class="qi open"><button type="button" aria-expanded="true"><span>Как вы относитесь к работающим студентам?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>К работающим студентам я отношусь замечательно, потому что ещё совсем недавно я сам был работающим студентом.</p><p>Есть такой анекдот. У студента есть только 3 опции: он хорошо учится, плохо работает и хорошо спит. Он плохо учится, хорошо работает и хорошо спит. Он хорошо учится, хорошо работает, но плохо спит или вообще не спит. Поэтому очень важно отслеживать этот тонкий момент, чтобы работа не мешала учёбе, потому что, если ты получаешь базовое академическое серьёзное образование, нужно сделать так, чтобы работа была важнейшим подспорьем для тебя, чтобы ты узнавал что-то новое именно на практике, чтобы ты соединял и теоретические, и практические знания, а не делал упор на чём-то одном. Всегда можно работать, но тогда ответь просто сам себе на вопрос. А нужно ли тебе тогда вообще получать высшее образование, если ты уже всю свою жизнь посвятил работе.</p><p>Работа в совокупности с высшим образованием – замечательно. Но всегда нужно выстраивать чёткий баланс между работой и учёбой, делать их помощниками друг друга, а не противниками, перевешивающими на ту или иную сторону.</p></div></div></div></div>
         <div class="qi"><button type="button" aria-expanded="false"><span>Считаете ли вы, что работа влияет на учебный процесс?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Работа очень влияет на учебный процесс. Если студент подходит к этому делу, ответственно, то работа будет крайне положительно влиять на его обучение, он будет впитывать практические знания как губка и применять их.</p><p>Есть первый вариант, когда работа является твоим помощником в учёбе. А есть второй – когда человек полностью посвящает себя работе, думает, что он заработает сейчас шикарно денег, получит диплом для галочки и так далее.  , ни в коем случае нельзя так думать, потому что Теоретические основы, они крайне важны в 3 вопросе. В 3 вопросе, как раз на это более подробно отвечу. И вот они, понимаешь. Они работают, кто-то даже в ночные смены (с 10 вечера до 7 утра, естественно) Студенты приходят на пары еле живые. Про то, чтобы работать, я вообще молчу. Им бы главное сидеть и не спать. Это уже достижение, если они не спят на парах после такой смены. Поэтому крайне важно соблюдать баланс и лучше, конечно же, идти работать сразу же по специальности. Нужно поставить себя перед выбором. А что ты хочешь? Ты хочешь работать? А работать в этой сфере, и, может быть тогда имеет смысл получить какое-то образование по этой специальности? Или ты хочешь получить образование по той специальности, на которую ты учишься, и, собственно, и развиваться в этой специальности?</p></div></div></div></div>
@@ -465,7 +466,7 @@ main,.foot{position:relative;z-index:1}
       </div>
     </div>
     <div class="person" role="tabpanel" id="p-suh" aria-labelledby="t-suh" hidden>
-      <div class="ph"><img src="img/suhotina.webp" alt="Сухотина Ирина Анатольевна"><div><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></div></div>
+      <div class="ph"><img loading="lazy" decoding="async" src="img/suhotina.webp" alt="Сухотина Ирина Анатольевна"><div><b>Сухотина Ирина Анатольевна</b><span>преподаватель СПбГУП</span></div></div>
       <div class="qa">
         <div class="qi open"><button type="button" aria-expanded="true"><span>Как вы относитесь к работающим студентам?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>К работающим студентам я отношусь с уважением. Работа влияет на учебный процесс</p></div></div></div></div>
         <div class="qi"><button type="button" aria-expanded="false"><span>Считаете ли вы, что работа влияет на учебный процесс?</span><span class="pm">+</span></button><div class="ans"><div><div class="card"><p>Иногда работа мешает учёбе. А иногда помогает. Мешает, когда студент не высыпается, когда у него становится меньше времени на занятия. А помогает, если он умеет свой режим дня подстроить под работу, как-то сконцентрироваться</p></div></div></div></div>
@@ -499,17 +500,17 @@ main,.foot{position:relative;z-index:1}
     <header class="sh"><h2>Спокойствие, только спокойствие</h2></header>
     <div class="glabel">Как не выгореть?</div>
     <div class="cgrid">
-      <article class="cc card" data-timer="1500"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Техника помодоро</h3><p>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</p><div class="tool"><span class="clock">25:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
-      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><p><em>Планируйте</em> отдых так же, как и работу</p><p><em>Учитесь</em> говорить нет лишним обязанностям</p></article>
-      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Разграничивайте работу и учебу</h3><p>например, не делайте рабочие задачи в перерывах между парами</p></article>
+      <article class="cc card" data-timer="1500"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Техника помодоро</h3><p>25 минут работы, 5 минут отдыха: помогает сосредоточиться и избежать перегрузки</p><div class="tool"><span class="clock">25:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+      <article class="cc card"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><p><em>Планируйте</em> отдых так же, как и работу</p><p><em>Учитесь</em> говорить нет лишним обязанностям</p></article>
+      <article class="cc card"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Разграничивайте работу и учебу</h3><p>например, не делайте рабочие задачи в перерывах между парами</p></article>
     </div>
     <div class="glabel">Техники для снижения стресса</div>
     <div class="cgrid five">
-      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Метод 4-7-8</h3><p>дыхательная техника для быстрого расслабления</p><div class="tool" style="padding-bottom:26px"><div class="breath"><i></i><em aria-live="polite"></em></div><button class="btn main" data-breath type="button">Дышать</button></div></article>
-      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Прогрессивная мышечная релаксация</h3><p>напряжение и расслабление мышц поочередно</p></article>
-      <article class="cc card"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Журнал эмоций</h3><p>фиксируйте мысли и чувства, чтобы разгрузить голову</p><textarea aria-label="Что я сейчас чувствую" placeholder="Что я сейчас чувствую…"></textarea></article>
-      <article class="cc card" data-timer="300"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Медитации</h3><p>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</p><div class="tool"><span class="clock">05:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
-      <article class="cc card" data-timer="600"><img class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Йога</h3><p>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</p><div class="tool"><span class="clock">10:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+      <article class="cc card"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Метод 4-7-8</h3><p>дыхательная техника для быстрого расслабления</p><div class="tool" style="padding-bottom:26px"><div class="breath"><i></i><em aria-live="polite"></em></div><button class="btn main" data-breath type="button">Дышать</button></div></article>
+      <article class="cc card"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Прогрессивная мышечная релаксация</h3><p>напряжение и расслабление мышц поочередно</p></article>
+      <article class="cc card"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Журнал эмоций</h3><p>фиксируйте мысли и чувства, чтобы разгрузить голову</p><textarea aria-label="Что я сейчас чувствую" placeholder="Что я сейчас чувствую…"></textarea></article>
+      <article class="cc card" data-timer="300"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Медитации</h3><p>простая 5-минутная медитация: закройте глаза, сосредоточьтесь на дыхании, отслеживайте мысли, не вовлекаясь в них</p><div class="tool"><span class="clock">05:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
+      <article class="cc card" data-timer="600"><img loading="lazy" decoding="async" class="pin" src="img/79-12.webp" alt="" style="right:18px;top:-36px;width:44px"><h3>Йога</h3><p>10 минут практики снижают стресс, улучшают концентрацию и расслабляют тело. попробуйте прямо сейчас!</p><div class="tool"><span class="clock">10:00</span><button class="btn main" data-t="go" type="button">Старт</button><button class="btn" data-t="reset" type="button">Сброс</button></div></article>
     </div>
   </div>
 </section>
@@ -519,12 +520,12 @@ main,.foot{position:relative;z-index:1}
   <div class="in">
     <header class="sh"><h2>Качай права</h2><p>права работающих студентов</p></header>
     <div class="rgrid">
-      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Права в сфере образования</h3><p>Студенты-работники могут воспользоваться следующими академическими правами:</p>
+      <article class="rc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Права в сфере образования</h3><p>Студенты-работники могут воспользоваться следующими академическими правами:</p>
         <details><summary class="btn"><span class="t1">Все права</span><span class="t2">Свернуть</span></summary><ul><li>Гибкий график обучения (если предусмотрено вузом).</li><li>Перевод на индивидуальный учебный план.</li><li>Выбор формы обучения (очная, заочная, очно-заочная).</li><li>Возможность дистанционного обучения (если вуз предоставляет такую возможность).</li><li>Академический отпуск (по уважительной причине, включая работу).</li><li>Перенос сессии или сдачи экзаменов (по договорённости с преподавателями).</li><li>Скидки и льготы (если вуз предоставляет их работающим студентам).</li></ul></details></article>
-      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Трудовые права работающих студентов</h3><p>По ТК РФ работающие студенты имеют те же права, что и другие работники, плюс дополнительные гарантии:</p>
+      <article class="rc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Трудовые права работающих студентов</h3><p>По ТК РФ работающие студенты имеют те же права, что и другие работники, плюс дополнительные гарантии:</p>
         <details><summary class="btn"><span class="t1">Все гарантии</span><span class="t2">Свернуть</span></summary><ul><li class="sub">А) Общие трудовые права:</li><li>Заключение трудового договора (срочного или бессрочного).</li><li>Оплачиваемый отпуск (28 дней в год).</li><li>Больничные и декретные выплаты (при наличии страхового стажа).</li><li>Защита от необоснованного увольнения.</li><li class="sub">Б) Специальные гарантии для студентов:</li><li>1. Учебный отпуск (ст. 173–176 ТК РФ):<ul><li>Оплачиваемый – для студентов-заочников и очно заочников:</li><li>Сессия (до 40 дней в году для промежуточной аттестации).</li><li>Госэкзамены и защита диплома (до 4 месяцев).</li><li>Неоплачиваемый – для студентов очной формы (по согласованию с работодателем).</li><li>Компенсация проезда (1 раз в год – для заочников, если это прописано в коллективном договоре).</li></ul></li><li>2. Сокращённый рабочий день (ст. 93 ТК РФ):<ul><li>По соглашению с работодателем можно установить неполный рабочий день (например, 4–6 часов).</li><li>Оплата пропорциональна отработанному времени.</li></ul></li><li>3. Запрет на сверхурочную работу и ночные смены (для несовершеннолетних студентов).</li><li>4. Дополнительные выходные (для студентов, обучающихся без отрыва от производства, если это предусмотрено коллективным договором).</li><li>5. Возможность дистанционной работы (если профессия позволяет).</li></ul></details></article>
-      <div class="rstack"><article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Налоговые льготы</h3><ul><li>Налоговый вычет за обучение (до 15 600 руб. в год по НДФЛ, ст. 219 НК РФ).</li><li>Освобождение от НДФЛ на стипендию (если студент получает её параллельно с зарплатой).</li></ul></article>
-      <article class="rc card"><img class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Социальные гарантии</h3><ul><li>Сохранение места работы на время учебного отпуска.</li><li>Право на пересмотр графика работы в период сессии.</li></ul></article></div>
+      <div class="rstack"><article class="rc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Налоговые льготы</h3><ul><li>Налоговый вычет за обучение (до 15 600 руб. в год по НДФЛ, ст. 219 НК РФ).</li><li>Освобождение от НДФЛ на стипендию (если студент получает её параллельно с зарплатой).</li></ul></article>
+      <article class="rc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="right:-6px;top:-42px;width:58px"><h3>Социальные гарантии</h3><ul><li>Сохранение места работы на время учебного отпуска.</li><li>Право на пересмотр графика работы в период сессии.</li></ul></article></div>
     </div>
   </div>
 </section>
@@ -535,12 +536,12 @@ main,.foot{position:relative;z-index:1}
     <header class="sh"><h2>Кто ищет, тот всегда найдет</h2><p>список сайтов по поиску работы</p></header>
     <div class="seek" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="sq">где найти работу студенту</span><i></i></div>
     <div class="jgrid">
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Крупные сайты по поиску работы:</h3><ul><li>HeadHunter (hh.ru)</li><li>Rabota.ru</li><li>SuperJob</li><li>Зарплата.ру</li></ul></article>
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты с подработкой и фрилансом</h3><ul><li>Avito Работа</li><li>YouDo</li><li>Kwork</li></ul></article>
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты для стажировок и карьеры</h3><ul><li>Career.ru</li><li>Профи.ру</li></ul></article>
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">ВКонтакте</p><ul><li>"Работа для студентов | [Твой город]"</li><li>"Подработка и вакансии | [Твой город]"</li></ul></article>
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">Telegram-каналы</p><ul><li>"Фриланс | Удалёнка | Подработка"</li><li>"Стажировки и карьера"</li><li>"Работа для студентов"</li></ul></article>
-      <article class="jc card"><img class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Доски объявлений</h3><ul><li>Юла (Youla)</li><li>Авито Услуги</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Крупные сайты по поиску работы:</h3><ul><li>HeadHunter (hh.ru)</li><li>Rabota.ru</li><li>SuperJob</li><li>Зарплата.ру</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты с подработкой и фрилансом</h3><ul><li>Avito Работа</li><li>YouDo</li><li>Kwork</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Сайты для стажировок и карьеры</h3><ul><li>Career.ru</li><li>Профи.ру</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">ВКонтакте</p><ul><li>"Работа для студентов | [Твой город]"</li><li>"Подработка и вакансии | [Твой город]"</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Группы в соцсетях и Telegram</h3><p class="grp">Telegram-каналы</p><ul><li>"Фриланс | Удалёнка | Подработка"</li><li>"Стажировки и карьера"</li><li>"Работа для студентов"</li></ul></article>
+      <article class="jc card"><img loading="lazy" decoding="async" class="pin" src="img/79-15.webp" alt="" style="left:50%;margin-left:-24px;top:-44px;width:48px"><h3>Доски объявлений</h3><ul><li>Юла (Youla)</li><li>Авито Услуги</li></ul></article>
     </div>
   </div>
 </section>
@@ -567,6 +568,7 @@ main,.foot{position:relative;z-index:1}
     v.addEventListener('load-complete',function(){fit();
       // no dragging or panning of the camera: a stray trackpad gesture used to push the title out of view
       var o=v._spline._controls&&v._spline._controls.orbitControls;if(o){o.enablePan=false;o.enableRotate=false;o.enableZoom=false}v.parentElement.classList.add('spline')});addEventListener('resize',fit);
+    new IntersectionObserver(function(es){var a=v._spline;if(a)es[0].isIntersecting?a.play&&a.play():a.stop&&a.stop()}).observe(v);
     // if her online scene can't be reached, try the copy exported into scene.js
     setTimeout(function(){if(v.parentElement.classList.contains('spline')||!window.SPLINE_SCENE)return;
       try{var b=atob(window.SPLINE_SCENE),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
@@ -597,14 +599,16 @@ main,.foot{position:relative;z-index:1}
   var nav=document.querySelector('.nav'),links=$('.nav a');
   var up=document.querySelector('.up'),navT=0;
   // the menu shows when the pointer visits the top edge and fades out shortly after it leaves
-  addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;
+  addEventListener('pointermove',function(e){if(e.pointerType==='touch'||scrollY<innerHeight*.6)return;
     if(e.clientY<80||nav.matches(':hover')){clearTimeout(navT);navT=0;nav.classList.add('show')}
     else if(nav.classList.contains('show')&&!navT)navT=setTimeout(function(){navT=0;nav.classList.remove('show')},700)},{passive:true});
-  document.documentElement.addEventListener('pointerleave',function(){nav.classList.remove('show')});
+  document.documentElement.addEventListener('pointerleave',function(){if(!atTop)nav.classList.remove('show')});
+  var atTop=true;
   function onScroll(){up.classList.toggle('show',scrollY>innerHeight*.8);
+    var t=scrollY<innerHeight*.6;if(t!==atTop){atTop=t;clearTimeout(navT);navT=0;nav.classList.toggle('show',t)}
     var cur='';$('main .sec').forEach(function(s){if(s.getBoundingClientRect().top<innerHeight*.4)cur=s.id});
     links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+cur)})}
-  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  addEventListener('scroll',onScroll,{passive:true});onScroll();nav.classList.add('show')
 
   // statistics cards
   // each face has its own arrow so it turns with the card; only the visible one is focusable
@@ -627,7 +631,7 @@ main,.foot{position:relative;z-index:1}
       who.forEach(function(x){var it=x.qs[i];if(!it)return;var qt=$('button>span',it)[0].textContent,card=$('.ans .card',it)[0];
         if(!head){head=document.createElement('h3');head.className='q';head.innerHTML='<small>Вопрос '+(i+1)+'</small>';head.appendChild(document.createTextNode(qt));blk.appendChild(head)}
         var a=document.createElement('div');a.className='a card';
-        a.innerHTML='<div class="who"><img alt="" src="'+x.img+'"><div><b></b><span></span></div></div>';
+        a.innerHTML='<div class="who"><img loading="lazy" decoding="async" alt="" src="'+x.img+'"><div><b></b><span></span></div></div>';
         $('b',a)[0].textContent=x.name;$('.who span',a)[0].textContent=x.role;
         if(qt!==head.lastChild.textContent){var own=document.createElement('p');own.className='own';own.textContent=qt;a.appendChild(own)}
         while(card.firstChild)a.appendChild(card.firstChild);two.appendChild(a)});
@@ -705,7 +709,8 @@ main,.foot{position:relative;z-index:1}
   function paint(){raf=0;
     var t=Math.max(0,Math.min(1,x/innerWidth))*2,i=t<1?0:1,f=t-i,a=stops[i],b=stops[i+1];
     root.style.setProperty('--gc',a.map(function(v,k){return Math.round(v+(b[k]-v)*f)}).join(' '));
-    cards.forEach(function(c){var r=c.getBoundingClientRect();
+    var rs=cards.map(function(c){return c.getBoundingClientRect()});
+    cards.forEach(function(c,i){var r=rs[i];
       if(x<r.left-260||x>r.right+260||y<r.top-260||y>r.bottom+260){if(c.style.getPropertyValue('--lx')!=='-999px'){c.style.setProperty('--lx','-999px');c.style.setProperty('--ly','-999px')}return}
       c.style.setProperty('--lx',(x-r.left)+'px');c.style.setProperty('--ly',(y-r.top)+'px')})}
   function ask(){if(!raf)raf=requestAnimationFrame(paint)}
