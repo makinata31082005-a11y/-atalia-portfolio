@@ -35,7 +35,7 @@
   ' if(vC>.86)run=.35+3.*pow(.5+.5*sin(q*3.-T*3.2+a.w*50.),10.);',
   ' vI=run*out_(y)*smoothstep(YS,YS+40.,y)*(.55+.45*fract(a.w*13.7));}'].join('\n'),
   ['precision mediump float;varying float vI;varying float vC;uniform float K;',
-  'void main(){vec3 pink=vec3(1.,.14,.55),hot=vec3(1.,.5,.78),lil=vec3(.55,.35,1.);',
+  'void main(){vec3 pink=vec3(1.,.3,.62),hot=vec3(1.,.62,.84),lil=vec3(.55,.35,1.);',
   ' vec3 col=vC>.86?vec3(1.,.9,.97):(vC<.18?lil:(vC<.42?hot:pink));gl_FragColor=vec4(col*vI*K,1.);}'].join('\n'));
 
   var pDot=prog(['attribute vec4 a;attribute float u;',CURVE,'varying float vI;uniform float DPR;',
